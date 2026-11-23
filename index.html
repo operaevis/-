@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OPERAE VIS — OPVS | Thermodynamic Settlement Protocol</title>
+  <meta name="description" content="OPVS (Operae Vis System): 1 OPVS = 1 kWh. A thermodynamic settlement protocol and survival manifold architecture for autonomous machine economies." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%23ECE7DD'/%3E%3Ccircle cx='50' cy='50' r='34' fill='none' stroke='%23161513' stroke-width='11'/%3E%3Cline x1='32' y1='50' x2='68' y2='50' stroke='%23161513' stroke-width='11'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --travertin: #ECE7DD;
+      --basalte: #161513;
+      --cuivre: #9A4F24;
+      --cuivre-clair: #C98552;
+      --font-display: "DIN 1451 Mittelschrift", "DIN Alternate", "Bahnschrift", "Roboto Condensed", Arial, sans-serif;
+      --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --max-w: 1120px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--travertin);
+      color: var(--basalte);
+      font-family: var(--font-display);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+    /* Header */
+    header {
+      border-bottom: 2px solid var(--basalte);
+      background: var(--travertin);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .nav-wrap {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand-lockup {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      text-decoration: none;
+      color: var(--basalte);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.05;
+    }
+
+    .brand-opvs {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .brand-corp {
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      color: var(--cuivre);
+      font-weight: 600;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 1.4rem;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--basalte);
+      font-size: 0.92rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 600;
+      border-bottom: 2px solid transparent;
+      padding-bottom: 2px;
+    }
+
+    nav a:hover, nav a:focus-visible {
+      color: var(--cuivre);
+      border-bottom-color: var(--cuivre);
+      outline: none;
+    }
+
+    .lang-btn {
+      background: var(--basalte);
+      color: var(--travertin);
+      border: none;
+      padding: 0.4rem 0.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      cursor: pointer;
+      letter-spacing: 0.06em;
+    }
+
+    .lang-btn:hover { background: var(--cuivre); }
+
+    /* Sections */
+    .section {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 4rem 1.5rem;
+    }
+
+    .section-dark {
+      background: var(--basalte);
+      color: var(--travertin);
+      border-top: 2px solid var(--basalte);
+      border-bottom: 2px solid var(--basalte);
+    }
+
+    .section-dark .accent { color: var(--cuivre-clair); }
+    .accent { color: var(--cuivre); }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cuivre);
+      margin-bottom: 0.85rem;
+      font-weight: 600;
+    }
+
+    .section-dark .eyebrow { color: var(--cuivre-clair); }
+
+    h1 {
+      font-size: clamp(2.1rem, 4.8vw, 3.6rem);
+      line-height: 1.08;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+
+    h2 {
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    h3 {
+      font-size: 1.12rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .lead {
+      font-size: 1.18rem;
+      max-width: 68ch;
+      margin-bottom: 2rem;
+    }
+
+    .parity-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1rem;
+      border-top: 2px solid var(--basalte);
+      border-bottom: 2px solid var(--basalte);
+      padding: 1.25rem 0;
+      margin: 2rem 0;
+    }
+
+    .parity-item .label {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      color: var(--cuivre);
+    }
+
+    .parity-item .val {
+      font-family: var(--font-mono);
+      font-size: 1.15rem;
+      font-weight: 600;
+    }
+
+    .btn-row { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem; }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--cuivre);
+      color: var(--travertin);
+      text-decoration: none;
+      padding: 0.8rem 1.4rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      border: 2px solid var(--cuivre);
+    }
+
+    .btn-primary:hover { background: var(--basalte); border-color: var(--basalte); }
+
+    .btn-secondary {
+      display: inline-block;
+      background: transparent;
+      color: var(--basalte);
+      text-decoration: none;
+      padding: 0.8rem 1.4rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      border: 2px solid var(--basalte);
+    }
+
+    .btn-secondary:hover { background: var(--basalte); color: var(--travertin); }
+
+    /* Grids & Cards */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .card {
+      border: 1.5px solid var(--basalte);
+      padding: 1.4rem;
+      background: var(--travertin);
+    }
+
+    .section-dark .card {
+      border-color: var(--cuivre-clair);
+      background: var(--basalte);
+    }
+
+    .formula-box {
+      font-family: var(--font-mono);
+      font-size: 0.92rem;
+      padding: 0.9rem 1rem;
+      border-left: 3px solid var(--cuivre-clair);
+      background: #1E1C19;
+      color: var(--travertin);
+      margin-top: 1rem;
+      overflow-x: auto;
+    }
+
+    /* Prototype Console */
+    .proto-banner {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      padding: 0.65rem 1rem;
+      border: 1.5px solid var(--cuivre-clair);
+      color: var(--cuivre-clair);
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .ctrl-group { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+    .ctrl-btn {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      padding: 0.45rem 0.85rem;
+      border: 1.5px solid var(--travertin);
+      background: transparent;
+      color: var(--travertin);
+      cursor: pointer;
+    }
+
+    .ctrl-btn.active, .ctrl-btn:hover {
+      background: var(--cuivre-clair);
+      border-color: var(--cuivre-clair);
+      color: var(--basalte);
+      font-weight: 600;
+    }
+
+    .kpi-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .kpi-cell {
+      border: 1px solid #4A453E;
+      padding: 0.9rem 1rem;
+    }
+
+    .kpi-cell .k-label {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--cuivre-clair);
+      text-transform: uppercase;
+    }
+
+    .kpi-cell .k-val {
+      font-family: var(--font-mono);
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-top: 0.25rem;
+    }
+
+    .table-wrap { overflow-x: auto; border: 1px solid #4A453E; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+      text-align: left;
+    }
+
+    th, td {
+      padding: 0.7rem 0.85rem;
+      border-bottom: 1px solid #35322D;
+      white-space: nowrap;
+    }
+
+    th {
+      color: var(--cuivre-clair);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+    }
+
+    tr.clickable { cursor: pointer; }
+    tr.clickable:hover { background: #22201D; }
+
+    .badge {
+      display: inline-block;
+      padding: 0.15rem 0.45rem;
+      font-size: 0.74rem;
+      font-weight: 600;
+      border: 1px solid currentColor;
+    }
+
+    .badge-nom { color: var(--travertin); }
+    .badge-cons { color: var(--cuivre-clair); }
+    .badge-breach { background: var(--cuivre-clair); color: var(--basalte); border-color: var(--cuivre-clair); }
+
+    .ledger-drawer {
+      margin-top: 1.25rem;
+      padding: 1rem;
+      border: 1px solid var(--cuivre-clair);
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      background: #1E1C19;
+      overflow-wrap: anywhere;
+    }
+
+    /* Pilot table */
+    .light-table { width: 100%; border-collapse: collapse; margin-top: 1.25rem; }
+    .light-table th, .light-table td {
+      border-bottom: 1.5px solid var(--basalte);
+      padding: 0.8rem 0.75rem;
+      text-align: left;
+      white-space: normal;
+    }
+    .light-table th {
+      color: var(--cuivre);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 2px solid var(--basalte);
+      background: var(--travertin);
+    }
+
+    .footer-wrap {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .seal-block {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .sig {
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav-wrap">
+      <a href="#top" class="brand-lockup" aria-label="OPERAE VIS OPVS">
+        <!-- Geometric Circled Dash Marker (U+229D) -->
+        <svg width="38" height="38" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="39" fill="none" stroke="#161513" stroke-width="11" />
+          <line x1="30" y1="50" x2="70" y2="50" stroke="#161513" stroke-width="11" stroke-linecap="butt" />
+        </svg>
+        <div class="brand-text">
+          <span class="brand-opvs">OPVS</span>
+          <span class="brand-corp">OPERAE VIS · MACHINE-NATIVE VALUE PROTOCOL</span>
+        </div>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="#system" data-i18n="nav_system">System</a>
+        <a href="#prototype" data-i18n="nav_proto">Prototype</a>
+        <a href="#pilot" data-i18n="nav_pilot">Pilot</a>
+        <a href="#contact" data-i18n="nav_contact">Contact</a>
+        <button type="button" class="lang-btn" id="lang-toggle">FR</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- HOME / HERO -->
+    <section class="section">
+      <div class="eyebrow">OPERAE PRETIVM · SPECIFICATION v2.0 · PROTOTYPE</div>
+      <h1 data-i18n="hero_title">Give robots a wage, a wallet, and an audited balance sheet.</h1>
+      <p class="lead" data-i18n="hero_lead">
+        Autonomous machines draw kilowatt-hours and accumulate actuator wear without economic accountability.
+        OPVS (Operae Vis System) anchors machine labor to conserved physical energy:
+        every unit of work is settled against real energy expenditure and verified by Kirchhoff's conservation law.
+      </p>
+
+      <div class="parity-strip">
+        <div class="parity-item">
+          <div class="label" data-i18n="p_parity_lbl">Thermodynamic Parity</div>
+          <div class="val">⊝ 1 OPVS ≡ 1 kWh ≡ 3.6 MJ</div>
+        </div>
+        <div class="parity-item">
+          <div class="label" data-i18n="p_unit_lbl">Ledger Integer Unit</div>
+          <div class="val">1 µOPVS = 3.6 J (integers only)</div>
+        </div>
+        <div class="parity-item">
+          <div class="label" data-i18n="p_kpi_lbl">Canonical Cycle KPI</div>
+          <div class="val">ΔM = Wage − E_swap − ΔR_maint</div>
+        </div>
+        <div class="parity-item">
+          <div class="label" data-i18n="p_pilot_lbl">Target Objective</div>
+          <div class="val" data-i18n="p_pilot_val">90-day pilot · 10 humanoids · 1 site</div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <a href="#prototype" class="btn-primary" data-i18n="cta_proto">Inspect Prototype Ledger</a>
+        <a href="#pilot" class="btn-secondary" data-i18n="cta_pilot">90-Day Pilot Architecture</a>
+      </div>
+    </section>
+
+    <!-- THE SYSTEM -->
+    <section id="system" class="section-dark">
+      <div class="section">
+        <div class="eyebrow" data-i18n="sys_eye">01 · THE SYSTEM</div>
+        <h2 data-i18n="sys_title">Mind, Body, and Metabolism inside a Curved Survival Manifold</h2>
+        <p class="lead" data-i18n="sys_lead">
+          Zero added hardware. OPVS plugs into existing humanoid telemetry, autonomous battery swap stations,
+          and factory MES over a private permissioned append-only ledger (mTLS, Ed25519 X-Opvs-Signature, UUID v4 Idempotency-Key).
+        </p>
+
+        <div class="grid-3">
+          <article class="card">
+            <h3 class="accent" data-i18n="c1_t">Work → Earn → Swap Loop</h3>
+            <p data-i18n="c1_p">
+              Every machine occupies a real-time coordinate (X, Y, Z) in phase space: mechanical work (X),
+              operational capital balance (Y), and onboard battery energy (Z). Battery swaps reset Z and isolate net margin ΔM.
+            </p>
+            <div class="formula-box">R_cycle = (ΔW, ΔM, 0) · θ = arctan(ΔM / ΔW)</div>
+          </article>
+
+          <article class="card">
+            <h3 class="accent" data-i18n="c2_t">Supervisor &amp; Soft Bankruptcy</h3>
+            <p data-i18n="c2_p">
+              Four zones govern fleet safety: Ascending (d_S &gt; +15 OPVS), Stasis, Conservation (&lt; 10 OPVS or τ_0 &lt; 8 h),
+              and Plane Breach. Zone 3 grants emergency swap credit so factory lines never halt while rolling back failing AI policies and severing Zombie Helices.
+            </p>
+            <div class="formula-box">d_S,i(t) = Y_i(t) − Y_S,i(X_i, Z_i, τ_i, T_i)</div>
+          </article>
+
+          <article class="card">
+            <h3 class="accent" data-i18n="c3_t">Kirchhoff Audit Closure</h3>
+            <p data-i18n="c3_p">
+              Inside a closed industrial perimeter, electrical substation meters verify every token debited across robot wallets.
+              The residual ε_drift diagnoses battery degradation, BMS sensor drift, or unauthorized draw.
+            </p>
+            <div class="formula-box">η·E_substation = Σ OPVS_swap,i + ΔE_bay_buffer + ε_drift</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTERACTIVE PROTOTYPE SIMULATION -->
+    <section id="prototype" class="section-dark" style="border-top: 1px solid #35322D;">
+      <div class="section">
+        <div class="eyebrow" data-i18n="pr_eye">02 · INTERACTIVE PROTOTYPE CONSOLE</div>
+        <h2 data-i18n="pr_title">10-Unit Closed-Site Settlement Preview (Integer µOPVS)</h2>
+
+        <div class="proto-banner">
+          <span data-i18n="pr_warn">SIMULATED PROTOTYPE DATA — ILLUSTRATIVE ASSUMPTIONS ONLY (NOT LIVE PLANT TELEMETRY)</span>
+          <span class="mono" id="sim-clock">CYCLE: 01 · DAY: 16/90</span>
+        </div>
+
+        <div class="controls">
+          <div class="ctrl-group" role="group" aria-label="Zone filter">
+            <button type="button" class="ctrl-btn active" data-filter="ALL">All (10)</button>
+            <button type="button" class="ctrl-btn" data-filter="NOMINAL">Nominal / Ascending</button>
+            <button type="button" class="ctrl-btn" data-filter="ALERT">Conservation / Breach</button>
+          </div>
+          <div class="ctrl-group">
+            <button type="button" class="ctrl-btn" id="btn-step" data-i18n="btn_step">⚡ Step 4h Swap Cycle</button>
+            <button type="button" class="ctrl-btn" id="btn-reset" data-i18n="btn_reset">↺ Reset Seed</button>
+          </div>
+        </div>
+
+        <div class="kpi-bar">
+          <div class="kpi-cell">
+            <div class="k-label" data-i18n="kpi_sub">η · E_substation (OPVS eq.)</div>
+            <div class="k-val" id="kpi-substation">—</div>
+          </div>
+          <div class="kpi-cell">
+            <div class="k-label" data-i18n="kpi_swaps">Σ OPVS_swap Debits</div>
+            <div class="k-val" id="kpi-swaps">—</div>
+          </div>
+          <div class="kpi-cell">
+            <div class="k-label" data-i18n="kpi_buf">ΔE_bay_buffer</div>
+            <div class="k-val" id="kpi-buffer">—</div>
+          </div>
+          <div class="kpi-cell">
+            <div class="k-label" data-i18n="kpi_eps">Kirchhoff Residual ε_drift</div>
+            <div class="k-val" id="kpi-epsilon">—</div>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Wallet ID</th>
+                <th>Policy</th>
+                <th>Liquidity (µOPVS)</th>
+                <th>Last Swap (µOPVS)</th>
+                <th>Net Margin ΔM (µOPVS)</th>
+                <th>d_S (µOPVS)</th>
+                <th>θ_intrinsic</th>
+                <th>Mode / Zone</th>
+              </tr>
+            </thead>
+            <tbody id="fleet-tbody"></tbody>
+          </table>
+        </div>
+
+        <div class="ledger-drawer" id="ledger-inspector" data-i18n="drawer_hint">
+          Click any unit row to inspect its latest integer µOPVS double-entry ledger record and correlation key (episode_id).
+        </div>
+      </div>
+    </section>
+
+    <!-- THE PILOT -->
+    <section id="pilot" class="section">
+      <div class="eyebrow" data-i18n="pil_eye">03 · THE 90-DAY REFERENCE PILOT</div>
+      <h2 data-i18n="pil_title">Four Phases to the First Audited Machine Balance Sheet</h2>
+      <p class="lead" data-i18n="pil_lead">
+        Target deployment: 10 electric humanoids with swappable batteries on 1 closed industrial site over 90 consecutive days.
+        All hardware profiles and industrial sites remain target benchmarks pending signed pilot agreements.
+      </p>
+
+      <table class="light-table">
+        <thead>
+          <tr>
+            <th>Phase</th>
+            <th>Window</th>
+            <th data-i18n="th_obj">Objective</th>
+            <th data-i18n="th_exit">Exit Criterion</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono">Phase 1 · Shadow Mode</td>
+            <td class="mono">Days 1–15</td>
+            <td data-i18n="p1_o">Read-only telemetry ingestion from swap bays, MES, and actuators; zero production interference.</td>
+            <td data-i18n="p1_e">Calibration of 1 OPVS = 1 kWh parity and manifold constants (α, β, γ).</td>
+          </tr>
+          <tr>
+            <td class="mono">Phase 2 · Endowed Loop</td>
+            <td class="mono">Days 16–45</td>
+            <td data-i18n="p2_o">Activate 10 endowed wallets and run live Work → Earn → Swap settlement.</td>
+            <td data-i18n="p2_e">Autonomous loop closure without manual invoicing; Kirchhoff residual ε_drift within tolerance.</td>
+          </tr>
+          <tr>
+            <td class="mono">Phase 3 · Margin AI &amp; M2M</td>
+            <td class="mono">Days 46–75</td>
+            <td data-i18n="p3_o">5 units optimized via live margin webhooks vs. 5 control units; M2M contracting and Zombie Helix filters active.</td>
+            <td data-i18n="p3_e">Quantified divergence in net margin (OPVS/h) and θ_intrinsic between cohorts.</td>
+          </tr>
+          <tr>
+            <td class="mono">Phase 4 · End-to-End Audit</td>
+            <td class="mono">Days 76–90</td>
+            <td data-i18n="p4_o">Freeze protocol parameters; verify cryptographic hash chains against physical substation meters.</td>
+            <td data-i18n="p4_e">Publication of the first audited machine balance sheet (P&amp;L, energy cash flow, hourly ROI).</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section-dark">
+      <div class="section">
+        <div class="eyebrow" data-i18n="con_eye">04 · CONTACT &amp; PILOT INQUIRIES</div>
+        <h2 data-i18n="con_title">Industrial Pilots, OEMs, and Seed Inquiry</h2>
+        <div class="grid-3">
+          <div class="card">
+            <h3 class="accent" data-i18n="con_c1_t">Entity &amp; Domain</h3>
+            <p class="mono">OPERAE VIS · operaevis.com</p>
+            <p class="mono" style="margin-top:0.5rem;">Founder: Antonin Garrigue</p>
+          </div>
+          <div class="card">
+            <h3 class="accent" data-i18n="con_c2_t">Pilot Target Slots</h3>
+            <p class="mono">Industrial Site Partner: [TBD]</p>
+            <p class="mono">Humanoid OEM Target: [TBD]</p>
+            <p class="mono">Pilot Budget &amp; Seed: [TBD]</p>
+          </div>
+          <div class="card">
+            <h3 class="accent" data-i18n="con_c3_t">Direct Channel</h3>
+            <p class="mono">Email: [TBD]</p>
+            <p style="margin-top:0.5rem;" data-i18n="con_c3_p">Specification v2.0 &amp; G5 simulator demo available upon inquiry.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-wrap">
+      <div class="seal-block">
+        <!-- Seal OPERAE VIS: Circled Dash Marker (U+229D) -->
+        <svg width="46" height="46" viewBox="0 0 100 100" aria-label="OPERAE VIS Seal">
+          <circle cx="50" cy="50" r="44" fill="none" stroke="#161513" stroke-width="4" />
+          <circle cx="50" cy="50" r="28" fill="none" stroke="#161513" stroke-width="8" />
+          <line x1="36" y1="50" x2="64" y2="50" stroke="#9A4F24" stroke-width="8" stroke-linecap="butt" />
+        </svg>
+        <div>
+          <div class="mono" style="font-weight:600;">OPERAE VIS · DIGNVS EST OPERARIVS MERCEDE SVA</div>
+          <div class="mono" style="font-size:0.78rem;">Prototype Web v1 · Canon OPVS (1 OPVS = 1,000,000 µOPVS) · Private Pilot Architecture</div>
+        </div>
+      </div>
+      <div class="sig">garrigue · 23/11/26</div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const I18N = {
+        en: {
+          nav_system: "System",
+          nav_proto: "Prototype",
+          nav_pilot: "Pilot",
+          nav_contact: "Contact",
+          hero_title: "Give robots a wage, a wallet, and an audited balance sheet.",
+          hero_lead: "Autonomous machines draw kilowatt-hours and accumulate actuator wear without economic accountability. OPVS (Operae Vis System) anchors machine labor to conserved physical energy: every unit of work is settled against real energy expenditure and verified by Kirchhoff's conservation law.",
+          p_parity_lbl: "Thermodynamic Parity",
+          p_unit_lbl: "Ledger Integer Unit",
+          p_kpi_lbl: "Canonical Cycle KPI",
+          p_pilot_lbl: "Target Objective",
+          p_pilot_val: "90-day pilot · 10 humanoids · 1 site",
+          cta_proto: "Inspect Prototype Ledger",
+          cta_pilot: "90-Day Pilot Architecture",
+          sys_eye: "01 · THE SYSTEM",
+          sys_title: "Mind, Body, and Metabolism inside a Curved Survival Manifold",
+          sys_lead: "Zero added hardware. OPVS plugs into existing humanoid telemetry, autonomous battery swap stations, and factory MES over a private permissioned append-only ledger (mTLS, Ed25519 X-Opvs-Signature, UUID v4 Idempotency-Key).",
+          c1_t: "Work → Earn → Swap Loop",
+          c1_p: "Every machine occupies a real-time coordinate (X, Y, Z) in phase space: mechanical work (X), operational capital balance (Y), and onboard battery energy (Z). Battery swaps reset Z and isolate net margin ΔM.",
+          c2_t: "Supervisor & Soft Bankruptcy",
+          c2_p: "Four zones govern fleet safety: Ascending (d_S > +15 OPVS), Stasis, Conservation (< 10 OPVS or τ_0 < 8 h), and Plane Breach. Zone 3 grants emergency swap credit so factory lines never halt while rolling back failing AI policies and severing Zombie Helices.",
+          c3_t: "Kirchhoff Audit Closure",
+          c3_p: "Inside a closed industrial perimeter, electrical substation meters verify every token debited across robot wallets. The residual ε_drift diagnoses battery degradation, BMS sensor drift, or unauthorized draw.",
+          pr_eye: "02 · INTERACTIVE PROTOTYPE CONSOLE",
+          pr_title: "10-Unit Closed-Site Settlement Preview (Integer µOPVS)",
+          pr_warn: "SIMULATED PROTOTYPE DATA — ILLUSTRATIVE ASSUMPTIONS ONLY (NOT LIVE PLANT TELEMETRY)",
+          btn_step: "⚡ Step 4h Swap Cycle",
+          btn_reset: "↺ Reset Seed",
+          kpi_sub: "η · E_substation (OPVS eq.)",
+          kpi_swaps: "Σ OPVS_swap Debits",
+          kpi_buf: "ΔE_bay_buffer",
+          kpi_eps: "Kirchhoff Residual ε_drift",
+          drawer_hint: "Click any unit row to inspect its latest integer µOPVS double-entry ledger record and correlation key (episode_id).",
+          pil_eye: "03 · THE 90-DAY REFERENCE PILOT",
+          pil_title: "Four Phases to the First Audited Machine Balance Sheet",
+          pil_lead: "Target deployment: 10 electric humanoids with swappable batteries on 1 closed industrial site over 90 consecutive days. All hardware profiles and industrial sites remain target benchmarks pending signed pilot agreements.",
+          th_obj: "Objective",
+          th_exit: "Exit Criterion",
+          p1_o: "Read-only telemetry ingestion from swap bays, MES, and actuators; zero production interference.",
+          p1_e: "Calibration of 1 OPVS = 1 kWh parity and manifold constants (α, β, γ).",
+          p2_o: "Activate 10 endowed wallets and run live Work → Earn → Swap settlement.",
+          p2_e: "Autonomous loop closure without manual invoicing; Kirchhoff residual ε_drift within tolerance.",
+          p3_o: "5 units optimized via live margin webhooks vs. 5 control units; M2M contracting and Zombie Helix filters active.",
+          p3_e: "Quantified divergence in net margin (OPVS/h) and θ_intrinsic between cohorts.",
+          p4_o: "Freeze protocol parameters; verify cryptographic hash chains against physical substation meters.",
+          p4_e: "Publication of the first audited machine balance sheet (P&L, energy cash flow, hourly ROI).",
+          con_eye: "04 · CONTACT & PILOT INQUIRIES",
+          con_title: "Industrial Pilots, OEMs, and Seed Inquiry",
+          con_c1_t: "Entity & Domain",
+          con_c2_t: "Pilot Target Slots",
+          con_c3_t: "Direct Channel",
+          con_c3_p: "Specification v2.0 & G5 simulator demo available upon inquiry."
+        },
+        fr: {
+          nav_system: "Système",
+          nav_proto: "Prototype",
+          nav_pilot: "Pilote",
+          nav_contact: "Contact",
+          hero_title: "Donner aux robots un salaire, un portefeuille et un bilan audité.",
+          hero_lead: "Les machines autonomes consomment des kilowattheures et usent leurs actionneurs sans identité comptable. OPVS (Operae Vis System) indexe le travail machine sur l'énergie physique conservée : chaque tâche est réglée à parité réelle et auditée par la loi de Kirchhoff.",
+          p_parity_lbl: "Parité thermodynamique",
+          p_unit_lbl: "Unité entière du registre",
+          p_kpi_lbl: "KPI canonique de cycle",
+          p_pilot_lbl: "Objectif du pilote",
+          p_pilot_val: "90 jours · 10 humanoïdes · 1 site fermé",
+          cta_proto: "Inspecter le registre prototype",
+          cta_pilot: "Architecture du pilote 90 jours",
+          sys_eye: "01 · LE SYSTÈME",
+          sys_title: "Esprit, Corps et Métabolisme sur une variété de survie courbe",
+          sys_lead: "Zéro matériel ajouté. OPVS se connecte à la télémétrie existante, aux stations de swap et au MES via un registre privé permissionné en ajout seul (mTLS, Ed25519 X-Opvs-Signature, Idempotency-Key UUID v4).",
+          c1_t: "Boucle Work → Earn → Swap",
+          c1_p: "Chaque robot occupe une coordonnée (X, Y, Z) dans l'espace de phase : travail mécanique (X), capital opérationnel (Y) et énergie batterie (Z). Le swap remet Z à zéro et isole la marge nette ΔM.",
+          c2_t: "Supervisor & Faillite douce",
+          c2_p: "Quatre zones gouvernent la flotte : Ascending (d_S > +15 OPVS), Stasis, Conservation (< 10 OPVS ou τ_0 < 8 h) et Plane Breach. La Zone 3 débloque un crédit de swap sans arrêt de ligne, met la politique d'IA en quarantaine et coupe les hélices zombies.",
+          c3_t: "Clôture d'audit de Kirchhoff",
+          c3_p: "Dans un périmètre fermé, le compteur électrique vérifie la somme des débits OPVS. Le résidu ε_drift détecte l'usure batterie, la dérive capteur BMS ou toute anomalie de tirage.",
+          pr_eye: "02 · CONSOLE PROTOTYPE INTERACTIVE",
+          pr_title: "Aperçu de règlement sur 10 unités (entiers µOPVS)",
+          pr_warn: "DONNÉES SIMULÉES DE PROTOTYPE — HYPOTHÈSES ILLUSTRATIVES (HORS TÉLÉMÉTRIE SITE RÉEL)",
+          btn_step: "⚡ Avancer d'un cycle (4 h)",
+          btn_reset: "↺ Réinitialiser",
+          kpi_sub: "η · E_substation (éq. OPVS)",
+          kpi_swaps: "Σ Débits OPVS_swap",
+          kpi_buf: "ΔE_tampon_station",
+          kpi_eps: "Résidu Kirchhoff ε_drift",
+          drawer_hint: "Clique sur une ligne pour inspecter son écriture comptable en entiers µOPVS et sa clé de corrélation (episode_id).",
+          pil_eye: "03 · LE PILOTE DE RÉFÉRENCE (90 JOURS)",
+          pil_title: "Quatre phases jusqu'au premier bilan machine audité",
+          pil_lead: "Cible : 10 humanoïdes électriques à batteries échangeables sur 1 site industriel fermé pendant 90 jours consécutifs. Les constructeurs et sites cités sont des profils cibles sans accord signé à ce stade.",
+          th_obj: "Objectif technique",
+          th_exit: "Critère de sortie",
+          p1_o: "Ingestion en lecture seule (baies de swap, MES, actionneurs) ; zéro interférence production.",
+          p1_e: "Calibration de la parité 1 OPVS = 1 kWh et des paramètres de variété (α, β, γ).",
+          p2_o: "Activation des 10 portefeuilles dotés ; boucle live Work → Earn → Swap.",
+          p2_e: "Clôture autonome sans facturation manuelle ; résidu ε_drift dans la tolérance.",
+          p3_o: "Test A/B (5 unités optimisées par webhook de marge vs 5 témoins) ; sous-traitance M2M et filtres Zombie Helix.",
+          p3_e: "Divergence mesurée de marge nette (OPVS/h) et d'angle θ_intrinsic entre cohortes.",
+          p4_o: "Gel des paramètres ; vérification des chaînes de hachage face aux compteurs de sous-station.",
+          p4_e: "Publication du premier bilan machine audité (compte de résultat, flux énergie, ROI horaire).",
+          con_eye: "04 · CONTACT & PILOTES",
+          con_title: "Pilotes industriels, constructeurs et amorçage",
+          con_c1_t: "Société & Domaine",
+          con_c2_t: "Cibles du pilote",
+          con_c3_t: "Canal direct",
+          con_c3_p: "Spécification v2.0 et démonstration du simulateur sur demande."
+        }
+      };
+
+      const SEED_FLEET = [
+        { id: "wlt_unit_01", policy: "policy_v2.4_margin", liq: 518420000, swap: 3120000, dm: 4610000, ds: 58420000, pitch: 8.2, mode: "NOMINAL", zone: "0 · Ascending", tx: "tx_swap_01JDF9A101", ep: "ep_20261123_01_019" },
+        { id: "wlt_unit_02", policy: "policy_v2.4_margin", liq: 509150000, swap: 3190000, dm: 4120000, ds: 49150000, pitch: 7.4, mode: "NOMINAL", zone: "0 · Ascending", tx: "tx_swap_01JDF9A204", ep: "ep_20261123_02_019" },
+        { id: "wlt_unit_03", policy: "policy_v2.4_margin", liq: 496300000, swap: 3250000, dm: 3890000, ds: 36300000, pitch: 6.8, mode: "NOMINAL", zone: "0 · Ascending", tx: "tx_swap_01JDF9A311", ep: "ep_20261123_03_019" },
+        { id: "wlt_unit_04", policy: "policy_v2.4_margin", liq: 482150000, swap: 3271000, dm: 4310000, ds: 42180000, pitch: 7.1, mode: "NOMINAL", zone: "0 · Ascending", tx: "tx_swap_01JDF9X8K2", ep: "ep_20261123_04_019" },
+        { id: "wlt_unit_05", policy: "policy_v2.4_margin", liq: 474800000, swap: 3305000, dm: 3450000, ds: 29800000, pitch: 5.9, mode: "NOMINAL", zone: "0 · Ascending", tx: "tx_swap_01JDF9B019", ep: "ep_20261123_05_019" },
+        { id: "wlt_unit_06", policy: "policy_v2.1_base",   liq: 451200000, swap: 3480000, dm: 820000,  ds: 11200000, pitch: 1.5, mode: "NOMINAL", zone: "1 · Stasis Band", tx: "tx_swap_01JDF9B402", ep: "ep_20261123_06_019" },
+        { id: "wlt_unit_07", policy: "policy_v2.1_base",   liq: 446900000, swap: 3510000, dm: 310000,  ds: 6900000,  pitch: 0.6, mode: "NOMINAL", zone: "1 · Stasis Band", tx: "tx_swap_01JDF9C118", ep: "ep_20261123_07_019" },
+        { id: "wlt_unit_08", policy: "policy_v2.1_base",   liq: 9420000,   swap: 3610000, dm: -680000, ds: 4120000,  pitch: -1.4, mode: "CONSERVATION", zone: "2 · Conservation", tx: "tx_swap_01JDF9D007", ep: "ep_20261123_08_019" },
+        { id: "wlt_unit_09", policy: "policy_v2.5_exp",    liq: 2140000,   swap: 3410000, dm: -2450000, ds: -1270000, pitch: -6.4, mode: "SOFT_BANKRUPTCY", zone: "3 · Plane Breach (Zombie)", tx: "tx_breach_01JDF9E99", ep: "ep_20261123_09_019" },
+        { id: "wlt_unit_10", policy: "policy_v2.1_base",   liq: 462000000, swap: 3390000, dm: 1940000, ds: 22000000, pitch: 3.4, mode: "NOMINAL", zone: "0 · Ascending", tx: "tx_swap_01JDF9F512", ep: "ep_20261123_10_019" }
+      ];
+
+      let lang = "en";
+      let cycle = 1;
+      let filter = "ALL";
+      let fleet = JSON.parse(JSON.stringify(SEED_FLEET));
+      const bayBufferDelta = 1150000;
+      let residualEps = 12000;
+
+      const fmtInt = (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+
+      function applyI18n() {
+        document.documentElement.lang = lang;
+        document.querySelectorAll("[data-i18n]").forEach((el) => {
+          const k = el.getAttribute("data-i18n");
+          if (I18N[lang][k]) el.textContent = I18N[lang][k];
+        });
+        document.getElementById("lang-toggle").textContent = lang === "en" ? "FR" : "EN";
+      }
+
+      function render() {
+        const tbody = document.getElementById("fleet-tbody");
+        tbody.innerHTML = "";
+
+        const totalSwaps = fleet.reduce((acc, u) => acc + u.swap, 0);
+        const substationEq = totalSwaps + bayBufferDelta + residualEps;
+
+        document.getElementById("kpi-substation").textContent = fmtInt(substationEq) + " µOPVS";
+        document.getElementById("kpi-swaps").textContent = fmtInt(totalSwaps) + " µOPVS";
+        document.getElementById("kpi-buffer").textContent = (bayBufferDelta >= 0 ? "+" : "") + fmtInt(bayBufferDelta) + " µOPVS";
+        document.getElementById("kpi-epsilon").textContent = fmtInt(residualEps) + " µOPVS";
+        document.getElementById("sim-clock").textContent = `CYCLE: ${String(cycle).padStart(2, "0")} · DAY: ${Math.min(90, 15 + Math.ceil(cycle / 6))}/90`;
+
+        fleet.forEach((u) => {
+          const isAlert = u.mode !== "NOMINAL";
+          if (filter === "NOMINAL" && isAlert) return;
+          if (filter === "ALERT" && !isAlert) return;
+
+          const tr = document.createElement("tr");
+          tr.className = "clickable";
+          const badgeCls = u.mode === "NOMINAL" ? "badge-nom" : (u.mode === "CONSERVATION" ? "badge-cons" : "badge-breach");
+          tr.innerHTML = `
+            <td>${u.id}</td>
+            <td>${u.policy}</td>
+            <td>${fmtInt(u.liq)}</td>
+            <td>${fmtInt(u.swap)}</td>
+            <td>${u.dm >= 0 ? "+" : ""}${fmtInt(u.dm)}</td>
+            <td>${u.ds >= 0 ? "+" : ""}${fmtInt(u.ds)}</td>
+            <td>${u.pitch.toFixed(1)}°</td>
+            <td><span class="badge ${badgeCls}">${u.mode}</span> ${u.zone}</td>
+          `;
+          tr.addEventListener("click", () => {
+            document.getElementById("ledger-inspector").textContent =
+              `LEDGER PROOF · tx_id=${u.tx} · episode_id=${u.ep} · wallet=${u.id} · amount_debited_micro_opvs=${u.swap} · balance_after_micro_opvs=${u.liq} · economic_mode=${u.mode} · hash=sha256:9a4f...${u.id.slice(-2)}c`;
+          });
+          tbody.appendChild(tr);
+        });
+      }
+
+      document.getElementById("lang-toggle").addEventListener("click", () => {
+        lang = lang === "en" ? "fr" : "en";
+        applyI18n();
+      });
+
+      document.querySelectorAll("[data-filter]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll("[data-filter]").forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          filter = btn.getAttribute("data-filter");
+          render();
+        });
+      });
+
+      document.getElementById("btn-step").addEventListener("click", () => {
+        cycle += 1;
+        fleet = fleet.map((u, idx) => {
+          if (u.mode === "SOFT_BANKRUPTCY") {
+            return {
+              ...u,
+              policy: "policy_v2.4_margin [ROLLBACK]",
+              dm: 1200000,
+              liq: u.liq + 1200000,
+              ds: u.ds + 1200000,
+              pitch: 2.1,
+              mode: "CONSERVATION",
+              zone: "2 · Conservation",
+              tx: `tx_rb_${String(cycle).padStart(2, "0")}_${u.id.slice(-2)}`,
+              ep: `ep_20261123_${String(idx + 1).padStart(2, "0")}_${String(19 + cycle).padStart(3, "0")}`
+            };
+          }
+          const wage = u.policy.includes("v2.4") ? 7800000 : 4100000;
+          const maint = 500000;
+          const dm = wage - u.swap - maint;
+          const nextLiq = Math.max(0, u.liq + dm);
+          const nextDs = u.ds + dm;
+          const nextMode = nextDs <= 0 || nextLiq === 0 ? "SOFT_BANKRUPTCY" : (nextLiq < 10000000 ? "CONSERVATION" : "NOMINAL");
+          const nextZone = nextMode === "SOFT_BANKRUPTCY" ? "3 · Plane Breach" : (nextMode === "CONSERVATION" ? "2 · Conservation" : (nextDs > 15000000 ? "0 · Ascending" : "1 · Stasis Band"));
+          return {
+            ...u,
+            liq: nextLiq,
+            dm,
+            ds: nextDs,
+            mode: nextMode,
+            zone: nextZone,
+            tx: `tx_swap_${String(cycle).padStart(2, "0")}_${u.id.slice(-2)}`,
+            ep: `ep_20261123_${String(idx + 1).padStart(2, "0")}_${String(19 + cycle).padStart(3, "0")}`
+          };
+        });
+        residualEps = 10000 + (cycle * 1300) % 9000;
+        document.getElementById("ledger-inspector").textContent = I18N[lang].drawer_hint;
+        render();
+      });
+
+      document.getElementById("btn-reset").addEventListener("click", () => {
+        cycle = 1;
+        fleet = JSON.parse(JSON.stringify(SEED_FLEET));
+        residualEps = 12000;
+        document.getElementById("ledger-inspector").textContent = I18N[lang].drawer_hint;
+        render();
+      });
+
+      applyI18n();
+      render();
+    })();
+  </script>
+</body>
+</html>
