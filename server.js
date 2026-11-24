@@ -24,7 +24,7 @@ const MICRO_OPVS_PER_CREDIT = 250_000; // 1 CREDIT = 0.25 OPVS (0.25 kWh)
 function createInitialAdapterState() {
   return {
     processedEvents: new Set(),
-    atlasWalletMicroOpvs: 482_150_000,
+    atlasWalletMicroOpvs: 518_420_000,
     atlasCreditsTotal: 0,
     baseHourlyRateCents: 2500, // $25.00 / h
     completionBonusCents: 500, // $5.00
