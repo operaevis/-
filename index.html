@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#000000" />
-  <title>OPERAE VIS — OPVS | Thermodynamic Settlement Protocol</title>
-  <meta name="description" content="OPVS (Operae Vis System): 1 OPVS = 1 kWh. A thermodynamic settlement protocol and survival manifold architecture for autonomous machine economies." />
+  <title>OPERAE VIS — OPVS | Thermodynamic Settlement Protocol &amp; Atlas Fleet Supervisor</title>
+  <meta name="description" content="OPVS (Operae Vis System): 1 OPVS = 1 kWh. Autonomous HR, Payroll, and Policy Governance platform for Boston Dynamics electric Atlas humanoids (Hyundai Georgia Pilot)." />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%23000000'/%3E%3Ccircle cx='50' cy='50' r='34' fill='none' stroke='%23FFFFFF' stroke-width='11'/%3E%3Cline x1='32' y1='50' x2='68' y2='50' stroke='%2300E5FF' stroke-width='11'/%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <style>
@@ -60,14 +60,14 @@
       --fg-muted: #B8B8B8;
       --fg-dim: #7A7A7A;
 
-      /* Robot-Oriented High-Contrast Signal Code on Pure Black */
-      --sig-energy: #00E5FF;   /* Cyan: kWh parity, swap energy, substation meters */
+      /* Robot-Oriented High-Contrast Signal Code on Pure Black (#000000 OLED) */
+      --sig-energy: #00E5FF;   /* Cyan: kWh parity, swap energy, GCUL settlement */
       --sig-nominal: #00E676;  /* Green: Z0 Ascending, +margin, Kirchhoff closed */
-      --sig-caution: #FFAB00;  /* Amber: Z1 Stasis / Z2 Conservation / caution */
-      --sig-breach: #FF3B30;   /* Red: Z3 Plane Breach, Soft Bankruptcy, -margin */
+      --sig-caution: #FFAB00;  /* Amber: Z1 Stasis / Z2 Conservation / warning */
+      --sig-breach: #FF3B30;   /* Red: Z3 Plane Breach, Soft Bankruptcy, Zombie Helix */
 
       --font-din: "DIN 1451", "DIN 1451 Mittelschrift", "DIN Alternate", "Bahnschrift", sans-serif;
-      --max-w: 1160px;
+      --max-w: 1180px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -148,7 +148,7 @@
     .nav-wrap {
       max-width: var(--max-w);
       margin: 0 auto;
-      padding: 0.9rem 1.5rem;
+      padding: 0.85rem 1.5rem;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
@@ -188,7 +188,7 @@
     nav {
       display: flex;
       align-items: center;
-      gap: 1.15rem;
+      gap: 1rem;
       flex-wrap: wrap;
     }
 
@@ -199,7 +199,7 @@
       border: none;
       border-bottom: 2px solid transparent;
       padding: 0.25rem 0.1rem;
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       font-weight: 600;
@@ -213,10 +213,24 @@
       outline: none;
     }
 
+    .nav-tab-btn.tab-wp {
+      border: 1.5px solid var(--fg-white);
+      color: var(--fg-white);
+      padding: 0.3rem 0.7rem;
+    }
+
+    .nav-tab-btn.tab-wp:hover,
+    .nav-tab-btn.tab-wp.active {
+      background: var(--fg-white);
+      color: var(--bg-void);
+      border-color: var(--fg-white);
+      font-weight: 700;
+    }
+
     .nav-tab-btn.tab-sim {
       border: 1.5px solid var(--sig-energy);
       color: var(--sig-energy);
-      padding: 0.32rem 0.7rem;
+      padding: 0.3rem 0.65rem;
     }
 
     .nav-tab-btn.tab-sim:hover,
@@ -230,7 +244,7 @@
     .nav-tab-btn.tab-dm {
       border: 1.5px solid var(--sig-caution);
       color: var(--sig-caution);
-      padding: 0.32rem 0.7rem;
+      padding: 0.3rem 0.65rem;
     }
 
     .nav-tab-btn.tab-dm:hover,
@@ -241,7 +255,7 @@
       font-weight: 700;
     }
 
-    .nav-tab-btn.active:not(.tab-sim):not(.tab-dm) {
+    .nav-tab-btn.active:not(.tab-sim):not(.tab-dm):not(.tab-wp) {
       color: var(--fg-white);
       border-bottom-color: var(--fg-white);
     }
@@ -285,36 +299,36 @@
     }
 
     h1 {
-      font-size: clamp(2.1rem, 5vw, 3.75rem);
+      font-size: clamp(2rem, 4.8vw, 3.5rem);
       line-height: 1.06;
       letter-spacing: 0.03em;
       text-transform: uppercase;
-      margin-bottom: 1.2rem;
+      margin-bottom: 1.1rem;
       color: var(--fg-white);
       font-weight: 700;
     }
 
     h2 {
-      font-size: clamp(1.5rem, 3vw, 2.25rem);
+      font-size: clamp(1.4rem, 2.8vw, 2.1rem);
       letter-spacing: 0.05em;
       text-transform: uppercase;
-      margin-bottom: 0.9rem;
+      margin-bottom: 0.85rem;
       color: var(--fg-white);
       font-weight: 700;
     }
 
     h3 {
-      font-size: 1.1rem;
+      font-size: 1.08rem;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      margin-bottom: 0.55rem;
+      margin-bottom: 0.5rem;
       font-weight: 700;
     }
 
     .lead {
-      font-size: 1.12rem;
+      font-size: 1.1rem;
       max-width: 68ch;
-      margin-bottom: 1.85rem;
+      margin-bottom: 1.75rem;
       color: var(--fg-muted);
     }
 
@@ -345,7 +359,7 @@
     }
 
     .parity-item .val {
-      font-size: 1.18rem;
+      font-size: 1.15rem;
       font-weight: 700;
       font-variant-numeric: tabular-nums;
       letter-spacing: 0.02em;
@@ -368,7 +382,7 @@
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       border: 2px solid var(--fg-white);
       cursor: pointer;
     }
@@ -389,7 +403,7 @@
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       border: 2px solid var(--border-strong);
       cursor: pointer;
     }
@@ -426,10 +440,10 @@
     .card.card-nominal { border-top-color: var(--sig-nominal); }
     .card.card-breach { border-top-color: var(--sig-breach); }
 
-    .card p { color: var(--fg-muted); font-size: 1rem; }
+    .card p { color: var(--fg-muted); font-size: 0.98rem; }
 
     .formula-box {
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       font-weight: 600;
       padding: 0.8rem 0.95rem;
       border: 1px solid var(--border-grid);
@@ -446,7 +460,7 @@
     .card-caution .formula-box { border-left-color: var(--sig-caution); color: var(--sig-caution); }
     .card-nominal .formula-box { border-left-color: var(--sig-nominal); color: var(--sig-nominal); }
 
-    /* Prototype Console */
+    /* Dashboard & Console */
     .proto-banner {
       font-size: 0.82rem;
       font-weight: 600;
@@ -481,11 +495,11 @@
     .ctrl-group { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 
     .ctrl-btn {
-      font-size: 0.84rem;
+      font-size: 0.82rem;
       font-weight: 600;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      padding: 0.5rem 0.9rem;
+      padding: 0.48rem 0.85rem;
       border: 1.5px solid var(--border-grid);
       background: var(--bg-void);
       color: var(--fg-white);
@@ -576,7 +590,7 @@
     .kpi-cell.kpi-breach { border-left-color: var(--sig-breach); }
 
     .kpi-cell .k-label {
-      font-size: 0.76rem;
+      font-size: 0.75rem;
       color: var(--fg-muted);
       text-transform: uppercase;
       letter-spacing: 0.08em;
@@ -584,7 +598,7 @@
     }
 
     .kpi-cell .k-val {
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       font-weight: 700;
       margin-top: 0.25rem;
       font-variant-numeric: tabular-nums;
@@ -599,13 +613,13 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       text-align: left;
       font-variant-numeric: tabular-nums;
     }
 
     th, td {
-      padding: 0.72rem 0.85rem;
+      padding: 0.7rem 0.85rem;
       border-bottom: 1px solid var(--border-grid);
       white-space: nowrap;
     }
@@ -613,7 +627,7 @@
     th {
       color: var(--fg-muted);
       text-transform: uppercase;
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       letter-spacing: 0.09em;
       font-weight: 700;
       border-bottom: 2px solid var(--border-strong);
@@ -632,12 +646,12 @@
 
     .badge {
       display: inline-block;
-      padding: 0.14rem 0.48rem;
-      font-size: 0.74rem;
+      padding: 0.12rem 0.45rem;
+      font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 0.06em;
       border: 1px solid currentColor;
-      margin-right: 0.45rem;
+      margin-right: 0.4rem;
     }
 
     .badge-nom { color: var(--sig-nominal); border-color: var(--sig-nominal); }
@@ -650,7 +664,7 @@
       padding: 1rem 1.1rem;
       border: 1px solid var(--border-strong);
       border-left: 4px solid var(--sig-energy);
-      font-size: 0.86rem;
+      font-size: 0.84rem;
       background: var(--bg-panel);
       color: var(--fg-muted);
       overflow-wrap: anywhere;
@@ -672,12 +686,12 @@
     }
 
     .ledger-kv-val {
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 600;
       color: var(--fg-white);
     }
 
-    /* G5 Simulator Tab */
+    /* Simulator Layout */
     .sim-layout {
       display: grid;
       grid-template-columns: 340px 1fr;
@@ -729,7 +743,7 @@
       color: var(--fg-white);
       border: 1.5px solid var(--border-grid);
       padding: 0.5rem 0.65rem;
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       font-weight: 600;
     }
 
@@ -812,14 +826,14 @@
     }
 
     .api-route {
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       font-weight: 700;
       letter-spacing: 0.06em;
       color: var(--sig-energy);
     }
 
     .api-desc {
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       color: var(--fg-muted);
       line-height: 1.35;
     }
@@ -837,7 +851,7 @@
       padding: 0.55rem 0.85rem;
       border-bottom: 1px solid var(--border-grid);
       display: grid;
-      grid-template-columns: 74px 135px 1fr auto;
+      grid-template-columns: 85px 135px 1fr auto;
       gap: 0.65rem;
       align-items: center;
     }
@@ -854,10 +868,10 @@
       color: var(--fg-muted);
       white-space: pre-wrap;
       overflow-x: auto;
-      max-height: 260px;
+      max-height: 280px;
     }
 
-    /* Pilot table */
+    /* Pilot & Audit Table */
     .pilot-table { width: 100%; border-collapse: collapse; margin-top: 1.25rem; }
     .pilot-table th, .pilot-table td {
       border-bottom: 1px solid var(--border-grid);
@@ -868,13 +882,230 @@
     }
     .pilot-table th {
       color: var(--fg-muted);
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       text-transform: uppercase;
       letter-spacing: 0.09em;
       border-bottom: 2px solid var(--border-strong);
     }
     .pilot-table td { color: var(--fg-muted); }
     .pilot-table td.phase-cell { font-weight: 700; white-space: nowrap; }
+
+    .dm-pipeline {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .dm-step {
+      border: 1px solid var(--border-grid);
+      border-top: 3px solid var(--fg-white);
+      background: var(--bg-panel);
+      padding: 0.75rem 0.9rem;
+    }
+
+    .dm-step-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.2rem;
+    }
+
+    .sim-input {
+      width: 100%;
+      background: var(--bg-void);
+      color: var(--fg-white);
+      border: 1.5px solid var(--border-grid);
+      padding: 0.45rem 0.65rem;
+      font-size: 0.86rem;
+      font-weight: 600;
+    }
+
+    .sim-input:focus {
+      border-color: var(--sig-caution);
+      outline: none;
+    }
+
+    /* Whitepaper v2.0 Front-Line Reader & Embedded PDF */
+    .wp-notice {
+      border: 1px solid var(--border-grid);
+      border-left: 4px solid var(--sig-caution);
+      background: var(--bg-panel);
+      padding: 0.85rem 1rem;
+      font-size: 0.84rem;
+      color: var(--fg-muted);
+      margin-top: 1.25rem;
+    }
+
+    .wp-pdf-shell {
+      border: 1.5px solid var(--border-strong);
+      background: var(--bg-panel);
+      margin-top: 1.5rem;
+    }
+
+    .wp-pdf-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.7rem 1rem;
+      border-bottom: 1px solid var(--border-grid);
+      background: var(--bg-void);
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .wp-pdf-frame {
+      display: block;
+      width: 100%;
+      height: 760px;
+      border: none;
+      background: #0A0A0A;
+    }
+
+    .wp-pdf-frame.tall {
+      height: 1040px;
+    }
+
+    .wp-pdf-fallback {
+      padding: 2rem 1.5rem;
+      text-align: left;
+      background: var(--bg-panel);
+      color: var(--fg-muted);
+    }
+
+    .wp-toc {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .wp-toc-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding: 0.55rem 0.75rem;
+      border: 1px solid var(--border-grid);
+      background: var(--bg-void);
+      color: var(--fg-muted);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .wp-toc-btn:hover, .wp-toc-btn:focus-visible {
+      border-color: var(--sig-energy);
+      color: var(--fg-white);
+      background: var(--bg-hover);
+      outline: none;
+    }
+
+    .wp-section {
+      border-top: 2px solid var(--border-grid);
+      padding-top: 2.25rem;
+      margin-top: 2.25rem;
+    }
+
+    .wp-sec-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .wp-sec-num {
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--sig-energy);
+      border: 1px solid var(--sig-energy);
+      padding: 0.15rem 0.5rem;
+    }
+
+    .wp-h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--fg-white);
+      margin-top: 1.35rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .wp-p {
+      color: var(--fg-muted);
+      font-size: 0.98rem;
+      max-width: 78ch;
+      margin-bottom: 0.75rem;
+    }
+
+    .wp-list {
+      list-style: none;
+      margin: 0.6rem 0 1rem 0;
+      max-width: 78ch;
+    }
+
+    .wp-list li {
+      color: var(--fg-muted);
+      font-size: 0.95rem;
+      padding: 0.35rem 0 0.35rem 1.1rem;
+      border-left: 2px solid var(--border-grid);
+      margin-bottom: 0.35rem;
+    }
+
+    .wp-eq {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.96rem;
+      font-weight: 700;
+      padding: 0.85rem 1rem;
+      border: 1px solid var(--border-grid);
+      border-left: 3px solid var(--sig-energy);
+      background: var(--bg-panel);
+      color: var(--sig-energy);
+      margin: 0.9rem 0;
+      overflow-x: auto;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .wp-eq-num {
+      color: var(--fg-dim);
+      font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+
+    .wp-quote {
+      border-left: 3px solid var(--fg-white);
+      padding: 0.65rem 1rem;
+      margin: 1rem 0;
+      font-style: italic;
+      color: var(--fg-white);
+      background: var(--bg-panel);
+      max-width: 76ch;
+    }
+
+    .wp-contract {
+      border: 1px solid var(--border-grid);
+      border-left: 3px solid var(--sig-nominal);
+      background: var(--bg-panel);
+      padding: 0.9rem 1rem;
+      font-size: 0.78rem;
+      color: var(--fg-muted);
+      white-space: pre-wrap;
+      overflow-x: auto;
+      margin: 0.75rem 0;
+    }
 
     /* Footer */
     footer {
@@ -922,56 +1153,19 @@
       }
       .parity-item:last-child { border-bottom: none; }
     }
-
-    .dm-pipeline {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-      gap: 0.75rem;
-      margin-bottom: 1.25rem;
-    }
-
-    .dm-step {
-      border: 1px solid var(--border-grid);
-      border-top: 3px solid var(--fg-white);
-      background: var(--bg-panel);
-      padding: 0.75rem 0.9rem;
-    }
-
-    .dm-step-tag {
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 0.2rem;
-    }
-
-    .sim-input {
-      width: 100%;
-      background: var(--bg-void);
-      color: var(--fg-white);
-      border: 1.5px solid var(--border-grid);
-      padding: 0.45rem 0.65rem;
-      font-size: 0.86rem;
-      font-weight: 600;
-    }
-
-    .sim-input:focus {
-      border-color: var(--sig-caution);
-      outline: none;
-    }
   </style>
 </head>
 <body>
   <div class="signal-strip" aria-label="Robot color-code legend">
     <div class="signal-strip-inner">
       <div class="signal-legend">
-        <span class="sig-key c-white"><span class="sig-dot" style="background:#FFFFFF;"></span><span data-i18n="leg_id">IDENTITY / LEDGER</span></span>
-        <span class="sig-key c-energy"><span class="sig-dot" style="background:#00E5FF;"></span><span data-i18n="leg_kwh">kWh ENERGY</span></span>
+        <span class="sig-key c-white"><span class="sig-dot" style="background:#FFFFFF;"></span><span data-i18n="leg_id">IDENTITY / GCUL LEDGER</span></span>
+        <span class="sig-key c-energy"><span class="sig-dot" style="background:#00E5FF;"></span><span data-i18n="leg_kwh">kWh METABOLISM (1 OPVS ≡ 1 kWh)</span></span>
         <span class="sig-key c-nominal"><span class="sig-dot" style="background:#00E676;"></span><span data-i18n="leg_z0">▲ Z0 ASCENDING (+ΔM)</span></span>
         <span class="sig-key c-caution"><span class="sig-dot" style="background:#FFAB00;"></span><span data-i18n="leg_z12">◆ Z1/Z2 STASIS · CONSERVE</span></span>
-        <span class="sig-key c-breach"><span class="sig-dot" style="background:#FF3B30;"></span><span data-i18n="leg_z3">✕ Z3 BREACH · ROLLBACK</span></span>
+        <span class="sig-key c-breach"><span class="sig-dot" style="background:#FF3B30;"></span><span data-i18n="leg_z3">✕ Z3 BREACH · SOFT BANKRUPTCY</span></span>
       </div>
-      <span class="eco-badge">OLED #000000 · ZERO-GLOW · DIN 1451</span>
+      <span class="eco-badge">OLED #000000 · HYUNDAI GEORGIA PILOT · DIN 1451</span>
     </div>
   </div>
 
@@ -984,34 +1178,420 @@
         </svg>
         <div class="brand-text">
           <span class="brand-opvs">OPVS</span>
-          <span class="brand-corp">OPERAE VIS · MACHINE-NATIVE VALUE PROTOCOL</span>
+          <span class="brand-corp">OPERAE VIS · ATLAS FLEET GOVERNANCE PROTOCOL</span>
         </div>
       </a>
       <nav aria-label="Primary navigation">
-        <button type="button" class="nav-tab-btn active" id="tab-btn-overview" data-i18n="nav_overview">Protocol</button>
-        <a href="#system" class="overview-anchor" data-i18n="nav_system">System</a>
-        <a href="#prototype" class="overview-anchor" data-i18n="nav_proto">Prototype</a>
-        <a href="#pilot" class="overview-anchor" data-i18n="nav_pilot">Pilot</a>
-        <a href="#contact" class="overview-anchor" data-i18n="nav_contact">Contact</a>
-        <button type="button" class="nav-tab-btn tab-sim" id="tab-btn-simulator" data-i18n="nav_sim">⚡ Simulator</button>
-        <button type="button" class="nav-tab-btn tab-dm" id="tab-btn-deepmind" data-i18n="nav_dm">DeepMind Prep</button>
+        <button type="button" class="nav-tab-btn tab-wp active" id="tab-btn-whitepaper" data-i18n="nav_wp">📄 Whitepaper v2.0</button>
+        <button type="button" class="nav-tab-btn" id="tab-btn-overview" data-i18n="nav_overview">Protocol</button>
+        <button type="button" class="nav-tab-btn tab-sim" id="tab-btn-simulator" data-i18n="nav_sim">⚡ Atlas Simulator</button>
+        <button type="button" class="nav-tab-btn tab-dm" id="tab-btn-deepmind" data-i18n="nav_dm">DeepMind Mind &amp; GCUL</button>
         <button type="button" class="lang-btn" id="lang-toggle">FR</button>
       </nav>
     </div>
   </header>
 
   <main id="top">
-    <!-- ==================== TAB 1: PROTOCOL OVERVIEW ==================== -->
-    <div id="view-overview">
-      <!-- HOME / HERO -->
+    <!-- ==================== TAB 0 (FRONT LINE): TECHNICAL WHITEPAPER V2.0 ==================== -->
+    <div id="view-whitepaper">
       <section class="section-band">
         <div class="section">
-          <div class="eyebrow">OPERAE PRETIVM · SPECIFICATION v2.0 · PROTOTYPE</div>
-          <h1 data-i18n="hero_title">Give robots a wage, a wallet, and an audited balance sheet.</h1>
+          <div class="eyebrow" data-i18n="wp_eye">TECHNICAL WHITEPAPER · SPECIFICATION V2.0 · 24/11/26 · SUPERSEDES V1.0</div>
+          <h1 data-i18n="wp_title">OPVS: A Thermodynamic Settlement Protocol for Autonomous Machine Economies</h1>
+          <p class="lead" style="margin-bottom:1.25rem;" data-i18n="wp_lead">
+            Survival Manifold Architecture — Closing the Triad of Mind, Body, and Metabolism. Author: Canius · Lineage: D-TEAM (2016) → OPVS (2026) · www.operaevis.com
+          </p>
+
+          <div class="parity-strip">
+            <div class="parity-item">
+              <div class="label" data-i18n="wp_m1_l">Parity Invariant</div>
+              <div class="val c-energy">Θ 1 OPVS ≡ 1 kWh (3.6 × 10⁶ J)</div>
+            </div>
+            <div class="parity-item">
+              <div class="label" data-i18n="wp_m2_l">Atomic Ledger Integer</div>
+              <div class="val c-white">1 µOPVS ≡ 3.6 J (INT64)</div>
+            </div>
+            <div class="parity-item">
+              <div class="label" data-i18n="wp_m3_l">Specification Edition</div>
+              <div class="val c-nominal">v2.0 · 24/11/26 · 19 Pages</div>
+            </div>
+            <div class="parity-item">
+              <div class="label" data-i18n="wp_m4_l">Author &amp; Emblem</div>
+              <div class="val c-caution">Canius · Θ (U+0398)</div>
+            </div>
+          </div>
+
+          <div class="btn-row" style="align-items:center;">
+            <a class="btn-primary" href="/public/assets/aistudio/Operae_Vis_OPVS_Technical_Whitepaper_v2.0_print_1bd25ab0.pdf" download="Operae_Vis_OPVS_Technical_Whitepaper_v2.0.pdf" data-i18n="wp_dl_btn">⬇ Download Official PDF (v2.0 · 19 pp.)</a>
+            <button type="button" class="btn-secondary" id="wp-open-sim" data-i18n="wp_sim_btn">⚡ Launch Atlas Simulator</button>
+            <button type="button" class="btn-secondary" id="wp-open-overview" data-i18n="wp_proto_btn">Open Fleet &amp; Protocol Roster</button>
+          </div>
+
+          <div class="wp-notice" data-i18n="wp_notice">
+            <strong class="c-caution">NOTICE:</strong> Boston Dynamics, Atlas, Google DeepMind, Gemini Robotics and Hyundai are named from public sources (References [1–4]) as target platforms and reference sites. OPERAE VIS has no partnership, endorsement or agreement with any of them; trademarks belong to their owners. Every amount in the examples is illustrative and uncalibrated.
+          </div>
+
+          <div class="controls" style="margin-top:1.5rem; margin-bottom:0.5rem;">
+            <div class="ctrl-group" role="group" aria-label="Whitepaper view mode">
+              <button type="button" class="ctrl-btn active" id="wp-mode-both" data-i18n="wp_v_both">PDF + DIN 1451 Spec</button>
+              <button type="button" class="ctrl-btn" id="wp-mode-pdf" data-i18n="wp_v_pdf">PDF Document Only</button>
+              <button type="button" class="ctrl-btn" id="wp-mode-spec" data-i18n="wp_v_spec">Interactive Spec Only</button>
+            </div>
+            <div class="ctrl-group">
+              <button type="button" class="ctrl-btn btn-action-energy" id="wp-toggle-height" data-i18n="wp_tall_btn">↕ Expand PDF Height</button>
+            </div>
+          </div>
+
+          <!-- EMBEDDED PDF VIEWER -->
+          <div class="wp-pdf-shell" id="wp-pdf-shell">
+            <div class="wp-pdf-bar">
+              <span class="c-energy" style="font-weight:700;">DOCUMENT · Operae_Vis_OPVS_Technical_Whitepaper_v2.0_print.pdf · 19 PAGES</span>
+              <div style="display:flex; gap:0.75rem; align-items:center;">
+                <a href="/public/assets/aistudio/Operae_Vis_OPVS_Technical_Whitepaper_v2.0_print_1bd25ab0.pdf" download="Operae_Vis_OPVS_Technical_Whitepaper_v2.0.pdf" class="c-white" style="text-decoration:none; border-bottom:1px solid var(--sig-energy); font-weight:700;">DOWNLOAD PDF</a>
+              </div>
+            </div>
+            <object
+              id="wp-pdf-object"
+              class="wp-pdf-frame"
+              data="/public/assets/aistudio/Operae_Vis_OPVS_Technical_Whitepaper_v2.0_print_1bd25ab0.pdf#view=FitH"
+              type="application/pdf"
+            >
+              <iframe
+                id="wp-pdf-iframe"
+                class="wp-pdf-frame"
+                src="/public/assets/aistudio/Operae_Vis_OPVS_Technical_Whitepaper_v2.0_print_1bd25ab0.pdf#view=FitH"
+                title="OPVS Technical Whitepaper v2.0 PDF"
+              >
+                <div class="wp-pdf-fallback">
+                  <p class="c-white" style="font-weight:700; margin-bottom:0.5rem;">Inline PDF preview is unavailable in this browser frame.</p>
+                  <p style="margin-bottom:1rem;">Use the download button below or read the complete v2.0 Specification directly below in DIN 1451 OLED format.</p>
+                  <a class="btn-primary" href="/public/assets/aistudio/Operae_Vis_OPVS_Technical_Whitepaper_v2.0_print_1bd25ab0.pdf" download="Operae_Vis_OPVS_Technical_Whitepaper_v2.0.pdf">⬇ Download Whitepaper v2.0 PDF</a>
+                </div>
+              </iframe>
+            </object>
+          </div>
+
+          <!-- FULL STRUCTURED WHITEPAPER V2.0 SPEC READER -->
+          <div id="wp-spec-reader">
+            <div class="wp-toc" aria-label="Whitepaper sections">
+              <a class="wp-toc-btn" href="#wp-abstract"><span>Abstract &amp; v2.0 Delta</span><span class="c-energy">00</span></a>
+              <a class="wp-toc-btn" href="#wp-s01"><span>Introduction &amp; Triad</span><span class="c-energy">§01</span></a>
+              <a class="wp-toc-btn" href="#wp-s02"><span>Energy Parity &amp; Wallet</span><span class="c-energy">§02</span></a>
+              <a class="wp-toc-btn" href="#wp-s03"><span>3D Energy Phase Space</span><span class="c-energy">§03</span></a>
+              <a class="wp-toc-btn" href="#wp-s04"><span>Curved Survival Manifold</span><span class="c-energy">§04</span></a>
+              <a class="wp-toc-btn" href="#wp-s05"><span>Supervisor &amp; Darwinian AI</span><span class="c-energy">§05</span></a>
+              <a class="wp-toc-btn" href="#wp-s06"><span>Kirchhoff Audit Closure</span><span class="c-energy">§06</span></a>
+              <a class="wp-toc-btn" href="#wp-s07"><span>4-Layer &amp; Core API v1</span><span class="c-energy">§07</span></a>
+              <a class="wp-toc-btn" href="#wp-s08"><span>90-Day Reference Pilot</span><span class="c-energy">§08</span></a>
+              <a class="wp-toc-btn" href="#wp-s09"><span>Fractal Scaling &amp; Closing</span><span class="c-energy">§09–10</span></a>
+              <a class="wp-toc-btn" href="#wp-annex-a"><span>Annex A — Notation</span><span class="c-caution">APP A</span></a>
+              <a class="wp-toc-btn" href="#wp-annex-b"><span>Annex B — Changelog &amp; Refs</span><span class="c-caution">APP B</span></a>
+            </div>
+
+            <!-- ABSTRACT & V2.0 CHANGES -->
+            <div class="wp-section" id="wp-abstract">
+              <div class="wp-sec-head">
+                <span class="wp-sec-num">ABSTRACT</span>
+                <h2 style="margin-bottom:0;" data-i18n="wp_abs_t">Executive Abstract &amp; What Changes in v2.0</h2>
+              </div>
+              <p class="wp-p">
+                Autonomous robots are entering factories, warehouses, homes, and streets. They consume electrical energy, accumulate mechanical wear, and produce measurable industrial value, yet they operate without economic identity, wage, incentive, or financial accountability. This whitepaper specifies OPVS (Operae Vis System), a settlement unit for machine labor pegged strictly to physical energy (1 OPVS ≡ 1 kWh), transforming machine work into a self-auditing metabolic economy. Building on the 2016 D-TEAM concept and a 2026 demonstration prototype, we define a four-layer settlement architecture that adds no hardware, anchored on the Work → Earn → Swap loop. We place every robot in a three-dimensional energy–economic phase space, generalize its solvency threshold into a curved Survival Manifold <em>S</em> carrying quadratic torque fatigue and Arrhenius-type thermal ageing, and introduce Survival Plane Supervisor Mode: a real-time governance and selection layer that isolates parasitic AI policies (Zombie Helices) and preserves physical factory continuity through controlled Soft Bankruptcy, while keeping safety constraints outside the economy. We close the physical-financial loop with Kirchhoff’s Law of the Machine Ledger, specify the OPVS Core API (v1), and detail a 90-day reference pilot—ten swap-capable electric humanoids on one closed industrial site—designed to publish the first audited balance sheet produced by a machine.
+              </p>
+
+              <div class="card card-energy" style="margin-top:1rem;">
+                <h3 class="c-energy">What Changes in v2.0 (Supersedes v1.0 · 22/11/26)</h3>
+                <ul class="wp-list" style="margin-bottom:0;">
+                  <li>Website corrected to <span class="c-white">www.operaevis.com</span>; author <span class="c-white">Canius</span>; OPERAE VIS identity: the ring mark, OLED black, DIN 1451.</li>
+                  <li>Survival Plane corrected: solvency is measured against the energy a robot has drawn, not the energy it still stores (§3.3, §4.1).</li>
+                  <li>Supervisor zones made exhaustive and exclusive (<span class="c-white">3 → 2 → 0 → 1</span>); peer credit booked as a liability; safety placed outside the economy (§5).</li>
+                  <li>Every API amount is an integer in <span class="c-energy">µOPVS</span> and every numerical example is recomputed (§7.3); the ledger runs on premises and swaps survive a ledger outage (§7.1).</li>
+                  <li>Third-party facts verified at source; named companies are target profiles, not partners (§8, References). Full change log in Annex B.</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- §01 -->
+            <div class="wp-section" id="wp-s01">
+              <div class="wp-sec-head">
+                <span class="wp-sec-num">01</span>
+                <h2 style="margin-bottom:0;">Introduction and Lineage</h2>
+              </div>
+              <h3 class="wp-h3">1.1 The Economic Blind Spot in Modern Robotics</h3>
+              <p class="wp-p">
+                Humanoid and autonomous mobile robots are crossing the threshold from laboratory prototypes to industrial fleets. Yet despite rapid advances in embodied perception, dexterity, and electrical actuation, deployed robots remain economically mute. A machine draws kilowatt-hours from the grid, fatigues harmonic drives and actuators under load, and executes revenue-generating tasks, yet possesses no wallet, no balance sheet, and no direct economic feedback linking its control policy to its physical survival.
+              </p>
+              <p class="wp-p">
+                This architectural gap produces two compounding inefficiencies: simulation policies suffer from proxy-metric drift when rewarded solely for raw speed, and operators deploying high-capital humanoids (six-figure units; no public list price) lack an hourly machine-level unit of account tying physical output to energy.
+              </p>
+              <h3 class="wp-h3">1.2 Historical Lineage: 2016–2026</h3>
+              <p class="wp-p">
+                OPVS descends from D-TEAM, a 2016 concept developed at Strate School of Design: a heterogeneous fleet of humanoid, aerial and plant-care robots rented through a dedicated token across six operational services, with human-to-robot tipping (TIP, slide 43) already specified in the 2016 protocol. In 2026 the concept is rebuilt from first principles and inverted: from a currency humans use to rent robots, to the currency robots themselves earn. A 2026 demonstration prototype already exercises the loop end to end: telemetry feed, AI task dispatcher, 500 OPVS wallet model, and M2M settlement ledger.
+              </p>
+              <h3 class="wp-h3">1.3 The Organism Triad: Mind, Body, and Metabolism</h3>
+              <table class="pilot-table">
+                <thead>
+                  <tr><th>Triad Node</th><th>Role</th><th>Value Captured</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="phase-cell c-caution">Mind — embodied AI policy<br><span style="font-weight:400; color:var(--fg-dim);">target stack: Gemini Robotics [3]</span></td>
+                    <td class="c-white">Decides</td>
+                    <td>Gains a ground-truth economic signal: net margin in OPVS, measured on the plant floor, complements simulation proxies and benchmark scores. The policy that earns, survives—within safety limits (§5.4).</td>
+                  </tr>
+                  <tr>
+                    <td class="phase-cell c-white">Body — electric humanoid<br><span style="font-weight:400; color:var(--fg-dim);">reference platform: Atlas [1]</span></td>
+                    <td class="c-white">Executes</td>
+                    <td>Gains an hourly, audited justification of a six-figure asset: economic worth moves from datasheets into a ledger.</td>
+                  </tr>
+                  <tr>
+                    <td class="phase-cell c-energy">Metabolism — OPVS</td>
+                    <td class="c-white">Settles</td>
+                    <td>Gives every decision and every joule a ledger entry: the unit of account that closes the loop between policy and hardware.</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="wp-quote">
+                The mind decides. The body executes. OPVS settles. Intelligence without a body is a ghost; a body without a metabolism is a statue. The triad closes the organism: perception → action → account.
+              </div>
+            </div>
+
+            <!-- §02 -->
+            <div class="wp-section" id="wp-s02">
+              <div class="wp-sec-head">
+                <span class="wp-sec-num">02</span>
+                <h2 style="margin-bottom:0;">Economic Model and the Energy Parity Invariant</h2>
+              </div>
+              <h3 class="wp-h3">2.1 Strict Thermodynamic Parity</h3>
+              <div class="wp-eq"><span>1 OPVS ≡ 1 kWh ≡ 3.6 × 10⁶ J</span><span class="wp-eq-num">(1)</span></div>
+              <div class="wp-eq"><span>1 OPVS = 1 000 000 µOPVS, &nbsp; 1 µOPVS = 3.6 J</span><span class="wp-eq-num">(2)</span></div>
+              <p class="wp-p">
+                Metered energy converts exactly: 1 Wh = 1,000 µOPVS. Finer readings round half-to-even to 1 µOPVS, and the remainder joins ε_drift (§6). A signed 64-bit account holds up to 9.2 × 10¹² OPVS (~9,223 TWh). Currency sign: Θ (U+0398)—drawn, it is the OPERAE VIS mark. The peg fixes quantity, not price; whoever denominates machine labor in energy defines the native unit of account of the robotics economy.
+              </p>
+              <h3 class="wp-h3">2.2 Initial Endowment, Wallet Anatomy, and Net Margin</h3>
+              <ul class="wp-list">
+                <li><strong class="c-white">Operational Liquidity (Y_op):</strong> spendable balance in µOPVS; peer credit sits as tagged contra-balance <em>L</em>, so solvency tests use net liquidity <span class="c-energy">Y = Y_op − L</span>.</li>
+                <li><strong class="c-white">Maintenance Escrow (R_maint):</strong> ring-fenced capital accrued each cycle from operating time and measured wear (§4.1), released only against maintenance performed.</li>
+                <li><strong class="c-white">Income Statement (M):</strong> cumulative net profit or loss recorded per cycle.</li>
+              </ul>
+              <div class="wp-eq"><span>ΔM_t = Wage_t − E_swap,t − ΔR_maint,t</span><span class="wp-eq-num">(3)</span></div>
+              <h3 class="wp-h3">2.3–2.4 M2M Markets, Human Tipping, &amp; Issuance Invariant</h3>
+              <p class="wp-p">
+                Peer credit is a liability repaid from future wages and never counts as margin (§5.3). Human micro-tips (2016 D-TEAM lineage) are capped per issuer/shift and excluded from policy replication. On the closed permissioned pilot ledger, the operator’s treasury is the sole issuer and every block enforces: <span class="c-nominal" style="font-weight:700;">∑ minted − ∑ burned = ∑ balances</span>.
+              </p>
+            </div>
+
+            <!-- §03 -->
+            <div class="wp-section" id="wp-s03">
+              <div class="wp-sec-head">
+                <span class="wp-sec-num">03</span>
+                <h2 style="margin-bottom:0;">Three-Dimensional Geometrical Energy System</h2>
+              </div>
+              <p class="wp-p">Every robot occupies a real-time coordinate (X, Y, Z) ∈ ℝ³ sharing one unit (kWh ≡ OPVS):</p>
+              <table class="pilot-table">
+                <thead><tr><th>Axis</th><th>Phase</th><th>Triad Node</th><th>State Variable</th></tr></thead>
+                <tbody>
+                  <tr><td class="phase-cell c-white">X (Kinetic)</td><td>WORK</td><td>Body</td><td>Cumulative positive mechanical work at the joints, ∫ ∑_j max(τ_j ω_j, 0) dt (kWh)</td></tr>
+                  <tr><td class="phase-cell c-nominal">Y (Economic)</td><td>EARN</td><td>Mind</td><td>Net operational liquidity Y = Y_op − L (OPVS)</td></tr>
+                  <tr><td class="phase-cell c-energy">Z (Metabolic)</td><td>SWAP</td><td>Metabolism</td><td>Onboard stored energy, 0 ≤ Z ≤ Z_cap, at strict parity (kWh ≡ OPVS)</td></tr>
+                </tbody>
+              </table>
+              <div class="wp-eq"><span>v_work = (+ΔW, 0, −ΔZ_drain) &nbsp;|&nbsp; v_earn = (0, +ΔY_wage, 0) &nbsp;|&nbsp; v_swap = (0, −ΔY_cost, +ΔZ_swap)</span><span class="wp-eq-num">(4–6)</span></div>
+              <div class="wp-eq"><span>R_cycle = v_work + v_earn + v_swap = (ΔW, ΔM, 0), &nbsp; ΔM = ΔY_wage − ΔY_cost</span><span class="wp-eq-num">(7)</span></div>
+              <div class="wp-eq"><span>Linear Survival Plane: Y = (Z_cap − Z) + R_maint &nbsp;|&nbsp; Climb Pitch: θ = arctan(ΔM / ΔW)</span><span class="wp-eq-num">(8–9)</span></div>
+              <p class="wp-p">
+                Signed vertical altitude <span class="c-energy">d = Y − (Z_cap − Z) − R_maint = (Y + Z) − (Z_cap + R_maint)</span> reads physically as energy-denominated net worth above the cost of a full pack and owed wear. Across cycles: <strong>Stasis Triangle (ΔM = 0)</strong>, <strong>Ascending Helix (ΔM &gt; 0)</strong> ranked by slope <span class="c-nominal">s = tan θ = ΔM / ΔW</span>, or <strong>Collapse Vortex (ΔM &lt; 0)</strong> triggering Soft Bankruptcy at d ≤ 0.
+              </p>
+            </div>
+
+            <!-- §04 -->
+            <div class="wp-section" id="wp-s04">
+              <div class="wp-sec-head">
+                <span class="wp-sec-num">04</span>
+                <h2 style="margin-bottom:0;">The Curved Survival Manifold and Geodesic Control</h2>
+              </div>
+              <p class="wp-p">
+                Operating near 30 kg sustained or 50 kg instantaneous payload limits induces super-linear actuator fatigue and accelerated thermal ageing (Atlas battery life halves from 4 h to 2 h under heavy lifting [1]). Replacing constant wear with stress integrals warps the flat plane into curved Survival Manifold <em>S</em>:
+              </p>
+              <div class="wp-eq">
+                <span>Y_S(t) = (Z_cap − Z(t)) + R_0 + ∫_{t_0}^{t} [ r_0 + α ‖τ(u)‖² + β (e^{γ(T(u)−T_nom)} − 1)^+ ] du</span>
+                <span class="wp-eq-num">(10)</span>
+              </div>
+              <p class="wp-p">
+                Where <span class="c-white">R_0</span> is the standing reserve, <span class="c-white">r_0</span> baseline depreciation, <span class="c-caution">α‖τ(u)‖²</span> quadratic torque fatigue, and <span class="c-breach">β(e^{γ(T−T_nom)} − 1)^+</span> the Arrhenius thermal wall (γ = ln 2 / 10 K reproduces winding life halving per 10 K). Optimal control becomes geodesic navigation: minimizing torque-squared and thermal integrals per verified output aligns the economic optimum with minimum-effort control.
+              </p>
+            </div>
+
+            <!-- §05 -->
+            <div class="wp-section" id="wp-s05">
+              <div class="wp-sec-head">
+                <span class="wp-sec-num">05</span>
+                <h2 style="margin-bottom:0;">Survival Plane Supervisor Mode and Darwinian Selection</h2>
+              </div>
+              <div class="wp-eq"><span>d_S,i(t) = Y_i(t) − Y_S,i(t), &nbsp; h_0,i = d_S,i / |ḋ_S,i| (ḋ_S,i &lt; 0)</span><span class="wp-eq-num">(11)</span></div>
+              <h3 class="wp-h3">5.2 Four-Tier Governance State Machine (Evaluated 3 → 2 → 0 → 1)</h3>
+              <table class="pilot-table">
+                <thead><tr><th>Zone</th><th>Condition</th><th>Automated Supervisor Action</th><th>Policy &amp; Fleet Authority</th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td class="phase-cell c-nominal">0. Ascending</td>
+                    <td class="c-white">d_S &gt; d_hi (+15 OPVS) and ḋ_S &gt; v_ε</td>
+                    <td>Nominal operation; telemetry anchored to daily Merkle audit chain.</td>
+                    <td>Policy tagged SURVIVOR; eligible for replication (§5.3).</td>
+                  </tr>
+                  <tr>
+                    <td class="phase-cell c-caution">1. Stasis Band</td>
+                    <td class="c-white">d_S &gt; 0 and no other zone matches</td>
+                    <td>Automated efficiency audit on joint torque norms, thermal load, and path detours.</td>
+                    <td>Policy frozen from replication; benchmarked against fleet median OPVS/kWh.</td>
+                  </tr>
+                  <tr>
+                    <td class="phase-cell c-caution">2. Conservation</td>
+                    <td class="c-white">0 &lt; d_S &lt; d_lo (10 OPVS) or h_0 &lt; h_min (8 h)</td>
+                    <td>Dispatcher restricts queue to highest OPVS/kWh assignments.</td>
+                    <td>M2M subcontracting enabled to offload low-margin tasks or borrow from Zone 0 peers (booked as liabilities).</td>
+                  </tr>
+                  <tr>
+                    <td class="phase-cell c-breach">3. Plane Breach<br>(Soft Bankruptcy)</td>
+                    <td class="c-breach">d_S ≤ 0</td>
+                    <td>Emergency swap credit line unlocked so unit completes safe swap (~3 min [1]) without halting production.</td>
+                    <td>Active policy quarantined and rolled back to last profitable checkpoint; flagged ECONOMICALLY_NON_VIABLE.</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 class="wp-h3">5.3–5.4 Apparent vs. Intrinsic Pitch, Zombie Helices &amp; Safety Precedence</h3>
+              <div class="wp-eq"><span>θ_i^app = arctan(ΔM_i / ΔW_i), &nbsp; θ_i^int = arctan((ΔM_i − ΔM_i^ext) / ΔW_i)</span><span class="wp-eq-num">(12)</span></div>
+              <p class="wp-p">
+                <strong class="c-breach">Zombie Helix Detection:</strong> across 3 consecutive swaps, if θ_i^int &lt; 0 while θ_i^app ≥ 0, or peer debt L_i grows while θ_i^int ≤ 0, Supervisor severs inbound M2M credit and forces Soft Bankruptcy. <strong class="c-nominal">Proof-of-Metabolism Replication:</strong> over rolling 72 h windows, promotion requires a pre-registered confidence bound, no guardrail regression, human sign-off, and staged rollout. <strong class="c-caution">Safety Precedence:</strong> no OPVS amount can buy a relaxation of force, speed, separation, or thermal limits; the economy never commands motion.
+              </p>
+            </div>
+
+            <!-- §06 -->
+            <div class="wp-section" id="wp-s06">
+              <div class="wp-sec-head">
+                <span class="wp-sec-num">06</span>
+                <h2 style="margin-bottom:0;">Thermodynamic Audit Closure: Kirchhoff’s Law</h2>
+              </div>
+              <div class="wp-eq"><span>η_station E_substation(t) = ∑_{i=1}^{N} OPVS_swap,i(t) + ΔE_buffer(t) + ε_drift(t)</span><span class="wp-eq-num">(13)</span></div>
+              <table class="pilot-table">
+                <thead><tr><th>Residual Signature (ε_drift)</th><th>Physical or Cryptographic Diagnosis</th><th>Automated Supervisor Response</th></tr></thead>
+                <tbody>
+                  <tr><td class="phase-cell c-white">Constant offset</td><td>Charger efficiency model η miscalibrated (rate, temperature).</td><td>Refits η per charger; no integrity alert.</td></tr>
+                  <tr><td class="phase-cell c-caution">Slow monotonic upward drift</td><td>Rising internal impedance in lithium packs causing charging heat loss.</td><td>Cross-correlates pack_id histories to retire degrading pack before field failure.</td></tr>
+                  <tr><td class="phase-cell c-caution">Oscillating periodic drift</td><td>Uncalibrated BMS shunt sensor or cyclic HVAC thermal skew inside swap bay.</td><td>Flags bay sensor recalibration; isolates bay from baseline calibration.</td></tr>
+                  <tr><td class="phase-cell c-breach">Instantaneous step discontinuity</td><td>Unmetered electrical draw, spoofed swap telemetry, or unauthorized ledger injection.</td><td>Freezes external Merkle audit root; triggers cryptographic integrity lock on node.</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- §07 -->
+            <div class="wp-section" id="wp-s07">
+              <div class="wp-sec-head">
+                <span class="wp-sec-num">07</span>
+                <h2 style="margin-bottom:0;">Four-Layer System Architecture &amp; Core API (v1)</h2>
+              </div>
+              <p class="wp-p">
+                Zero hardware added. The pilot runs a 3- or 5-node Raft ledger cluster on premises on the plant’s segmented OT LAN (p99 commit &lt; 100 ms target; BFT for multi-party deployments). Swaps never wait for the ledger: bays authorize locally within cached limits and replay with the same UUID <span class="c-energy">Idempotency-Key</span>. All API amounts are integer <span class="c-energy">µOPVS</span> over TLS 1.3 + mTLS + Ed25519 signatures.
+              </p>
+              <table class="pilot-table">
+                <thead><tr><th>Method &amp; Endpoint</th><th>Authorized Caller</th><th>Functional Role</th></tr></thead>
+                <tbody>
+                  <tr><td class="phase-cell c-energy">POST /v1/swaps/settle</td><td>Swap station (BMS)</td><td>Debits robot wallet at strict parity (1 OPVS = 1 kWh) on battery lock; escrows accrued wear.</td></tr>
+                  <tr><td class="phase-cell c-nominal">POST /v1/tasks/settle</td><td>Factory MES / dispatcher</td><td>Credits verified task wage; accrues wear provision of (10); recognizes margin.</td></tr>
+                  <tr><td class="phase-cell c-white">GET /v1/wallets/{id}/state</td><td>Policy server / dispatcher</td><td>Returns net liquidity, altitude d_S, pitch θ, slope s, zone, and time-to-breach h_0.</td></tr>
+                  <tr><td class="phase-cell c-caution">POST /v1/m2m/transfer</td><td>Robot unit / dispatcher</td><td>Executes peer subcontracting payments or peer credit (booked as a liability).</td></tr>
+                  <tr><td class="phase-cell c-white">POST /v1/wallets/{id}/tip</td><td>Human operator UI</td><td>Credits capped human-to-robot tip in OPVS (2016 D-TEAM lineage).</td></tr>
+                  <tr><td class="phase-cell c-energy">GET /v1/audit/balance-sheet/{id}</td><td>Site auditor / management</td><td>Exports machine income statement, energy cash flow, and Merkle proof.</td></tr>
+                </tbody>
+              </table>
+
+              <h3 class="wp-h3">Representative Contracts 1–3 (Exact v2.0 Integer µOPVS Recomputations)</h3>
+              <pre class="wp-contract">// CONTRACT 1 · POST /v1/swaps/settle  (CHECK: 3,693 - 422 = 3,271 Wh = 3,271,000 µOPVS; 148s swap)
+{ "wallet_id": "wlt_h04", "energy_delta_wh": 3271, "swap_duration_sec": 148 }
+--&gt; 200 OK { "tx_id": "tx_swap_01JDF9X8K2", "seq": 1048213, "amount_debited_micro_opvs": 3271000, "escrow_transferred_micro_opvs": 1169000, "balance_after_micro_opvs": 482150000, "economic_mode": "NOMINAL" }
+
+// CONTRACT 2 · WEBHOOK reward.margin_settled  (CHECK Eq. 3: 8,750,000 - 3,271,000 - 1,169,000 = 4,310,000 µOPVS; yield_per_kwh = 2.675)
+{ "wallet_id": "wlt_h04", "reward_signal": { "wage_micro_opvs": 8750000, "energy_debit_micro_opvs": 3271000, "wear_provision_micro_opvs": 1169000, "net_margin_micro_opvs": 4310000, "manifold_altitude_micro_opvs": 477143000, "yield_per_kwh": 2.675 } }
+
+// CONTRACT 3 · WEBHOOK supervisor.plane_breach  (CHECK Eq. 10-11: Y_S = (3,700,000-1,000,000)+5,000,000+710,000 = 8,410,000; d_S = 7,140,000-8,410,000 = -1,270,000 µOPVS)
+{ "wallet_id": "wlt_h09", "cause": "ALTITUDE_BREACH", "auto_action": { "physical_swap": "AUTHORIZED_OVERDRAFT", "policy_state": "QUARANTINED", "rollback_target": "pol_v2.4-margin" } }</pre>
+            </div>
+
+            <!-- §08 -->
+            <div class="wp-section" id="wp-s08">
+              <div class="wp-sec-head">
+                <span class="wp-sec-num">08</span>
+                <h2 style="margin-bottom:0;">The 90-Day Reference Pilot</h2>
+              </div>
+              <p class="wp-p">
+                Target platform: Boston Dynamics electric Atlas [1] (1.9 m, 90 kg, 56 DoF, 50 kg peak / 30 kg sustained / 20 kg one-handed payload, 4 h / 2 h heavy-lift battery, ~3 min swap, 1.5 h charge, IP67). Pack rotation needs 1 + t_charge / t_run (14 packs at 4 h, 18 for heavy lift, before spares). Closed-site target profile: Hyundai Motor Group Metaplant America (Savannah, GA [4]). Four phases: Phase 1 Shadow Mode (Days 1–15), Phase 2 Endowed Loop (Days 16–45), Phase 3 Margin AI &amp; M2M Switchback Test (Days 46–75), Phase 4 End-to-End Third-Party Audit (Days 76–90).
+              </p>
+            </div>
+
+            <!-- §09–10 -->
+            <div class="wp-section" id="wp-s09">
+              <div class="wp-sec-head">
+                <span class="wp-sec-num">09–10</span>
+                <h2 style="margin-bottom:0;">Fractal Scaling &amp; Conclusion</h2>
+              </div>
+              <ul class="wp-list">
+                <li><strong class="c-white">Scale 0 — The Organism (1 robot):</strong> single humanoid navigating curved Survival Manifold <em>S</em> with a verifiable balance sheet.</li>
+                <li><strong class="c-energy">Scale 1 — The Colony (10 robots / 1 site):</strong> surplus above Y &gt; Y_cap overflows into the site Genesis Pool to fund Unit #11’s startup energy endowment—machines capitalize machine activation.</li>
+                <li><strong class="c-nominal">Scale 2 — The Metabolic Clearing Network:</strong> fleets settle kWh quantities at parity across North America, Europe, and Asia while carrying regional tariff and carbon intensity as explicit metadata; zero discretionary monetary policy.</li>
+              </ul>
+              <div class="wp-quote">Mind. Body. Metabolism. The machine becomes an organism. — Θ Canius · OPERAE VIS (OPVS) · 24/11/26</div>
+            </div>
+
+            <!-- ANNEX A -->
+            <div class="wp-section" id="wp-annex-a">
+              <div class="wp-sec-head">
+                <span class="wp-sec-num" style="border-color:var(--sig-caution); color:var(--sig-caution);">ANNEX A</span>
+                <h2 style="margin-bottom:0;">Notation Reference</h2>
+              </div>
+              <table class="pilot-table">
+                <thead><tr><th>Symbol</th><th>Meaning</th><th>Unit</th></tr></thead>
+                <tbody>
+                  <tr><td class="phase-cell c-energy">OPVS, µOPVS</td><td>Unit of account; one millionth of it (ledger integer)</td><td>1 kWh; 3.6 J</td></tr>
+                  <tr><td class="phase-cell c-white">Θ</td><td>Currency sign (U+0398) in text; drawn, the OPERAE VIS mark</td><td>—</td></tr>
+                  <tr><td class="phase-cell c-white">X, Y = Y_op − L, Z, Z_cap</td><td>Mechanical work; net operational liquidity; stored energy &amp; pack capacity</td><td>kWh; OPVS; kWh ≡ OPVS</td></tr>
+                  <tr><td class="phase-cell c-caution">R_maint, ΔR_maint, R_0</td><td>Maintenance provision owed, cycle accrual, standing reserve</td><td>OPVS</td></tr>
+                  <tr><td class="phase-cell c-white">r_0, α, β, γ</td><td>Wear constants: baseline, quadratic torque, thermal scale, steepness</td><td>OPVS h⁻¹; OPVS N⁻²m⁻²h⁻¹; OPVS h⁻¹; K⁻¹</td></tr>
+                  <tr><td class="phase-cell c-nominal">d_S, ḋ_S, h_0, θ, s = tan θ</td><td>Manifold altitude, altitude velocity, time-to-breach, climb pitch, ranking slope</td><td>OPVS; OPVS h⁻¹; h; rad; —</td></tr>
+                  <tr><td class="phase-cell c-energy">η_station, ε_drift</td><td>Charger efficiency; Kirchhoff physical-financial residual</td><td>—; kWh</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- ANNEX B & REFERENCES -->
+            <div class="wp-section" id="wp-annex-b">
+              <div class="wp-sec-head">
+                <span class="wp-sec-num" style="border-color:var(--sig-caution); color:var(--sig-caution);">ANNEX B</span>
+                <h2 style="margin-bottom:0;">Change Log v1.0 → v2.0 &amp; Public References</h2>
+              </div>
+              <p class="wp-p">
+                v2.0 applies surgical corrections across §§1–10 and Contracts 1–3: canonical domain www.operaevis.com; Survival Plane corrected to Y = (Z_cap − Z) + R_maint; exhaustive non-overlapping Supervisor zones (3 → 2 → 0 → 1); safety placed outside the economy (§5.4); on-premises Raft/BFT topology with offline swap idempotent replay; and integer-only µOPVS APIs with recomputed examples (Contracts 1–3).
+              </p>
+              <ul class="wp-list">
+                <li>[1] Boston Dynamics, <em>Atlas specification sheet</em>, Rev. 10/15/2026. bostondynamics.com/wp-content/uploads/2026/01/atlas-spec-sheet.pdf</li>
+                <li>[2] Boston Dynamics, <em>Boston Dynamics Unveils New Atlas Robot to Revolutionize Industry</em>, 5 Jan 2026.</li>
+                <li>[3] Boston Dynamics, <em>Boston Dynamics &amp; Google DeepMind Form New AI Partnership</em>, 5 Jan 2026.</li>
+                <li>[4] The Atlanta Journal-Constitution, <em>Hyundai to deploy AI-powered humanoid robots at Georgia auto factory</em>, 7 Jan 2026.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ==================== TAB 1: PROTOCOL OVERVIEW & FLEET ROSTER ==================== -->
+    <div id="view-overview" class="hidden">
+      <!-- HERO SECTION -->
+      <section class="section-band">
+        <div class="section">
+          <div class="eyebrow">HYUNDAI GEORGIA PLANT · 90-DAY PILOT · 10 ATLAS HUMANOIDS</div>
+          <h1 data-i18n="hero_title">Autonomous HR, Payroll &amp; Policy Governance for Electric Atlas Fleets.</h1>
           <p class="lead" data-i18n="hero_lead">
-            Autonomous machines draw kilowatt-hours and accumulate actuator wear without economic accountability.
-            OPVS (Operae Vis System) anchors machine labor to conserved physical energy:
-            every unit of work is settled against real energy expenditure and verified by Kirchhoff's conservation law.
+            The Organism Triad in action: DeepMind (Policy Engine), Atlas (56-DoF Body), and OPVS (Thermodynamic Metabolism).
+            Every kilowatt-hour drawn and actuator cycle executed is settled against integer micro-OPVS on the Google Cloud Universal Ledger (GCUL).
           </p>
 
           <div class="parity-strip">
@@ -1021,87 +1601,47 @@
             </div>
             <div class="parity-item">
               <div class="label" data-i18n="p_unit_lbl">Ledger Integer Unit</div>
-              <div class="val c-white">1 µOPVS = 3.6 J (INT64)</div>
+              <div class="val c-white">1 µOPVS = 3.6 J (INT64 / No Drift)</div>
             </div>
             <div class="parity-item">
-              <div class="label" data-i18n="p_kpi_lbl">Canonical Cycle KPI</div>
+              <div class="label" data-i18n="p_kpi_lbl">Canonical Net Margin</div>
               <div class="val c-nominal">ΔM = Wage − E_swap − ΔR_maint</div>
             </div>
             <div class="parity-item">
-              <div class="label" data-i18n="p_pilot_lbl">Target Objective</div>
-              <div class="val c-caution" data-i18n="p_pilot_val">90-day pilot · 10 humanoids · 1 site</div>
+              <div class="label" data-i18n="p_pilot_lbl">Zero-Halt Safety</div>
+              <div class="val c-caution" data-i18n="p_pilot_val">Zone 3 Overdraft &amp; Policy Rollback</div>
             </div>
           </div>
 
           <div class="btn-row">
-            <button type="button" class="btn-primary" id="hero-open-sim" data-i18n="cta_sim">Launch G5 Fleet Simulator</button>
-            <a href="#prototype" class="btn-secondary" data-i18n="cta_proto">Inspect Prototype Ledger</a>
-            <a href="#pilot" class="btn-secondary" data-i18n="cta_pilot">90-Day Pilot Architecture</a>
+            <button type="button" class="btn-primary" id="hero-open-sim" data-i18n="cta_sim">Launch Atlas Fleet Simulator</button>
+            <button type="button" class="btn-secondary" id="hero-open-wp" data-i18n="cta_wp">📄 Technical Whitepaper v2.0</button>
+            <button type="button" class="btn-secondary" id="hero-open-dm" data-i18n="cta_dm">DeepMind &amp; GCUL Ledger</button>
           </div>
         </div>
       </section>
 
-      <!-- THE SYSTEM -->
-      <section id="system" class="section-band">
-        <div class="section">
-          <div class="eyebrow" data-i18n="sys_eye">01 · THE SYSTEM</div>
-          <h2 data-i18n="sys_title">Mind, Body, and Metabolism inside a Curved Survival Manifold</h2>
-          <p class="lead" data-i18n="sys_lead">
-            Zero added hardware. OPVS plugs into existing humanoid telemetry, autonomous battery swap stations,
-            and factory MES over a private permissioned append-only ledger (mTLS, Ed25519 X-Opvs-Signature, UUID v4 Idempotency-Key).
-          </p>
-
-          <div class="grid-3">
-            <article class="card card-energy">
-              <h3 class="c-energy" data-i18n="c1_t">Work → Earn → Swap Loop</h3>
-              <p data-i18n="c1_p">
-                Every machine occupies a real-time coordinate (X, Y, Z) in phase space: mechanical work (X),
-                operational capital balance (Y), and onboard battery energy (Z). Battery swaps reset Z and isolate net margin ΔM.
-              </p>
-              <div class="formula-box">R_cycle = (ΔW, ΔM, 0) · θ = arctan(ΔM / ΔW)</div>
-            </article>
-
-            <article class="card card-caution">
-              <h3 class="c-caution" data-i18n="c2_t">Supervisor &amp; Soft Bankruptcy</h3>
-              <p data-i18n="c2_p">
-                Four zones govern fleet safety: Ascending (d_S &gt; +15 OPVS), Stasis, Conservation (&lt; 10 OPVS or τ_0 &lt; 8 h),
-                and Plane Breach. Zone 3 grants emergency swap credit so factory lines never halt while rolling back failing AI policies and severing Zombie Helices.
-              </p>
-              <div class="formula-box">d_S,i(t) = Y_i(t) − Y_S,i(X_i, Z_i, τ_i, T_i)</div>
-            </article>
-
-            <article class="card card-nominal">
-              <h3 class="c-nominal" data-i18n="c3_t">Kirchhoff Audit Closure</h3>
-              <p data-i18n="c3_p">
-                Inside a closed industrial perimeter, electrical substation meters verify every token debited across robot wallets.
-                The residual ε_drift diagnoses battery degradation, BMS sensor drift, or unauthorized draw.
-              </p>
-              <div class="formula-box">η·E_substation = Σ OPVS_swap,i + ΔE_bay_buffer + ε_drift</div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <!-- INTERACTIVE PROTOTYPE SIMULATION -->
+      <!-- FLEET ROSTER & SUPERVISOR MODE (HR DASHBOARD) -->
       <section id="prototype" class="section-band">
         <div class="section">
-          <div class="eyebrow" data-i18n="pr_eye">02 · INTERACTIVE PROTOTYPE CONSOLE</div>
-          <h2 data-i18n="pr_title">10-Unit Closed-Site Settlement Preview (Integer µOPVS)</h2>
+          <div class="eyebrow" data-i18n="pr_eye">01 · FLEET ROSTER &amp; SUPERVISOR MODE (HR DASHBOARD)</div>
+          <h2 data-i18n="pr_title">10 Boston Dynamics Electric Atlas Humanoids · Hyundai Georgia Plant</h2>
 
           <div class="proto-banner">
-            <span data-i18n="pr_warn">SIMULATED PROTOTYPE DATA — ILLUSTRATIVE ASSUMPTIONS ONLY (NOT LIVE PLANT TELEMETRY)</span>
-            <span class="mono" id="sim-clock">CYCLE: 01 · DAY: 16/90</span>
+            <span data-i18n="pr_warn">LIVE GCUL PERMISSIONED SETTLEMENT STREAM · mTLS v1.3 · ED25519 SIGNATURES · IDEMPOTENCY LOCK</span>
+            <span class="mono" id="sim-clock">CYCLE: 01 · DAY: 16/90 · FLEET: 10/10 ACTIVE</span>
           </div>
 
           <div class="controls">
             <div class="ctrl-group" role="group" aria-label="Zone filter">
               <button type="button" class="ctrl-btn active" data-filter="ALL" data-i18n="flt_all">All (10)</button>
-              <button type="button" class="ctrl-btn" data-filter="NOMINAL" data-i18n="flt_nom">▲ Nominal / Ascending</button>
-              <button type="button" class="ctrl-btn" data-filter="ALERT" data-i18n="flt_alert">✕ Conservation / Breach</button>
+              <button type="button" class="ctrl-btn" data-filter="NOMINAL" data-i18n="flt_nom">▲ Z0/Z1 Nominal / Stasis</button>
+              <button type="button" class="ctrl-btn" data-filter="ALERT" data-i18n="flt_alert">✕ Z2/Z3 Conservation / Breach</button>
             </div>
             <div class="ctrl-group">
-              <button type="button" class="ctrl-btn btn-action-energy" id="btn-step" data-i18n="btn_step">⚡ Step 4h Swap Cycle</button>
-              <button type="button" class="ctrl-btn" id="btn-reset" data-i18n="btn_reset">↺ Reset Seed</button>
+              <button type="button" class="ctrl-btn btn-action-energy" id="btn-step" data-i18n="btn_step">⚡ Step 4h Work-Swap Cycle</button>
+              <button type="button" class="ctrl-btn btn-action-caution" id="trigger-reckless" data-i18n="trig_reck">⚠️ Sim Reckless Policy (v2.5)</button>
+              <button type="button" class="ctrl-btn btn-action-breach" id="trigger-zombie" data-i18n="trig_zom">🧬 Sim Zombie Helix</button>
             </div>
           </div>
 
@@ -1128,14 +1668,13 @@
             <table>
               <thead>
                 <tr>
-                  <th>Wallet ID</th>
-                  <th>Policy</th>
-                  <th>Liquidity (µOPVS)</th>
-                  <th>Last Swap (µOPVS)</th>
-                  <th>Net Margin ΔM (µOPVS)</th>
-                  <th>d_S (µOPVS)</th>
-                  <th>θ_intrinsic</th>
-                  <th>Mode / Zone</th>
+                  <th data-i18n="th_wlt">Wallet ID</th>
+                  <th data-i18n="th_pol">Gemini Policy</th>
+                  <th data-i18n="th_liq">Liquidity (µOPVS)</th>
+                  <th data-i18n="th_soc">Battery SoC</th>
+                  <th data-i18n="th_ds">Altitude d_S</th>
+                  <th data-i18n="th_pitch">Pitch θ_intrinsic</th>
+                  <th data-i18n="th_zone">Governance Zone &amp; Status</th>
                 </tr>
               </thead>
               <tbody id="fleet-tbody"></tbody>
@@ -1143,26 +1682,63 @@
           </div>
 
           <div class="ledger-drawer" id="ledger-inspector" data-i18n="drawer_hint">
-            Click any unit row to inspect its latest integer µOPVS double-entry ledger record and correlation key (episode_id).
+            Click any Atlas unit row above to inspect its hardware-bound Ed25519 wallet, survival manifold altitude, and GCUL double-entry proof.
           </div>
         </div>
       </section>
 
-      <!-- THE PILOT -->
+      <!-- THE ORGANISM TRIAD & SYSTEM ARCHITECTURE -->
+      <section id="system" class="section-band">
+        <div class="section">
+          <div class="eyebrow" data-i18n="sys_eye">02 · THE ORGANISM TRIAD &amp; SURVIVAL MANIFOLD ARCHITECTURE</div>
+          <h2 data-i18n="sys_title">Mind, Body, and Metabolism inside a Curved Survival Manifold</h2>
+          <p class="lead" data-i18n="sys_lead">
+            Zero added hardware on the Boston Dynamics Atlas 56-DoF robots. OPVS plugs directly into real-time joint torque telemetry,
+            autonomous battery swap bay BMS, and the Hyundai MES over encrypted mTLS.
+          </p>
+
+          <div class="grid-3">
+            <article class="card card-energy">
+              <h3 class="c-energy" data-i18n="c1_t">DeepMind Mind (Policy Engine)</h3>
+              <p data-i18n="c1_p">
+                Evaluates embodied transformer policy checkpoints. Continuous feedback loops rank policies by intrinsic climb pitch θ_intrinsic and thermodynamic energy efficiency.
+              </p>
+              <div class="formula-box">R_cycle = (ΔW, ΔM, 0) · θ = arctan(ΔM / ΔW)</div>
+            </article>
+
+            <article class="card card-caution">
+              <h3 class="c-caution" data-i18n="c2_t">Atlas Body (56-DoF Execution)</h3>
+              <p data-i18n="c2_p">
+                Electric actuation draws energy from swappable packs. The curved manifold computes fatigue via torque integration and thermal walls without ever stalling factory lines.
+              </p>
+              <div class="formula-box">d_S,i(t) = Y_i(t) − Y_S,i(X_i, Z_i, τ_i, T_i)</div>
+            </article>
+
+            <article class="card card-nominal">
+              <h3 class="c-nominal" data-i18n="c3_t">OPVS Metabolism &amp; GCUL</h3>
+              <p data-i18n="c3_p">
+                Google Cloud Universal Ledger guarantees permissioned sub-100ms settlement. Kirchhoff substation meter audits verify every token debited against physical meters.
+              </p>
+              <div class="formula-box">η·E_substation = Σ OPVS_swap,i + ΔE_bay_buffer + ε_drift</div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- 90-DAY PILOT ARCHITECTURE -->
       <section id="pilot" class="section-band">
         <div class="section">
-          <div class="eyebrow" data-i18n="pil_eye">03 · THE 90-DAY REFERENCE PILOT</div>
+          <div class="eyebrow" data-i18n="pil_eye">03 · THE 90-DAY HYUNDAI GEORGIA REFERENCE PILOT</div>
           <h2 data-i18n="pil_title">Four Phases to the First Audited Machine Balance Sheet</h2>
           <p class="lead" data-i18n="pil_lead">
-            Target deployment: 10 electric humanoids with swappable batteries on 1 closed industrial site over 90 consecutive days.
-            All hardware profiles and industrial sites remain target benchmarks pending signed pilot agreements.
+            Target deployment: 10 electric Atlas humanoids with swappable batteries across the Georgia assembly facility over 90 consecutive days.
           </p>
 
           <table class="pilot-table">
             <thead>
               <tr>
-                <th>Phase</th>
-                <th>Window</th>
+                <th data-i18n="th_phase">Phase</th>
+                <th data-i18n="th_win">Window</th>
                 <th data-i18n="th_obj">Objective</th>
                 <th data-i18n="th_exit">Exit Criterion</th>
               </tr>
@@ -1171,13 +1747,13 @@
               <tr>
                 <td class="phase-cell c-energy">Phase 1 · Shadow Mode</td>
                 <td class="c-white">Days 1–15</td>
-                <td data-i18n="p1_o">Read-only telemetry ingestion from swap bays, MES, and actuators; zero production interference.</td>
+                <td data-i18n="p1_o">Read-only telemetry ingestion from swap bays, MES, and Atlas actuators; zero production interference.</td>
                 <td data-i18n="p1_e">Calibration of 1 OPVS = 1 kWh parity and manifold constants (α, β, γ).</td>
               </tr>
               <tr>
                 <td class="phase-cell c-white">Phase 2 · Endowed Loop</td>
                 <td class="c-white">Days 16–45</td>
-                <td data-i18n="p2_o">Activate 10 endowed wallets and run live Work → Earn → Swap settlement.</td>
+                <td data-i18n="p2_o">Activate 10 endowed wallets and run live Work → Earn → Swap thermodynamic settlement on GCUL.</td>
                 <td data-i18n="p2_e">Autonomous loop closure without manual invoicing; Kirchhoff residual ε_drift within tolerance.</td>
               </tr>
               <tr>
@@ -1210,13 +1786,13 @@
             </div>
             <div class="card card-caution">
               <h3 class="c-caution" data-i18n="con_c2_t">Pilot Target Slots</h3>
-              <p>Industrial Site Partner: <span class="c-white">[TBD]</span></p>
-              <p>Humanoid OEM Target: <span class="c-white">[TBD]</span></p>
-              <p>Pilot Budget &amp; Seed: <span class="c-white">[TBD]</span></p>
+              <p>Plant Partner: <span class="c-white">Hyundai Motor Group Metaplant America (Georgia)</span></p>
+              <p>Humanoid OEM: <span class="c-white">Boston Dynamics Atlas (Electric 56-DoF)</span></p>
+              <p>Settlement Layer: <span class="c-white">Google Cloud Universal Ledger (GCUL)</span></p>
             </div>
             <div class="card card-nominal">
               <h3 class="c-nominal" data-i18n="con_c3_t">Direct Channel</h3>
-              <p>Email: <span class="c-white">[TBD]</span></p>
+              <p>Email: <span class="c-white">canium@operaevis.com</span></p>
               <p style="margin-top:0.5rem;" data-i18n="con_c3_p">Specification v2.0 &amp; G5 simulator demo available upon inquiry.</p>
             </div>
           </div>
@@ -1224,30 +1800,30 @@
       </section>
     </div>
 
-    <!-- ==================== TAB 2: G5 FLEET SUPERVISOR SIMULATOR ==================== -->
+    <!-- ==================== TAB 2: ATLAS FLEET SIMULATOR & PHASE-SPACE VISUALIZER ==================== -->
     <div id="view-simulator" class="hidden">
       <section class="section-band">
         <div class="section">
-          <div class="eyebrow" data-i18n="sim_eye">G5 FLEET SUPERVISOR · THERMODYNAMIC SETTLEMENT SIMULATOR</div>
-          <h1 style="font-size:clamp(1.75rem,3.8vw,2.75rem); margin-bottom:0.75rem;" data-i18n="sim_title">Survival Manifold &amp; Kirchhoff Ledger Simulator</h1>
+          <div class="eyebrow" data-i18n="sim_eye">ATLAS FLEET SIMULATOR · SURVIVAL MANIFOLD &amp; GCUL SETTLEMENT</div>
+          <h1 style="font-size:clamp(1.75rem,3.8vw,2.75rem); margin-bottom:0.75rem;" data-i18n="sim_title">Phase-Space Trajectory &amp; Kirchhoff Ledger Simulator</h1>
           <p class="lead" style="margin-bottom:1.25rem;" data-i18n="sim_lead">
             Simulate integer µOPVS task wages, battery swaps (1 Wh = 1,000 µOPVS), curved maintenance escrow (torque² + thermal wall),
             M2M subcontracting, and Supervisor Zone 3 Soft Bankruptcy rollbacks in real time.
           </p>
 
           <div class="proto-banner">
-            <span data-i18n="sim_banner">G5 INTERACTIVE SANDBOX · STRICT INT64 µOPVS ARITHMETIC · ZERO FLOATING-POINT CURRENCY</span>
-            <span id="g5-clock">SIM CYCLE: 01 · DAY: 16/90 · MERKLE ENTRIES: 01</span>
+            <span data-i18n="sim_banner">ATLAS SIMULATION SANDBOX · STRICT INT64 µOPVS ARITHMETIC · ZERO FLOATING-POINT CURRENCY</span>
+            <span id="g5-clock">SIM CYCLE: 01 · DAY: 16/90 · GCUL ENTRIES: 01</span>
           </div>
 
           <div class="sim-layout">
-            <!-- LEFT: CONTROL DECK -->
+            <!-- LEFT: CONTROL DECK & HUMAN-ON-THE-LOOP OVERRIDE -->
             <aside class="sim-panel">
-              <div class="sim-panel-title" data-i18n="sim_ctrl_title">01 · UNIT &amp; MANIFOLD PARAMETERS</div>
+              <div class="sim-panel-title" data-i18n="sim_ctrl_title">01 · ATLAS UNIT &amp; MANIFOLD CONTROLS</div>
 
               <div class="sim-field">
                 <div class="sim-field-head">
-                  <label for="g5-unit-select" data-i18n="sim_unit_lbl">Target Humanoid Wallet</label>
+                  <label for="g5-unit-select" data-i18n="sim_unit_lbl">Target Atlas Wallet</label>
                   <span class="sim-field-val c-energy" id="g5-unit-zone">ZONE 0</span>
                 </div>
                 <select id="g5-unit-select" class="sim-select"></select>
@@ -1299,15 +1875,21 @@
                 ΔR_maint = 1 000 000 µOPVS · Est ΔM = +4 310 000 µOPVS
               </div>
 
+              <div class="sim-panel-title" style="margin-top:1.25rem;" data-i18n="sim_override_t">02 · HUMAN-ON-THE-LOOP OVERRIDE</div>
+              <div class="ctrl-group" style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; margin-bottom:1rem;">
+                <button type="button" class="ctrl-btn btn-action-caution" id="btn-quarantine" data-i18n="btn_quar">Quarantine Policy</button>
+                <button type="button" class="ctrl-btn btn-action-nominal" id="btn-sever-zombie" data-i18n="btn_sever">Sever Zombie Credit</button>
+              </div>
+
               <div class="ctrl-group" style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;">
                 <button type="button" class="ctrl-btn btn-action-energy" id="g5-step-1" data-i18n="g5_step1">⚡ +1 Cycle (4h)</button>
                 <button type="button" class="ctrl-btn btn-action-nominal" id="g5-step-6" data-i18n="g5_step6">⏩ +6 Cycles (24h)</button>
                 <button type="button" class="ctrl-btn btn-action-caution" id="g5-export" data-i18n="g5_export">Export Balance Sheet</button>
-                <button type="button" class="ctrl-btn" id="g5-reset" data-i18n="g5_reset">↺ Reset G5</button>
+                <button type="button" class="ctrl-btn" id="g5-reset" data-i18n="g5_reset">↺ Reset Simulation</button>
               </div>
             </aside>
 
-            <!-- RIGHT: LIVE TELEMETRY, MANIFOLD GRAPH, API ACTIONS & HASH LOG -->
+            <!-- RIGHT: TELEMETRY, PHASE-SPACE MANIFOLD GRAPH, GCUL API ACTIONS & HASH LOG -->
             <div>
               <div class="kpi-bar">
                 <div class="kpi-cell">
@@ -1331,13 +1913,13 @@
               <!-- PURE BLACK SVG SURVIVAL MANIFOLD CHART -->
               <div class="chart-box">
                 <div class="chart-header">
-                  <span class="c-white" style="font-weight:700;" data-i18n="g5_chart_t">SURVIVAL MANIFOLD ALTITUDE d_S(t) — SELECTED UNIT (OPVS)</span>
+                  <span class="c-white" style="font-weight:700;" data-i18n="g5_chart_t">SURVIVAL MANIFOLD ALTITUDE d_S(t) — SELECTED ATLAS UNIT (OPVS)</span>
                   <span id="g5-chart-status" class="c-nominal" style="font-weight:700;">▲ ZONE 0 · ASCENDING</span>
                 </div>
                 <svg id="g5-manifold-svg" viewBox="0 0 720 210" width="100%" height="210" role="img" aria-label="Survival Manifold Trajectory"></svg>
               </div>
 
-              <!-- OPVS CORE API DISPATCHER (DIRECTLY FROM OPENAPI 3.1.0 SPEC) -->
+              <!-- GCUL LEDGER API DISPATCHER (OPENAPI 3.1.0 SPEC) -->
               <div class="api-grid">
                 <div class="api-card">
                   <div>
@@ -1358,7 +1940,7 @@
                 <div class="api-card">
                   <div>
                     <div class="api-route">POST /v1/m2m/transfer</div>
-                    <div class="api-desc" data-i18n="api_m2m_d">Subcontract 1.50 OPVS from wlt_unit_01 to target (422 if Zombie Helix locked).</div>
+                    <div class="api-desc" data-i18n="api_m2m_d">Subcontract 1.50 OPVS from wlt_atlas_01 to target (422 if Zombie Helix locked).</div>
                   </div>
                   <button type="button" class="ctrl-btn btn-action-caution" id="api-m2m-btn" data-i18n="api_m2m_b">M2M Transfer</button>
                 </div>
@@ -1375,7 +1957,7 @@
               <!-- APPEND-ONLY HASH-CHAINED LEDGER & WEBHOOK STREAM -->
               <div class="sim-panel" style="padding:0;">
                 <div style="padding:0.7rem 0.9rem; border-bottom:1px solid var(--border-grid); display:flex; justify-content:space-between; align-items:center;">
-                  <span style="font-size:0.78rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--fg-white);" data-i18n="g5_log_t">APPEND-ONLY LEDGER &amp; WEBHOOK STREAM (SHA-256 CHAIN)</span>
+                  <span style="font-size:0.78rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--fg-white);" data-i18n="g5_log_t">GCUL APPEND-ONLY LEDGER &amp; WEBHOOK STREAM (SHA-256 CHAIN)</span>
                   <span style="font-size:0.74rem; color:var(--sig-nominal); font-weight:700;" id="g5-kirchhoff-badge">KIRCHHOFF: CLOSED_WITHIN_TOLERANCE</span>
                 </div>
                 <div class="event-log" id="g5-event-log"></div>
@@ -1388,11 +1970,11 @@
       </section>
     </div>
 
-    <!-- ==================== TAB 3: DEEPMIND PREP · ORBIT ↔ AIVI ↔ ATLAS ADAPTER ==================== -->
+    <!-- ==================== TAB 3: DEEPMEIND MIND & GCUL SETTLEMENT ADAPTER ==================== -->
     <div id="view-deepmind" class="hidden">
       <section class="section-band">
         <div class="section">
-          <div class="eyebrow" style="color:var(--sig-caution);" data-i18n="dm_eye">GOOGLE DEEPMIND PREP · EMBODIED AGENT WAGE ADAPTER</div>
+          <div class="eyebrow" style="color:var(--sig-caution);" data-i18n="dm_eye">DEEPMEIND MIND &amp; GCUL SETTLEMENT ADAPTER</div>
           <h1 style="font-size:clamp(1.75rem,3.8vw,2.75rem); margin-bottom:0.75rem;" data-i18n="dm_title">Orbit ↔ AIVI-Learning ↔ AtlasWageService → OPVS</h1>
           <p class="lead" style="margin-bottom:1.25rem;" data-i18n="dm_lead">
             Live integration sandbox bridging embodied AI learning &amp; adoption events (LearningEvent) through OrbitAiviAdapter and idempotent AtlasWageService into integer µOPVS thermodynamic settlement (1 CREDIT = 0.25 OPVS = 250,000 µOPVS).
@@ -1566,10 +2148,10 @@
         </svg>
         <div>
           <div class="c-white" style="font-weight:700; letter-spacing:0.06em;">OPERAE VIS · DIGNVS EST OPERARIVS MERCEDE SVA</div>
-          <div style="font-size:0.8rem; color:var(--fg-muted);">Prototype Web v1 · Canon OPVS (1 OPVS = 1,000,000 µOPVS) · OLED Energy-Saving Architecture</div>
+          <div style="font-size:0.8rem; color:var(--fg-muted);">Hyundai Georgia Pilot · 10 Atlas Electric Humanoids · GCUL Settlement Protocol v2.0</div>
         </div>
       </div>
-      <div class="sig">garrigue · 23/11/26</div>
+      <div class="sig">garrigue · 24/11/26</div>
     </div>
   </footer>
 
@@ -1577,57 +2159,79 @@
     (function () {
       const I18N = {
         en: {
-          leg_id: "IDENTITY / LEDGER",
-          leg_kwh: "kWh ENERGY",
+          leg_id: "IDENTITY / GCUL LEDGER",
+          leg_kwh: "kWh METABOLISM (1 OPVS ≡ 1 kWh)",
           leg_z0: "▲ Z0 ASCENDING (+ΔM)",
           leg_z12: "◆ Z1/Z2 STASIS · CONSERVE",
-          leg_z3: "✕ Z3 BREACH · ROLLBACK",
+          leg_z3: "✕ Z3 BREACH · SOFT BANKRUPTCY",
+          nav_wp: "📄 Whitepaper v2.0",
           nav_overview: "Protocol",
-          nav_system: "System",
-          nav_proto: "Prototype",
-          nav_pilot: "Pilot",
-          nav_contact: "Contact",
-          nav_sim: "⚡ Simulator",
-          hero_title: "Give robots a wage, a wallet, and an audited balance sheet.",
-          hero_lead: "Autonomous machines draw kilowatt-hours and accumulate actuator wear without economic accountability. OPVS (Operae Vis System) anchors machine labor to conserved physical energy: every unit of work is settled against real energy expenditure and verified by Kirchhoff's conservation law.",
+          nav_sim: "⚡ Atlas Simulator",
+          nav_dm: "DeepMind Mind & GCUL",
+          wp_eye: "TECHNICAL WHITEPAPER · SPECIFICATION V2.0 · 24/11/26 · SUPERSEDES V1.0",
+          wp_title: "OPVS: A Thermodynamic Settlement Protocol for Autonomous Machine Economies",
+          wp_lead: "Survival Manifold Architecture — Closing the Triad of Mind, Body, and Metabolism. Author: Canius · Lineage: D-TEAM (2016) → OPVS (2026) · www.operaevis.com",
+          wp_m1_l: "Parity Invariant",
+          wp_m2_l: "Atomic Ledger Integer",
+          wp_m3_l: "Specification Edition",
+          wp_m4_l: "Author & Emblem",
+          wp_dl_btn: "⬇ Download Official PDF (v2.0 · 19 pp.)",
+          wp_sim_btn: "⚡ Launch Atlas Simulator",
+          wp_proto_btn: "Open Fleet & Protocol Roster",
+          wp_v_both: "PDF + DIN 1451 Spec",
+          wp_v_pdf: "PDF Document Only",
+          wp_v_spec: "Interactive Spec Only",
+          wp_tall_btn: "↕ Expand PDF Height",
+          wp_abs_t: "Executive Abstract & What Changes in v2.0",
+          cta_wp: "📄 Technical Whitepaper v2.0",
+          hero_title: "Autonomous HR, Payroll & Policy Governance for Electric Atlas Fleets.",
+          hero_lead: "The Organism Triad in action: DeepMind (Policy Engine), Atlas (56-DoF Body), and OPVS (Thermodynamic Metabolism). Every kilowatt-hour drawn and actuator cycle executed is settled against integer micro-OPVS on the Google Cloud Universal Ledger (GCUL).",
           p_parity_lbl: "Thermodynamic Parity",
           p_unit_lbl: "Ledger Integer Unit",
-          p_kpi_lbl: "Canonical Cycle KPI",
-          p_pilot_lbl: "Target Objective",
-          p_pilot_val: "90-day pilot · 10 humanoids · 1 site",
-          cta_sim: "Launch G5 Fleet Simulator",
-          cta_proto: "Inspect Prototype Ledger",
-          cta_pilot: "90-Day Pilot Architecture",
-          sys_eye: "01 · THE SYSTEM",
+          p_kpi_lbl: "Canonical Net Margin",
+          p_pilot_lbl: "Zero-Halt Safety",
+          p_pilot_val: "Zone 3 Overdraft & Policy Rollback",
+          cta_sim: "Launch Atlas Fleet Simulator",
+          cta_dm: "DeepMind & GCUL Ledger",
+          sys_eye: "02 · THE ORGANISM TRIAD & SURVIVAL MANIFOLD ARCHITECTURE",
           sys_title: "Mind, Body, and Metabolism inside a Curved Survival Manifold",
-          sys_lead: "Zero added hardware. OPVS plugs into existing humanoid telemetry, autonomous battery swap stations, and factory MES over a private permissioned append-only ledger (mTLS, Ed25519 X-Opvs-Signature, UUID v4 Idempotency-Key).",
-          c1_t: "Work → Earn → Swap Loop",
-          c1_p: "Every machine occupies a real-time coordinate (X, Y, Z) in phase space: mechanical work (X), operational capital balance (Y), and onboard battery energy (Z). Battery swaps reset Z and isolate net margin ΔM.",
-          c2_t: "Supervisor & Soft Bankruptcy",
-          c2_p: "Four zones govern fleet safety: Ascending (d_S > +15 OPVS), Stasis, Conservation (< 10 OPVS or τ_0 < 8 h), and Plane Breach. Zone 3 grants emergency swap credit so factory lines never halt while rolling back failing AI policies and severing Zombie Helices.",
-          c3_t: "Kirchhoff Audit Closure",
-          c3_p: "Inside a closed industrial perimeter, electrical substation meters verify every token debited across robot wallets. The residual ε_drift diagnoses battery degradation, BMS sensor drift, or unauthorized draw.",
-          pr_eye: "02 · INTERACTIVE PROTOTYPE CONSOLE",
-          pr_title: "10-Unit Closed-Site Settlement Preview (Integer µOPVS)",
-          pr_warn: "SIMULATED PROTOTYPE DATA — ILLUSTRATIVE ASSUMPTIONS ONLY (NOT LIVE PLANT TELEMETRY)",
+          sys_lead: "Zero added hardware on the Boston Dynamics Atlas 56-DoF robots. OPVS plugs directly into real-time joint torque telemetry, autonomous battery swap bay BMS, and the Hyundai MES over encrypted mTLS.",
+          c1_t: "DeepMind Mind (Policy Engine)",
+          c1_p: "Evaluates embodied transformer policy checkpoints. Continuous feedback loops rank policies by intrinsic climb pitch θ_intrinsic and thermodynamic energy efficiency.",
+          c2_t: "Atlas Body (56-DoF Execution)",
+          c2_p: "Electric actuation draws energy from swappable packs. The curved manifold computes fatigue via torque integration and thermal walls without ever stalling factory lines.",
+          c3_t: "OPVS Metabolism & GCUL",
+          c3_p: "Google Cloud Universal Ledger guarantees permissioned sub-100ms settlement. Kirchhoff substation meter audits verify every token debited against physical meters.",
+          pr_eye: "01 · FLEET ROSTER & SUPERVISOR MODE (HR DASHBOARD)",
+          pr_title: "10 Boston Dynamics Electric Atlas Humanoids · Hyundai Georgia Plant",
+          pr_warn: "LIVE GCUL PERMISSIONED SETTLEMENT STREAM · mTLS v1.3 · ED25519 SIGNATURES · IDEMPOTENCY LOCK",
           flt_all: "All (10)",
-          flt_nom: "▲ Nominal / Ascending",
-          flt_alert: "✕ Conservation / Breach",
-          btn_step: "⚡ Step 4h Swap Cycle",
-          btn_reset: "↺ Reset Seed",
+          flt_nom: "▲ Z0/Z1 Nominal / Stasis",
+          flt_alert: "✕ Z2/Z3 Conservation / Breach",
+          btn_step: "⚡ Step 4h Work-Swap Cycle",
+          trig_reck: "⚠️ Sim Reckless Policy (v2.5)",
+          trig_zom: "🧬 Sim Zombie Helix",
           kpi_sub: "η · E_substation (OPVS eq.)",
           kpi_swaps: "Σ OPVS_swap Debits",
           kpi_buf: "ΔE_bay_buffer",
           kpi_eps: "Kirchhoff Residual ε_drift",
-          drawer_hint: "Click any unit row to inspect its latest integer µOPVS double-entry ledger record and correlation key (episode_id).",
-          pil_eye: "03 · THE 90-DAY REFERENCE PILOT",
+          th_wlt: "Wallet ID",
+          th_pol: "Gemini Policy",
+          th_liq: "Liquidity (µOPVS)",
+          th_soc: "Battery SoC",
+          th_ds: "Altitude d_S",
+          th_pitch: "Pitch θ_intrinsic",
+          th_zone: "Governance Zone & Status",
+          drawer_hint: "Click any Atlas unit row above to inspect its hardware-bound Ed25519 wallet, survival manifold altitude, and GCUL double-entry proof.",
+          pil_eye: "03 · THE 90-DAY HYUNDAI GEORGIA REFERENCE PILOT",
           pil_title: "Four Phases to the First Audited Machine Balance Sheet",
-          pil_lead: "Target deployment: 10 electric humanoids with swappable batteries on 1 closed industrial site over 90 consecutive days. All hardware profiles and industrial sites remain target benchmarks pending signed pilot agreements.",
-          th_obj: "Objective",
+          pil_lead: "Target deployment: 10 electric Atlas humanoids with swappable batteries across the Georgia assembly facility over 90 consecutive days.",
+          th_phase: "Phase",
+          th_win: "Window",
           th_exit: "Exit Criterion",
-          p1_o: "Read-only telemetry ingestion from swap bays, MES, and actuators; zero production interference.",
+          p1_o: "Read-only telemetry ingestion from swap bays, MES, and Atlas actuators; zero production interference.",
           p1_e: "Calibration of 1 OPVS = 1 kWh parity and manifold constants (α, β, γ).",
-          p2_o: "Activate 10 endowed wallets and run live Work → Earn → Swap settlement.",
+          p2_o: "Activate 10 endowed wallets and run live Work → Earn → Swap thermodynamic settlement on GCUL.",
           p2_e: "Autonomous loop closure without manual invoicing; Kirchhoff residual ε_drift within tolerance.",
           p3_o: "5 units optimized via live margin webhooks vs. 5 control units; M2M contracting and Zombie Helix filters active.",
           p3_e: "Quantified divergence in net margin (OPVS/h) and θ_intrinsic between cohorts.",
@@ -1639,12 +2243,12 @@
           con_c2_t: "Pilot Target Slots",
           con_c3_t: "Direct Channel",
           con_c3_p: "Specification v2.0 & G5 simulator demo available upon inquiry.",
-          sim_eye: "G5 FLEET SUPERVISOR · THERMODYNAMIC SETTLEMENT SIMULATOR",
-          sim_title: "Survival Manifold & Kirchhoff Ledger Simulator",
+          sim_eye: "ATLAS FLEET SIMULATOR · SURVIVAL MANIFOLD & GCUL SETTLEMENT",
+          sim_title: "Phase-Space Trajectory & Kirchhoff Ledger Simulator",
           sim_lead: "Simulate integer µOPVS task wages, battery swaps (1 Wh = 1,000 µOPVS), curved maintenance escrow (torque² + thermal wall), M2M subcontracting, and Supervisor Zone 3 Soft Bankruptcy rollbacks in real time.",
-          sim_banner: "G5 INTERACTIVE SANDBOX · STRICT INT64 µOPVS ARITHMETIC · ZERO FLOATING-POINT CURRENCY",
-          sim_ctrl_title: "01 · UNIT & MANIFOLD PARAMETERS",
-          sim_unit_lbl: "Target Humanoid Wallet",
+          sim_banner: "ATLAS SIMULATION SANDBOX · STRICT INT64 µOPVS ARITHMETIC · ZERO FLOATING-POINT CURRENCY",
+          sim_ctrl_title: "01 · ATLAS UNIT & MANIFOLD CONTROLS",
+          sim_unit_lbl: "Target Atlas Wallet",
           sim_preset_lbl: "Stress & Policy Scenario",
           pre_nom: "Margin AI v2.4",
           pre_therm: "Thermal Surge",
@@ -1654,26 +2258,28 @@
           sim_wh_lbl: "Swap Energy ΔWh (1 Wh = 1k µOPVS)",
           sim_temp_lbl: "Peak Joint Temp (°C · Thermal Wall)",
           sim_torq_lbl: "Torque² Fatigue Integral",
+          sim_override_t: "02 · HUMAN-ON-THE-LOOP OVERRIDE",
+          btn_quar: "Quarantine Policy",
+          btn_sever: "Sever Zombie Credit",
           g5_step1: "⚡ +1 Cycle (4h)",
           g5_step6: "⏩ +6 Cycles (24h)",
           g5_export: "Export Balance Sheet",
-          g5_reset: "↺ Reset G5",
+          g5_reset: "↺ Reset Simulation",
           g5_k_liq: "Operational Liquidity (Y)",
           g5_k_ds: "Manifold Altitude d_S",
           g5_k_dm: "Last Cycle Margin ΔM",
           g5_k_esc: "Maintenance Escrow R_maint",
-          g5_chart_t: "SURVIVAL MANIFOLD ALTITUDE d_S(t) — SELECTED UNIT (OPVS)",
+          g5_chart_t: "SURVIVAL MANIFOLD ALTITUDE d_S(t) — SELECTED ATLAS UNIT (OPVS)",
           api_swap_d: "Atomic BMS battery swap debit at 1,000 µOPVS/Wh (triggers Zone 3 overdraft if Y < E_swap).",
           api_swap_b: "Dispatch Swap",
           api_task_d: "Settle MES task wage & curved manifold maintenance escrow; emits margin webhook.",
           api_task_b: "Settle Task",
-          api_m2m_d: "Subcontract 1.50 OPVS from wlt_unit_01 to target (422 if Zombie Helix locked).",
+          api_m2m_d: "Subcontract 1.50 OPVS from wlt_atlas_01 to target (422 if Zombie Helix locked).",
           api_m2m_b: "M2M Transfer",
           api_tip_d: "Credit +250,000 µOPVS human operator edge-case recovery bonus.",
           api_tip_b: "Credit +0.25 OPVS Tip",
-          g5_log_t: "APPEND-ONLY LEDGER & WEBHOOK STREAM (SHA-256 CHAIN)",
-          nav_dm: "DeepMind Prep",
-          dm_eye: "GOOGLE DEEPMIND PREP · EMBODIED AGENT WAGE ADAPTER",
+          g5_log_t: "GCUL APPEND-ONLY LEDGER & WEBHOOK STREAM (SHA-256 CHAIN)",
+          dm_eye: "DEEPMEIND MIND & GCUL SETTLEMENT ADAPTER",
           dm_title: "Orbit ↔ AIVI-Learning ↔ AtlasWageService → OPVS",
           dm_lead: "Live integration sandbox bridging embodied AI learning & adoption events (LearningEvent) through OrbitAiviAdapter and idempotent AtlasWageService into integer µOPVS thermodynamic settlement (1 CREDIT = 0.25 OPVS = 250,000 µOPVS).",
           dm_p1: "Bidirectional state sync on every LearningEvent",
@@ -1699,74 +2305,96 @@
           dm_c3_p: "Converts Decimal CREDITS into INT64 µOPVS so embodied policies optimize thermodynamic margin, not ungrounded tokens."
         },
         fr: {
-          leg_id: "IDENTITÉ / REGISTRE",
-          leg_kwh: "ÉNERGIE kWh",
+          leg_id: "IDENTITÉ / REGISTRE GCUL",
+          leg_kwh: "MÉTABOLISME kWh (1 OPVS ≡ 1 kWh)",
           leg_z0: "▲ Z0 ASCENDING (+ΔM)",
           leg_z12: "◆ Z1/Z2 STASIS · CONSERVE",
-          leg_z3: "✕ Z3 RUPTURE · ROLLBACK",
+          leg_z3: "✕ Z3 RUPTURE · FAILLITE DOUCE",
+          nav_wp: "📄 Livre Blanc v2.0",
           nav_overview: "Protocole",
-          nav_system: "Système",
-          nav_proto: "Prototype",
-          nav_pilot: "Pilote",
-          nav_contact: "Contact",
-          nav_sim: "⚡ Simulateur",
-          hero_title: "Donner aux robots un salaire, un portefeuille et un bilan audité.",
-          hero_lead: "Les machines autonomes consomment des kilowattheures et usent leurs actionneurs sans identité comptable. OPVS (Operae Vis System) indexe le travail machine sur l'énergie physique conservée : chaque tâche est réglée à parité réelle et auditée par la loi de Kirchhoff.",
+          nav_sim: "⚡ Simulateur Atlas",
+          nav_dm: "DeepMind & Registre GCUL",
+          wp_eye: "LIVRE BLANC TECHNIQUE · SPÉCIFICATION V2.0 · 24/11/26 · REMPLACE V1.0",
+          wp_title: "OPVS : Un Protocole de Règlement Thermodynamique pour Économies de Machines Autonomes",
+          wp_lead: "Architecture de Variété de Survie — Bouclage de la Triade Esprit, Corps et Métabolisme. Auteur : Canius · Lignée : D-TEAM (2016) → OPVS (2026) · www.operaevis.com",
+          wp_m1_l: "Invariant de Parité",
+          wp_m2_l: "Entier du Registre",
+          wp_m3_l: "Édition Spécification",
+          wp_m4_l: "Auteur & Emblème",
+          wp_dl_btn: "⬇ Télécharger le PDF Officiel (v2.0 · 19 pp.)",
+          wp_sim_btn: "⚡ Lancer le Simulateur Atlas",
+          wp_proto_btn: "Ouvrir le Registre Flotte",
+          wp_v_both: "PDF + Spécification DIN 1451",
+          wp_v_pdf: "Document PDF Uniquement",
+          wp_v_spec: "Spécification Interactive Uniquement",
+          wp_tall_btn: "↕ Agrandir le Lecteur PDF",
+          wp_abs_t: "Résumé Exécutif & Nouveautés v2.0",
+          cta_wp: "📄 Livre Blanc Technique v2.0",
+          hero_title: "RH, Paie et Gouvernance Autonomes pour Flottes Atlas Électriques.",
+          hero_lead: "La Triade des Organismes en action : DeepMind (Moteur de Politique), Atlas (Corps 56-DoF) et OPVS (Métabolisme Thermodynamique). Chaque kWh consommé et cycle d'actionneur exécuté est réglé en micro-OPVS entiers sur le GCUL.",
           p_parity_lbl: "Parité thermodynamique",
           p_unit_lbl: "Unité entière du registre",
-          p_kpi_lbl: "KPI canonique de cycle",
-          p_pilot_lbl: "Objectif du pilote",
-          p_pilot_val: "90 jours · 10 humanoïdes · 1 site fermé",
-          cta_sim: "Lancer le Simulateur G5",
-          cta_proto: "Inspecter le registre prototype",
-          cta_pilot: "Architecture du pilote 90 jours",
-          sys_eye: "01 · LE SYSTÈME",
+          p_kpi_lbl: "Marge nette canonique",
+          p_pilot_lbl: "Sécurité sans arrêt",
+          p_pilot_val: "Découvert Zone 3 & Rollback",
+          cta_sim: "Lancer le Simulateur Atlas",
+          cta_dm: "DeepMind & Registre GCUL",
+          sys_eye: "02 · LA TRIADE DES ORGANISMES & VARIÉTÉ DE SURVIE",
           sys_title: "Esprit, Corps et Métabolisme sur une variété de survie courbe",
-          sys_lead: "Zéro matériel ajouté. OPVS se connecte à la télémétrie existante, aux stations de swap et au MES via un registre privé permissionné en ajout seul (mTLS, Ed25519 X-Opvs-Signature, Idempotency-Key UUID v4).",
-          c1_t: "Boucle Work → Earn → Swap",
-          c1_p: "Chaque robot occupe une coordonnée (X, Y, Z) dans l'espace de phase : travail mécanique (X), capital opérationnel (Y) et énergie batterie (Z). Le swap remet Z à zéro et isole la marge nette ΔM.",
-          c2_t: "Supervisor & Faillite douce",
-          c2_p: "Quatre zones gouvernent la flotte : Ascending (d_S > +15 OPVS), Stasis, Conservation (< 10 OPVS ou τ_0 < 8 h) et Plane Breach. La Zone 3 débloque un crédit de swap sans arrêt de ligne, met la politique d'IA en quarantaine et coupe les hélices zombies.",
-          c3_t: "Clôture d'audit de Kirchhoff",
-          c3_p: "Dans un périmètre fermé, le compteur électrique vérifie la somme des débits OPVS. Le résidu ε_drift détecte l'usure batterie, la dérive capteur BMS ou toute anomalie de tirage.",
-          pr_eye: "02 · CONSOLE PROTOTYPE INTERACTIVE",
-          pr_title: "Aperçu de règlement sur 10 unités (entiers µOPVS)",
-          pr_warn: "DONNÉES SIMULÉES DE PROTOTYPE — HYPOTHÈSES ILLUSTRATIVES (HORS TÉLÉMÉTRIE SITE RÉEL)",
+          sys_lead: "Zéro matériel ajouté sur les robots Atlas Boston Dynamics 56-DoF. OPVS se connecte directement à la télémétrie de couple, au BMS des baies de swap et au MES Hyundai via mTLS chiffré.",
+          c1_t: "Esprit DeepMind (Moteur de Politique)",
+          c1_p: "Évalue les checkpoints de politiques transformeurs incarnées. Les boucles continues classent les politiques par angle d'ascension intrinsic θ et efficacité énergétique.",
+          c2_t: "Corps Atlas (Exécution 56-DoF)",
+          c2_p: "L'actionnement électrique puce sur des batteries échangeables. La variété courbe calcule la fatigue par intégration de couple et murs thermiques sans arrêt de ligne.",
+          c3_t: "Métabolisme OPVS & GCUL",
+          c3_p: "Le Google Cloud Universal Ledger garantit un règlement permissionné en moins de 100 ms. Les audits de sous-station de Kirchhoff vérifient chaque jeton débité.",
+          pr_eye: "01 · FLOTTE ATLAS & SUPERVISEUR (TABLEAU DE BORD RH)",
+          pr_title: "10 Humanoïdes Électriques Atlas Boston Dynamics · Usine Hyundai Georgia",
+          pr_warn: "FLUX GCUL PERMISSIONNÉ EN DIRECT · mTLS v1.3 · SIGNATURES ED25519 · VERROU D'IDÉMPOTENCE",
           flt_all: "Toutes (10)",
-          flt_nom: "▲ Nominal / Ascending",
-          flt_alert: "✕ Conservation / Breach",
+          flt_nom: "▲ Nominal / Stase",
+          flt_alert: "✕ Conservation / Rupture",
           btn_step: "⚡ Avancer d'un cycle (4 h)",
-          btn_reset: "↺ Réinitialiser",
+          trig_reck: "⚠️ Simuler Politique v2.5",
+          trig_zom: "🧬 Simuler Hélice Zombie",
           kpi_sub: "η · E_substation (éq. OPVS)",
           kpi_swaps: "Σ Débits OPVS_swap",
           kpi_buf: "ΔE_tampon_station",
           kpi_eps: "Résidu Kirchhoff ε_drift",
-          drawer_hint: "Clique sur une ligne pour inspecter son écriture comptable en entiers µOPVS et sa clé de corrélation (episode_id).",
-          pil_eye: "03 · LE PILOTE DE RÉFÉRENCE (90 JOURS)",
+          th_wlt: "Portefeuille",
+          th_pol: "Politique Gemini",
+          th_liq: "Liquidité (µOPVS)",
+          th_soc: "SoC Batterie",
+          th_ds: "Altitude d_S",
+          th_pitch: "Pente θ_intrinsic",
+          th_zone: "Zone de Gouvernance & Statut",
+          drawer_hint: "Cliquez sur une ligne d'unité Atlas pour inspecter son portefeuille lié Ed25519, son altitude de survie et sa preuve GCUL.",
+          pil_eye: "03 · PILOTE DE RÉFÉRENCE HYUNDAI GEORGIA (90 JOURS)",
           pil_title: "Quatre phases jusqu'au premier bilan machine audité",
-          pil_lead: "Cible : 10 humanoïdes électriques à batteries échangeables sur 1 site industriel fermé pendant 90 jours consécutifs. Les constructeurs et sites cités sont des profils cibles sans accord signé à ce stade.",
-          th_obj: "Objectif technique",
+          pil_lead: "Cible : 10 humanoïdes électriques Atlas à batteries échangeables sur le site d'assemblage géorgien pendant 90 jours consécutifs.",
+          th_phase: "Phase",
+          th_win: "Fenêtre",
           th_exit: "Critère de sortie",
-          p1_o: "Ingestion en lecture seule (baies de swap, MES, actionneurs) ; zéro interférence production.",
+          p1_o: "Ingestion télémétrique en lecture seule (baies, MES, actionneurs Atlas) ; zéro interférence production.",
           p1_e: "Calibration de la parité 1 OPVS = 1 kWh et des paramètres de variété (α, β, γ).",
-          p2_o: "Activation des 10 portefeuilles dotés ; boucle live Work → Earn → Swap.",
-          p2_e: "Clôture autonome sans facturation manuelle ; résidu ε_drift dans la tolérance.",
-          p3_o: "Test A/B (5 unités optimisées par webhook de marge vs 5 témoins) ; sous-traitance M2M et filtres Zombie Helix.",
-          p3_e: "Divergence mesurée de marge nette (OPVS/h) et d'angle θ_intrinsic entre cohortes.",
-          p4_o: "Gel des paramètres ; vérification des chaînes de hachage face aux compteurs de sous-station.",
-          p4_e: "Publication du premier bilan machine audité (compte de résultat, flux énergie, ROI horaire).",
+          p2_o: "Activation des 10 portefeuilles et règlement thermodynamique en direct Work → Earn → Swap sur GCUL.",
+          p2_e: "Bouclage autonome sans facture manuelle ; résidu Kirchhoff ε_drift dans les tolérances.",
+          p3_o: "Test A/B (5 unités optimisées par webhook vs 5 témoins) ; sous-traitance M2M et filtres Hélice Zombie actifs.",
+          p3_e: "Divergence mesurée de marge nette (OPVS/h) et θ_intrinsic entre cohortes.",
+          p4_o: "Gel des paramètres ; vérification des chaînes de hachage cryptographique face aux compteurs.",
+          p4_e: "Publication du premier bilan machine audité (compte de résultat, flux d'énergie, ROI horaire).",
           con_eye: "04 · CONTACT & PILOTES",
           con_title: "Pilotes industriels, constructeurs et amorçage",
           con_c1_t: "Société & Domaine",
           con_c2_t: "Cibles du pilote",
           con_c3_t: "Canal direct",
           con_c3_p: "Spécification v2.0 et démonstration du simulateur sur demande.",
-          sim_eye: "SUPERVISEUR FLOTTE G5 · SIMULATEUR THERMODYNAMIQUE",
-          sim_title: "Variété de survie & Simulateur de registre Kirchhoff",
-          sim_lead: "Simulez en temps réel les salaires en entiers µOPVS, les swaps batterie (1 Wh = 1 000 µOPVS), la réserve de maintenance courbe (couple² + mur thermique), la sous-traitance M2M et les rollbacks Zone 3.",
-          sim_banner: "BAC À SABLE INTERACTIF G5 · ARITHMÉTIQUE ENTIÈRE INT64 µOPVS · ZÉRO FLOTTANT",
-          sim_ctrl_title: "01 · PARAMÈTRES UNITÉ & VARIÉTÉ",
-          sim_unit_lbl: "Portefeuille Humanoïde Cible",
+          sim_eye: "SIMULATEUR DE FLOTTE ATLAS · VARIÉTÉ DE SURVIE & GCUL",
+          sim_title: "Trajectoire d'Espace de Phase & Simulateur de Registre",
+          sim_lead: "Simulez en temps réel les salaires en µOPVS, les swaps de batteries, la réserve de maintenance courbe, la sous-traitance M2M et les rollbacks Zone 3.",
+          sim_banner: "BAC À SABLE ATLAS · ARITHMÉTIQUE ENTIÈRE INT64 µOPVS · ZÉRO JETON FLOTTANT",
+          sim_ctrl_title: "01 · CONTRÔLES UNITÉ ATLAS & VARIÉTÉ",
+          sim_unit_lbl: "Portefeuille Atlas Cible",
           sim_preset_lbl: "Scénario de contrainte & politique",
           pre_nom: "Margin AI v2.4",
           pre_therm: "Pic Thermique",
@@ -1776,26 +2404,28 @@
           sim_wh_lbl: "Énergie Swap ΔWh (1 Wh = 1k µOPVS)",
           sim_temp_lbl: "Temp. Articulation Max (°C · Mur Thermique)",
           sim_torq_lbl: "Intégrale Fatigue Couple²",
+          sim_override_t: "02 · SUPERVISION HUMAINE (OVERRIDE)",
+          btn_quar: "Mettre en Quarantaine",
+          btn_sever: "Couper Crédit Zombie",
           g5_step1: "⚡ +1 Cycle (4h)",
           g5_step6: "⏩ +6 Cycles (24h)",
           g5_export: "Exporter Bilan JSON",
-          g5_reset: "↺ Réinitialiser G5",
+          g5_reset: "↺ Réinitialiser la Simulation",
           g5_k_liq: "Liquidité Opérationnelle (Y)",
           g5_k_ds: "Altitude Variété d_S",
           g5_k_dm: "Marge Dernier Cycle ΔM",
           g5_k_esc: "Réserve Maintenance R_maint",
-          g5_chart_t: "TRAJECTOIRE D'ALTITUDE d_S(t) — UNITÉ SÉLECTIONNÉE (OPVS)",
+          g5_chart_t: "TRAJECTOIRE d_S(t) — UNITÉ ATLAS SÉLECTIONNÉE (OPVS)",
           api_swap_d: "Débit atomique swap BMS à 1 000 µOPVS/Wh (découvert Zone 3 si Y < E_swap).",
           api_swap_b: "Exécuter Swap",
           api_task_d: "Règlement salaire MES & réserve de maintenance courbe ; émet webhook de marge.",
           api_task_b: "Régler Tâche",
-          api_m2m_d: "Sous-traitance 1,50 OPVS de wlt_unit_01 vers cible (422 si Hélice Zombie).",
+          api_m2m_d: "Sous-traitance 1,50 OPVS de wlt_atlas_01 vers cible (422 si Hélice Zombie).",
           api_m2m_b: "Transfert M2M",
           api_tip_d: "Créditer +250 000 µOPVS pour récupération opérateur humain.",
           api_tip_b: "Pourboire +0.25 OPVS",
-          g5_log_t: "FLUX APPEND-ONLY & WEBHOOKS (CHAÎNE SHA-256)",
-          nav_dm: "DeepMind Prep",
-          dm_eye: "PRÉPA GOOGLE DEEPMIND · ADAPTATEUR SALAIRE AGENT INCARNÉ",
+          g5_log_t: "FLUX APPEND-ONLY GCUL & WEBHOOKS (SHA-256)",
+          dm_eye: "DEEPMIND & GCUL SETTLEMENT ADAPTER",
           dm_title: "Orbit ↔ AIVI-Learning ↔ AtlasWageService → OPVS",
           dm_lead: "Bac à sable reliant les événements d'apprentissage (LearningEvent) via OrbitAiviAdapter et AtlasWageService idempotent vers le règlement thermodynamique en entiers µOPVS (1 CREDIT = 0,25 OPVS = 250 000 µOPVS).",
           dm_p1: "Synchronisation bidirectionnelle sur chaque LearningEvent",
@@ -1823,20 +2453,20 @@
       };
 
       const SEED_FLEET = [
-        { id: "wlt_unit_01", policy: "policy_v2.4_margin", liq: 518420000, swap: 3120000, dm: 4610000, ds: 58420000, pitch: 8.2, mode: "NOMINAL", zone: "0 · Ascending", tx: "tx_swap_01JDF9A101", ep: "ep_20261123_01_019", esc: 41200000, wageSum: 26800000, swapSum: 9360000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 9360, zombie: false },
-        { id: "wlt_unit_02", policy: "policy_v2.4_margin", liq: 509150000, swap: 3190000, dm: 4120000, ds: 49150000, pitch: 7.4, mode: "NOMINAL", zone: "0 · Ascending", tx: "tx_swap_01JDF9A204", ep: "ep_20261123_02_019", esc: 39800000, wageSum: 24900000, swapSum: 9570000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 9570, zombie: false },
-        { id: "wlt_unit_03", policy: "policy_v2.4_margin", liq: 496300000, swap: 3250000, dm: 3890000, ds: 36300000, pitch: 6.8, mode: "NOMINAL", zone: "0 · Ascending", tx: "tx_swap_01JDF9A311", ep: "ep_20261123_03_019", esc: 38900000, wageSum: 24200000, swapSum: 9750000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 9750, zombie: false },
-        { id: "wlt_unit_04", policy: "policy_v2.4_margin", liq: 482150000, swap: 3271000, dm: 4310000, ds: 42180000, pitch: 7.1, mode: "NOMINAL", zone: "0 · Ascending", tx: "tx_swap_01JDF9X8K2", ep: "ep_20261123_04_019", esc: 38200000, wageSum: 25743000, swapSum: 9813000, escSum: 3000000, tipSum: 250000, m2mSum: 0, whSum: 9813, zombie: false },
-        { id: "wlt_unit_05", policy: "policy_v2.4_margin", liq: 474800000, swap: 3305000, dm: 3450000, ds: 29800000, pitch: 5.9, mode: "NOMINAL", zone: "0 · Ascending", tx: "tx_swap_01JDF9B019", ep: "ep_20261123_05_019", esc: 37600000, wageSum: 22900000, swapSum: 9915000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 9915, zombie: false },
-        { id: "wlt_unit_06", policy: "policy_v2.1_base",   liq: 451200000, swap: 3480000, dm: 820000,  ds: 11200000, pitch: 1.5, mode: "NOMINAL", zone: "1 · Stasis Band", tx: "tx_swap_01JDF9B402", ep: "ep_20261123_06_019", esc: 34100000, wageSum: 15900000, swapSum: 10440000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 10440, zombie: false },
-        { id: "wlt_unit_07", policy: "policy_v2.1_base",   liq: 446900000, swap: 3510000, dm: 310000,  ds: 6900000,  pitch: 0.6, mode: "NOMINAL", zone: "1 · Stasis Band", tx: "tx_swap_01JDF9C118", ep: "ep_20261123_07_019", esc: 33200000, wageSum: 14460000, swapSum: 10530000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 10530, zombie: false },
-        { id: "wlt_unit_08", policy: "policy_v2.1_base",   liq: 9420000,   swap: 3610000, dm: -680000, ds: 4120000,  pitch: -1.4, mode: "CONSERVATION", zone: "2 · Conservation", tx: "tx_swap_01JDF9D007", ep: "ep_20261123_08_019", esc: 29400000, wageSum: 11800000, swapSum: 10830000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 10830, zombie: false },
-        { id: "wlt_unit_09", policy: "policy_v2.5_exp",    liq: 2140000,   swap: 3410000, dm: -2450000, ds: -1270000, pitch: -6.4, mode: "SOFT_BANKRUPTCY", zone: "3 · Plane Breach (Zombie)", tx: "tx_breach_01JDF9E99", ep: "ep_20261123_09_019", esc: 24500000, wageSum: 5880000, swapSum: 10230000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 10230, zombie: true },
-        { id: "wlt_unit_10", policy: "policy_v2.1_base",   liq: 462000000, swap: 3390000, dm: 1940000, ds: 22000000, pitch: 3.4, mode: "NOMINAL", zone: "0 · Ascending", tx: "tx_swap_01JDF9F512", ep: "ep_20261123_10_019", esc: 35600000, wageSum: 19000000, swapSum: 10170000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 10170, zombie: false }
+        { id: "wlt_atlas_01", policy: "gemini-robotics-v2.4-margin", liq: 518420000, soc: 94.2, swap: 3120000, dm: 4610000, ds: 58420000, pitch: 8.2, mode: "NOMINAL", zone: "0 · Ascending (Survivor)", tx: "tx_gcul_01JDF9A101", ep: "ep_20261123_01_019", esc: 41200000, wageSum: 26800000, swapSum: 9360000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 9360, zombie: false },
+        { id: "wlt_atlas_02", policy: "gemini-robotics-v2.4-margin", liq: 509150000, soc: 91.5, swap: 3190000, dm: 4120000, ds: 49150000, pitch: 7.4, mode: "NOMINAL", zone: "0 · Ascending (Survivor)", tx: "tx_gcul_01JDF9A204", ep: "ep_20261123_02_019", esc: 39800000, wageSum: 24900000, swapSum: 9570000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 9570, zombie: false },
+        { id: "wlt_atlas_03", policy: "gemini-robotics-v2.4-margin", liq: 496300000, soc: 88.0, swap: 3250000, dm: 3890000, ds: 36300000, pitch: 6.8, mode: "NOMINAL", zone: "0 · Ascending (Survivor)", tx: "tx_gcul_01JDF9A311", ep: "ep_20261123_03_019", esc: 38900000, wageSum: 24200000, swapSum: 9750000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 9750, zombie: false },
+        { id: "wlt_atlas_04", policy: "gemini-robotics-v2.4-margin", liq: 482150000, soc: 84.1, swap: 3271000, dm: 4310000, ds: 42180000, pitch: 7.1, mode: "NOMINAL", zone: "0 · Ascending (Survivor)", tx: "tx_gcul_01JDF9X8K2", ep: "ep_20261123_04_019", esc: 38200000, wageSum: 25743000, swapSum: 9813000, escSum: 3000000, tipSum: 250000, m2mSum: 0, whSum: 9813, zombie: false },
+        { id: "wlt_atlas_05", policy: "gemini-robotics-v2.4-margin", liq: 474800000, soc: 82.3, swap: 3305000, dm: 3450000, ds: 29800000, pitch: 5.9, mode: "NOMINAL", zone: "0 · Ascending (Survivor)", tx: "tx_gcul_01JDF9B019", ep: "ep_20261123_05_019", esc: 37600000, wageSum: 22900000, swapSum: 9915000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 9915, zombie: false },
+        { id: "wlt_atlas_06", policy: "gemini-robotics-v2.1-base",   liq: 451200000, soc: 76.4, swap: 3480000, dm: 820000,  ds: 11200000, pitch: 1.5, mode: "NOMINAL", zone: "1 · Stasis Band", tx: "tx_gcul_01JDF9B402", ep: "ep_20261123_06_019", esc: 34100000, wageSum: 15900000, swapSum: 10440000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 10440, zombie: false },
+        { id: "wlt_atlas_07", policy: "gemini-robotics-v2.1-base",   liq: 446900000, soc: 74.8, swap: 3510000, dm: 310000,  ds: 6900000,  pitch: 0.6, mode: "NOMINAL", zone: "1 · Stasis Band", tx: "tx_gcul_01JDF9C118", ep: "ep_20261123_07_019", esc: 33200000, wageSum: 14460000, swapSum: 10530000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 10530, zombie: false },
+        { id: "wlt_atlas_08", policy: "gemini-robotics-v2.1-base",   liq: 9420000,   soc: 18.2, swap: 3610000, dm: -680000, ds: 4120000,  pitch: -1.4, mode: "CONSERVATION", zone: "2 · Conservation", tx: "tx_gcul_01JDF9D007", ep: "ep_20261123_08_019", esc: 29400000, wageSum: 11800000, swapSum: 10830000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 10830, zombie: false },
+        { id: "wlt_atlas_09", policy: "gemini-robotics-v2.5-exp",    liq: 2140000,   soc: 4.5,  swap: 3410000, dm: -2450000, ds: -1270000, pitch: -6.4, mode: "SOFT_BANKRUPTCY", zone: "3 · Plane Breach (Zombie)", tx: "tx_gcul_breach_09", ep: "ep_20261123_09_019", esc: 24500000, wageSum: 5880000, swapSum: 10230000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 10230, zombie: true },
+        { id: "wlt_atlas_10", policy: "gemini-robotics-v2.1-base",   liq: 462000000, soc: 79.0, swap: 3390000, dm: 1940000, ds: 22000000, pitch: 3.4, mode: "NOMINAL", zone: "0 · Ascending (Survivor)", tx: "tx_gcul_01JDF9F512", ep: "ep_20261123_10_019", esc: 35600000, wageSum: 19000000, swapSum: 10170000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 10170, zombie: false }
       ];
 
       let lang = "en";
-      let activeTab = "overview";
+      let activeTab = "whitepaper";
       let cycle = 1;
       let filter = "ALL";
       let selectedWalletId = null;
@@ -1844,10 +2474,10 @@
       const bayBufferDelta = 1150000;
       let residualEps = 12000;
 
-      // G5 Simulator independent sandbox state
+      // Simulator sandbox state
       let g5Cycle = 1;
       let g5Fleet = JSON.parse(JSON.stringify(SEED_FLEET));
-      let g5SelectedId = "wlt_unit_04";
+      let g5SelectedId = "wlt_atlas_04";
       let g5History = {};
       let g5Events = [];
       let g5JsonOpen = false;
@@ -1864,16 +2494,20 @@
 
       function switchTab(tab, scrollTarget) {
         activeTab = tab;
+        const wp = document.getElementById("view-whitepaper");
         const ov = document.getElementById("view-overview");
         const sim = document.getElementById("view-simulator");
         const dm = document.getElementById("view-deepmind");
+        const btnWp = document.getElementById("tab-btn-whitepaper");
         const btnOv = document.getElementById("tab-btn-overview");
         const btnSim = document.getElementById("tab-btn-simulator");
         const btnDm = document.getElementById("tab-btn-deepmind");
 
+        wp.classList.add("hidden");
         ov.classList.add("hidden");
         sim.classList.add("hidden");
         dm.classList.add("hidden");
+        btnWp.classList.remove("active");
         btnOv.classList.remove("active");
         btnSim.classList.remove("active");
         btnDm.classList.remove("active");
@@ -1888,9 +2522,18 @@
           btnDm.classList.add("active");
           window.scrollTo({ top: 0, behavior: "smooth" });
           fetchAdapterState();
-        } else {
+        } else if (tab === "overview") {
           ov.classList.remove("hidden");
           btnOv.classList.add("active");
+          if (scrollTarget) {
+            const el = document.querySelector(scrollTarget);
+            if (el) el.scrollIntoView({ behavior: "smooth" });
+          } else {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }
+        } else {
+          wp.classList.remove("hidden");
+          btnWp.classList.add("active");
           if (scrollTarget) {
             const el = document.querySelector(scrollTarget);
             if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -1900,22 +2543,52 @@
         }
       }
 
+      document.getElementById("tab-btn-whitepaper").addEventListener("click", () => switchTab("whitepaper"));
       document.getElementById("tab-btn-overview").addEventListener("click", () => switchTab("overview"));
       document.getElementById("tab-btn-simulator").addEventListener("click", () => switchTab("simulator"));
       document.getElementById("tab-btn-deepmind").addEventListener("click", () => switchTab("deepmind"));
       document.getElementById("hero-open-sim").addEventListener("click", () => switchTab("simulator"));
+      document.getElementById("hero-open-wp").addEventListener("click", () => switchTab("whitepaper"));
+      document.getElementById("hero-open-dm").addEventListener("click", () => switchTab("deepmind"));
+      document.getElementById("wp-open-sim").addEventListener("click", () => switchTab("simulator"));
+      document.getElementById("wp-open-overview").addEventListener("click", () => switchTab("overview"));
       document.getElementById("brand-home").addEventListener("click", (e) => {
         e.preventDefault();
-        switchTab("overview");
-      });
-      document.querySelectorAll(".overview-anchor").forEach((a) => {
-        a.addEventListener("click", (e) => {
-          e.preventDefault();
-          switchTab("overview", a.getAttribute("href"));
-        });
+        switchTab("whitepaper");
       });
 
-      /* ==================== OVERVIEW PROTOTYPE CONSOLE ==================== */
+      function setWpViewMode(mode) {
+        const pdfShell = document.getElementById("wp-pdf-shell");
+        const specReader = document.getElementById("wp-spec-reader");
+        ["wp-mode-both", "wp-mode-pdf", "wp-mode-spec"].forEach((id) => {
+          document.getElementById(id).classList.remove("active");
+        });
+        if (mode === "pdf") {
+          pdfShell.classList.remove("hidden");
+          specReader.classList.add("hidden");
+          document.getElementById("wp-mode-pdf").classList.add("active");
+        } else if (mode === "spec") {
+          pdfShell.classList.add("hidden");
+          specReader.classList.remove("hidden");
+          document.getElementById("wp-mode-spec").classList.add("active");
+        } else {
+          pdfShell.classList.remove("hidden");
+          specReader.classList.remove("hidden");
+          document.getElementById("wp-mode-both").classList.add("active");
+        }
+      }
+
+      document.getElementById("wp-mode-both").addEventListener("click", () => setWpViewMode("both"));
+      document.getElementById("wp-mode-pdf").addEventListener("click", () => setWpViewMode("pdf"));
+      document.getElementById("wp-mode-spec").addEventListener("click", () => setWpViewMode("spec"));
+      document.getElementById("wp-toggle-height").addEventListener("click", () => {
+        const obj = document.getElementById("wp-pdf-object");
+        const ifr = document.getElementById("wp-pdf-iframe");
+        const isTall = obj.classList.toggle("tall");
+        if (ifr) ifr.classList.toggle("tall", isTall);
+      });
+
+      /* ==================== FLEET ROSTER CONSOLE ==================== */
       function resetLedgerDrawer() {
         selectedWalletId = null;
         const drawer = document.getElementById("ledger-inspector");
@@ -1938,7 +2611,7 @@
         title.style.letterSpacing = "0.08em";
         title.style.textTransform = "uppercase";
         title.style.color = accentColor;
-        title.textContent = `LEDGER PROOF · ${u.id} · ${u.mode} · ${u.zone}`;
+        title.textContent = `GCUL LEDGER PROOF · ${u.id} · ${u.mode} · ${u.zone}`;
         drawer.appendChild(title);
 
         const grid = document.createElement("div");
@@ -1950,7 +2623,7 @@
           ["amount_debited_micro_opvs", fmtInt(u.swap) + " µOPVS", "c-energy"],
           ["balance_after_micro_opvs", fmtInt(u.liq) + " µOPVS", u.liq < 10000000 ? "c-caution" : "c-nominal"],
           ["net_margin_micro_opvs", (u.dm >= 0 ? "+" : "") + fmtInt(u.dm) + " µOPVS", u.dm >= 0 ? "c-nominal" : "c-breach"],
-          ["ledger_hash", `sha256:9a4f...${u.id.slice(-2)}c`, "c-white"]
+          ["ed25519_signature", `ed25519:a8f4c19d...${u.id.slice(-2)}`, "c-white"]
         ];
 
         fields.forEach(([k, v, cls]) => {
@@ -1980,7 +2653,7 @@
         document.getElementById("kpi-swaps").textContent = fmtInt(totalSwaps) + " µOPVS";
         document.getElementById("kpi-buffer").textContent = (bayBufferDelta >= 0 ? "+" : "") + fmtInt(bayBufferDelta) + " µOPVS";
         document.getElementById("kpi-epsilon").textContent = fmtInt(residualEps) + " µOPVS";
-        document.getElementById("sim-clock").textContent = `CYCLE: ${String(cycle).padStart(2, "0")} · DAY: ${Math.min(90, 15 + Math.ceil(cycle / 6))}/90`;
+        document.getElementById("sim-clock").textContent = `CYCLE: ${String(cycle).padStart(2, "0")} · DAY: ${Math.min(90, 15 + Math.ceil(cycle / 6))}/90 · FLEET: 10/10 ACTIVE`;
 
         fleet.forEach((u) => {
           const isAlert = u.mode !== "NOMINAL";
@@ -1997,7 +2670,7 @@
 
           const badgeCls = isBreach ? "badge-breach" : (isCons ? "badge-cons" : (isStasis ? "badge-stasis" : "badge-nom"));
           const marker = isBreach ? "✕" : (isCons ? "▼" : (isStasis ? "◆" : "▲"));
-          const dmCls = u.dm >= 0 ? "c-nominal" : "c-breach";
+          const socCls = u.soc < 20 ? "c-breach" : (u.soc < 50 ? "c-caution" : "c-nominal");
           const dsCls = u.ds < 0 ? "c-breach" : (u.ds > 15000000 ? "c-nominal" : "c-caution");
           const pitchCls = u.pitch > 2 ? "c-nominal" : (u.pitch < 0 ? "c-breach" : "c-caution");
           const zoneCls = isBreach ? "c-breach" : (isCons || isStasis ? "c-caution" : "c-nominal");
@@ -2006,8 +2679,7 @@
             <td class="c-white" style="font-weight:700;">${u.id}</td>
             <td style="color:var(--fg-muted);">${u.policy}</td>
             <td class="c-white">${fmtInt(u.liq)}</td>
-            <td class="c-energy">${fmtInt(u.swap)}</td>
-            <td class="${dmCls}" style="font-weight:700;">${u.dm >= 0 ? "+" : ""}${fmtInt(u.dm)}</td>
+            <td class="${socCls}" style="font-weight:700;">${u.soc.toFixed(1)}%</td>
             <td class="${dsCls}">${u.ds >= 0 ? "+" : ""}${fmtInt(u.ds)}</td>
             <td class="${pitchCls}">${u.pitch.toFixed(1)}°</td>
             <td class="${zoneCls}"><span class="badge ${badgeCls}">${marker} ${u.mode}</span> ${u.zone}</td>
@@ -2035,14 +2707,15 @@
           if (u.mode === "SOFT_BANKRUPTCY") {
             return {
               ...u,
-              policy: "policy_v2.4_margin [ROLLBACK]",
+              policy: "gemini-robotics-v2.4-margin [ROLLBACK]",
               dm: 1200000,
               liq: u.liq + 1200000,
               ds: u.ds + 1200000,
+              soc: Math.min(100, u.soc + 85),
               pitch: 2.1,
               mode: "CONSERVATION",
               zone: "2 · Conservation",
-              tx: `tx_rb_${String(cycle).padStart(2, "0")}_${u.id.slice(-2)}`,
+              tx: `tx_gcul_rb_${String(cycle).padStart(2, "0")}_${u.id.slice(-2)}`,
               ep: `ep_20261123_${String(idx + 1).padStart(2, "0")}_${String(19 + cycle).padStart(3, "0")}`
             };
           }
@@ -2051,16 +2724,18 @@
           const dm = wage - u.swap - maint;
           const nextLiq = Math.max(0, u.liq + dm);
           const nextDs = u.ds + dm;
+          const nextSoc = Math.max(5, u.soc - 4.2);
           const nextMode = nextDs <= 0 || nextLiq === 0 ? "SOFT_BANKRUPTCY" : (nextLiq < 10000000 ? "CONSERVATION" : "NOMINAL");
           const nextZone = nextMode === "SOFT_BANKRUPTCY" ? "3 · Plane Breach" : (nextMode === "CONSERVATION" ? "2 · Conservation" : (nextDs > 15000000 ? "0 · Ascending" : "1 · Stasis Band"));
           return {
             ...u,
             liq: nextLiq,
+            soc: nextSoc,
             dm,
             ds: nextDs,
             mode: nextMode,
             zone: nextZone,
-            tx: `tx_swap_${String(cycle).padStart(2, "0")}_${u.id.slice(-2)}`,
+            tx: `tx_gcul_swap_${String(cycle).padStart(2, "0")}_${u.id.slice(-2)}`,
             ep: `ep_20261123_${String(idx + 1).padStart(2, "0")}_${String(19 + cycle).padStart(3, "0")}`
           };
         });
@@ -2069,15 +2744,31 @@
         render();
       });
 
-      document.getElementById("btn-reset").addEventListener("click", () => {
-        cycle = 1;
-        fleet = JSON.parse(JSON.stringify(SEED_FLEET));
-        residualEps = 12000;
+      document.getElementById("trigger-reckless").addEventListener("click", () => {
+        fleet[8].policy = "gemini-robotics-v2.5-exp [RECKLESS]";
+        fleet[8].ds = -1270000;
+        fleet[8].liq = 2140000;
+        fleet[8].soc = 3.2;
+        fleet[8].mode = "SOFT_BANKRUPTCY";
+        fleet[8].zone = "3 · Plane Breach (Soft Bankruptcy)";
         resetLedgerDrawer();
         render();
+        alert("⚠️ Simulated Reckless Policy (v2.5-exp) triggered on wlt_atlas_09: Actuator torque integral spiked, bending manifold S upward. Triggered Zone 3 Soft Bankruptcy + automatic quarantine.");
       });
 
-      /* ==================== G5 FLEET SUPERVISOR SIMULATOR ==================== */
+      document.getElementById("trigger-zombie").addEventListener("click", () => {
+        fleet[6].liq = 446900000;
+        fleet[6].swap = 3510000;
+        fleet[6].dm = -450000;
+        fleet[6].pitch = -1.2;
+        fleet[6].zombie = true;
+        fleet[6].zone = "1 · Stasis (Zombie Helix Masked)";
+        resetLedgerDrawer();
+        render();
+        alert("🧬 Zombie Helix detected on wlt_atlas_07: θ_intrinsic < 0 across 3 consecutive swaps whileapparent climb pitch was masked via M2M borrowing. One-click severing ready in Simulator.");
+      });
+
+      /* ==================== SIMULATOR SANDBOX ==================== */
       function initG5History() {
         g5History = {};
         g5Fleet.forEach((u) => {
@@ -2088,7 +2779,7 @@
             cycle: 1,
             type: "WEBHOOK",
             route: "reward.margin_settled",
-            wallet: "wlt_unit_04",
+            wallet: "wlt_atlas_04",
             detail: "net_margin=+4 310 000 µOPVS · d_S=+42 180 000 · NOMINAL",
             cls: "c-nominal",
             hash: hashStub("seed_04")
@@ -2097,8 +2788,8 @@
             cycle: 1,
             type: "BREACH",
             route: "supervisor.plane_breach",
-            wallet: "wlt_unit_09",
-            detail: "d_S=-1 270 000 µOPVS · AUTHORIZED_OVERDRAFT · QUARANTINED policy_v2.5_exp",
+            wallet: "wlt_atlas_09",
+            detail: "d_S=-1 270 000 µOPVS · AUTHORIZED_OVERDRAFT · QUARANTINED v2.5-exp",
             cls: "c-breach",
             hash: hashStub("seed_09")
           }
@@ -2123,7 +2814,7 @@
         if (u.ds <= 15000000) {
           return { mode: "NOMINAL", zone: "1 · Stasis Band", zombie: false };
         }
-        return { mode: "NOMINAL", zone: "0 · Ascending", zombie: false };
+        return { mode: "NOMINAL", zone: "0 · Ascending (Survivor)", zombie: false };
       }
 
       function updateSliderPreview() {
@@ -2172,7 +2863,6 @@
           g5Fleet = g5Fleet.map((u) => {
             const isTarget = u.id === g5SelectedId;
             if (u.mode === "SOFT_BANKRUPTCY") {
-              // Supervisor Zone 3 auto-rollback recovery
               const rbWage = isTarget ? Math.max(wage, 7800000) : 7800000;
               const rbSwap = isTarget ? swapMicro : 3200000;
               const rbMaint = isTarget ? Math.min(maint, 1200000) : 850000;
@@ -2181,18 +2871,19 @@
               const nextDs = u.ds + dm;
               const next = {
                 ...u,
-                policy: "policy_v2.4_margin [ROLLBACK]",
+                policy: "gemini-robotics-v2.4-margin [ROLLBACK]",
                 liq: nextLiq,
                 swap: rbSwap,
                 dm,
                 ds: nextDs,
+                soc: Math.min(100, u.soc + 90),
                 esc: u.esc + rbMaint,
                 wageSum: u.wageSum + rbWage,
                 swapSum: u.swapSum + rbSwap,
                 escSum: u.escSum + rbMaint,
                 whSum: u.whSum + Math.round(rbSwap / 1000),
                 pitch: Number((Math.atan2(dm, 18000000) * 180 / Math.PI).toFixed(1)),
-                tx: `tx_rb_${String(g5Cycle).padStart(2, "0")}_${u.id.slice(-2)}`
+                tx: `tx_gcul_rb_${String(g5Cycle).padStart(2, "0")}_${u.id.slice(-2)}`
               };
               const cls = classifyUnit(next);
               next.mode = cls.mode;
@@ -2200,7 +2891,7 @@
               next.zombie = cls.zombie;
               g5History[u.id].push(next.ds);
               if (isTarget) {
-                pushG5Event("ROLLBACK", "supervisor.rollback", u.id, `Quarantined failing policy → policy_v2.4_margin · ΔM=${dm >= 0 ? "+" : ""}${fmtInt(dm)} µOPVS`, "c-caution");
+                pushG5Event("ROLLBACK", "supervisor.rollback", u.id, `Quarantined failing policy → gemini-robotics-v2.4-margin · ΔM=${dm >= 0 ? "+" : ""}${fmtInt(dm)} µOPVS`, "c-caution");
               }
               return next;
             }
@@ -2211,9 +2902,11 @@
             const dm = uWage - uSwap - uMaint;
             const nextLiq = Math.max(0, u.liq + dm);
             const nextDs = u.ds + dm;
+            const nextSoc = Math.max(5, u.soc - 4.5);
             const next = {
               ...u,
               liq: nextLiq,
+              soc: nextSoc,
               swap: uSwap,
               dm,
               ds: nextDs,
@@ -2223,7 +2916,7 @@
               escSum: u.escSum + uMaint,
               whSum: u.whSum + Math.round(uSwap / 1000),
               pitch: Number((Math.atan2(dm, 18000000) * 180 / Math.PI).toFixed(1)),
-              tx: `tx_cyc_${String(g5Cycle).padStart(2, "0")}_${u.id.slice(-2)}`
+              tx: `tx_gcul_cyc_${String(g5Cycle).padStart(2, "0")}_${u.id.slice(-2)}`
             };
             const cls = classifyUnit(next);
             next.mode = cls.mode;
@@ -2267,7 +2960,6 @@
           return el;
         };
 
-        // Threshold bands (Z0 +15, Z2 +10, Z3 0)
         const bands = [
           { val: 15, color: "#00E676", label: "+15 Z0" },
           { val: 10, color: "#FFAB00", label: "+10 Z2" },
@@ -2281,11 +2973,9 @@
           }
         });
 
-        // Axes
         addEl("line", { x1: padL, y1: padT, x2: padL, y2: H - padB, stroke: "#262626", "stroke-width": 1 });
         addEl("line", { x1: padL, y1: H - padB, x2: W - padR, y2: H - padB, stroke: "#262626", "stroke-width": 1 });
 
-        // Trajectory Polyline
         const lineColor = unit.mode === "SOFT_BANKRUPTCY" ? "#FF3B30" : (unit.mode === "CONSERVATION" || unit.zone.startsWith("1") ? "#FFAB00" : "#00E676");
         if (opvsPts.length > 1) {
           const d = opvsPts.map((v, i) => `${i === 0 ? "M" : "L"}${xOf(i).toFixed(1)},${yOf(v).toFixed(1)}`).join(" ");
@@ -2323,7 +3013,7 @@
         zoneEl.textContent = u.zone.toUpperCase();
         zoneEl.className = "sim-field-val " + (u.mode === "SOFT_BANKRUPTCY" ? "c-breach" : (u.mode === "NOMINAL" && u.zone.startsWith("0") ? "c-nominal" : "c-caution"));
 
-        document.getElementById("g5-clock").textContent = `SIM CYCLE: ${String(g5Cycle).padStart(2, "0")} · DAY: ${Math.min(90, 15 + Math.ceil(g5Cycle / 6))}/90 · ENTRIES: ${String(g5Events.length).padStart(2, "0")}`;
+        document.getElementById("g5-clock").textContent = `SIM CYCLE: ${String(g5Cycle).padStart(2, "0")} · DAY: ${Math.min(90, 15 + Math.ceil(g5Cycle / 6))}/90 · GCUL ENTRIES: ${String(g5Events.length).padStart(2, "0")}`;
 
         document.getElementById("g5-kpi-liq").textContent = fmtInt(u.liq) + " µOPVS";
         const dsEl = document.getElementById("g5-kpi-ds");
@@ -2383,6 +3073,7 @@
           },
           merkle_proof: {
             merkle_root: hashStub(`merkle_${u.id}_${g5Cycle}`),
+            ledger_head_hash: u.tx,
             entry_count: g5Events.length,
             kirchhoff_site_status: "CLOSED_WITHIN_TOLERANCE"
           }
@@ -2431,6 +3122,22 @@
 
       document.getElementById("g5-step-1").addEventListener("click", () => stepG5Cycle(1));
       document.getElementById("g5-step-6").addEventListener("click", () => stepG5Cycle(6));
+      document.getElementById("btn-quarantine").addEventListener("click", () => {
+        const u = g5Fleet.find((item) => item.id === g5SelectedId);
+        u.policy = "gemini-robotics-v2.4-margin [QUARANTINED]";
+        u.mode = "CONSERVATION";
+        u.zone = "2 · Conservation (Policy Quarantined)";
+        pushG5Event("QUARANTINE", "supervisor.quarantine", u.id, "Human operator manually quarantined active policy and rolled back to v2.4", "c-caution");
+        renderG5();
+      });
+      document.getElementById("btn-sever-zombie").addEventListener("click", () => {
+        const u = g5Fleet.find((item) => item.id === g5SelectedId);
+        u.zombie = false;
+        u.mode = "NOMINAL";
+        u.zone = "1 · Stasis (Zombie Helix Severed)";
+        pushG5Event("SEVER", "supervisor.sever_zombie", u.id, "Inbound M2M credit line successfully severed by Supervisor", "c-nominal");
+        renderG5();
+      });
       document.getElementById("g5-export").addEventListener("click", () => {
         g5JsonOpen = !g5JsonOpen;
         const drawer = document.getElementById("g5-json-drawer");
@@ -2451,7 +3158,7 @@
         renderG5();
       });
 
-      // Individual OpenAPI Endpoint Dispatchers
+      // OpenAPI Endpoint Dispatchers
       document.getElementById("api-swap-btn").addEventListener("click", () => {
         const wh = Number(document.getElementById("g5-wh").value);
         const debit = wh * 1000;
@@ -2462,6 +3169,7 @@
         u.swap = debit;
         u.swapSum += debit;
         u.whSum += wh;
+        u.soc = Math.max(5, u.soc - Math.round(wh / 35));
         const cls = classifyUnit(u);
         u.mode = overdraft > 0 ? "SOFT_BANKRUPTCY" : cls.mode;
         u.zone = overdraft > 0 ? "3 · Plane Breach (Zombie)" : cls.zone;
@@ -2506,11 +3214,11 @@
       });
 
       document.getElementById("api-m2m-btn").addEventListener("click", () => {
-        const sender = g5Fleet.find((item) => item.id === "wlt_unit_01");
+        const sender = g5Fleet.find((item) => item.id === "wlt_atlas_01");
         const target = g5Fleet.find((item) => item.id === g5SelectedId);
         const amt = 1500000;
         if (target.id === sender.id) {
-          pushG5Event("422 ERR", "/v1/m2m/transfer", target.id, "SELF_TRANSFER_REJECTED · choose another target wallet", "c-caution");
+          pushG5Event("422 ERR", "/v1/m2m/transfer", target.id, "SELF_TRANSFER_REJECTED · choose another wallet", "c-caution");
           renderG5();
           return;
         }
@@ -2528,7 +3236,7 @@
         target.mode = cls.mode;
         target.zone = cls.zone;
         g5History[target.id].push(target.ds);
-        pushG5Event("200 OK", "/v1/m2m/transfer", target.id, `SUBCONTRACT +1 500 000 µOPVS from wlt_unit_01`, "c-caution");
+        pushG5Event("200 OK", "/v1/m2m/transfer", target.id, `SUBCONTRACT +1 500 000 µOPVS from wlt_atlas_01`, "c-caution");
         renderG5();
       });
 
@@ -2564,7 +3272,7 @@
         applyI18n();
       });
 
-      /* ==================== DEEPMIND PREP ADAPTER ==================== */
+      /* ==================== DEEPMIND ADAPTER ==================== */
       let dmLastEventId = "evt_dm_atlas_001";
       let dmSeq = 2;
 

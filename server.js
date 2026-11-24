@@ -144,6 +144,16 @@ app.post('/api/adapter/reset', (_req, res) => {
   return res.json({ status: 'reset', atlas_wallet_micro_opvs: adapterState.atlasWalletMicroOpvs });
 });
 
+app.get('/whitepaper.pdf', (_req, res) => {
+  res.sendFile(
+    path.join(
+      __dirname,
+      'public/assets/aistudio/Operae_Vis_OPVS_Technical_Whitepaper_v2.0_print_1bd25ab0.pdf'
+    )
+  );
+});
+
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(__dirname));
 
 app.get(/.*/, (_req, res) => {
