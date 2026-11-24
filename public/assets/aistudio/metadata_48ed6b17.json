@@ -1,0 +1,8 @@
+{
+  "name": "Remix Operae Vis — OPVS Fleet Supervisor",
+  "description": "Private append-only thermodynamic settlement ledger, safety zone enforcement, and Kirchhoff energy audit console for autonomous machine fleets.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

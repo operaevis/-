@@ -81,11 +81,12 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    button, input, select, textarea, code, pre {
+    button, input, select, textarea, code, pre, svg text {
       font-family: var(--font-din);
     }
 
     .mono { font-family: var(--font-din); font-variant-numeric: tabular-nums; }
+    .hidden { display: none !important; }
 
     /* Energy-Saving Top Signal Key */
     .signal-strip {
@@ -161,6 +162,7 @@
       gap: 0.85rem;
       text-decoration: none;
       color: var(--fg-white);
+      cursor: pointer;
     }
 
     .brand-text {
@@ -186,25 +188,48 @@
     nav {
       display: flex;
       align-items: center;
-      gap: 1.4rem;
+      gap: 1.15rem;
       flex-wrap: wrap;
     }
 
-    nav a {
+    nav a, .nav-tab-btn {
       text-decoration: none;
       color: var(--fg-white);
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: 0.25rem 0.1rem;
       font-size: 0.92rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       font-weight: 600;
-      border-bottom: 2px solid transparent;
-      padding-bottom: 2px;
+      cursor: pointer;
     }
 
-    nav a:hover, nav a:focus-visible {
+    nav a:hover, nav a:focus-visible,
+    .nav-tab-btn:hover, .nav-tab-btn:focus-visible {
       color: var(--sig-energy);
       border-bottom-color: var(--sig-energy);
       outline: none;
+    }
+
+    .nav-tab-btn.tab-sim {
+      border: 1.5px solid var(--sig-energy);
+      color: var(--sig-energy);
+      padding: 0.32rem 0.7rem;
+    }
+
+    .nav-tab-btn.tab-sim:hover,
+    .nav-tab-btn.tab-sim.active {
+      background: var(--sig-energy);
+      color: var(--bg-void);
+      border-color: var(--sig-energy);
+      font-weight: 700;
+    }
+
+    .nav-tab-btn.active:not(.tab-sim) {
+      color: var(--fg-white);
+      border-bottom-color: var(--fg-white);
     }
 
     .lang-btn {
@@ -233,7 +258,7 @@
     .section {
       max-width: var(--max-w);
       margin: 0 auto;
-      padding: 3.75rem 1.5rem;
+      padding: 3.5rem 1.5rem;
     }
 
     .eyebrow {
@@ -265,7 +290,7 @@
     }
 
     h3 {
-      font-size: 1.12rem;
+      font-size: 1.1rem;
       letter-spacing: 0.06em;
       text-transform: uppercase;
       margin-bottom: 0.55rem;
@@ -273,9 +298,9 @@
     }
 
     .lead {
-      font-size: 1.14rem;
+      font-size: 1.12rem;
       max-width: 68ch;
-      margin-bottom: 2rem;
+      margin-bottom: 1.85rem;
       color: var(--fg-muted);
     }
 
@@ -331,6 +356,7 @@
       text-transform: uppercase;
       font-size: 0.92rem;
       border: 2px solid var(--fg-white);
+      cursor: pointer;
     }
 
     .btn-primary:hover, .btn-primary:focus-visible {
@@ -351,6 +377,7 @@
       text-transform: uppercase;
       font-size: 0.92rem;
       border: 2px solid var(--border-strong);
+      cursor: pointer;
     }
 
     .btn-secondary:hover, .btn-secondary:focus-visible {
@@ -367,6 +394,12 @@
       margin-top: 1.5rem;
     }
 
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.25rem;
+    }
+
     .card {
       border: 1px solid var(--border-grid);
       border-top: 3px solid var(--fg-white);
@@ -377,6 +410,7 @@
     .card.card-energy { border-top-color: var(--sig-energy); }
     .card.card-caution { border-top-color: var(--sig-caution); }
     .card.card-nominal { border-top-color: var(--sig-nominal); }
+    .card.card-breach { border-top-color: var(--sig-breach); }
 
     .card p { color: var(--fg-muted); font-size: 1rem; }
 
@@ -415,7 +449,7 @@
       gap: 0.5rem;
     }
 
-    #sim-clock {
+    #sim-clock, #g5-clock {
       color: var(--sig-energy);
       font-weight: 700;
       letter-spacing: 0.08em;
@@ -478,6 +512,36 @@
       color: var(--bg-void);
     }
 
+    .ctrl-btn.btn-action-nominal {
+      border-color: var(--sig-nominal);
+      color: var(--sig-nominal);
+    }
+
+    .ctrl-btn.btn-action-nominal:hover {
+      background: var(--sig-nominal);
+      color: var(--bg-void);
+    }
+
+    .ctrl-btn.btn-action-caution {
+      border-color: var(--sig-caution);
+      color: var(--sig-caution);
+    }
+
+    .ctrl-btn.btn-action-caution:hover {
+      background: var(--sig-caution);
+      color: var(--bg-void);
+    }
+
+    .ctrl-btn.btn-action-breach {
+      border-color: var(--sig-breach);
+      color: var(--sig-breach);
+    }
+
+    .ctrl-btn.btn-action-breach:hover {
+      background: var(--sig-breach);
+      color: var(--bg-void);
+    }
+
     .kpi-bar {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -495,6 +559,7 @@
     .kpi-cell.kpi-energy { border-left-color: var(--sig-energy); }
     .kpi-cell.kpi-caution { border-left-color: var(--sig-caution); }
     .kpi-cell.kpi-nominal { border-left-color: var(--sig-nominal); }
+    .kpi-cell.kpi-breach { border-left-color: var(--sig-breach); }
 
     .kpi-cell .k-label {
       font-size: 0.76rem;
@@ -598,6 +663,186 @@
       color: var(--fg-white);
     }
 
+    /* G5 Simulator Tab */
+    .sim-layout {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 1.25rem;
+      align-items: start;
+    }
+
+    .sim-panel {
+      border: 1px solid var(--border-grid);
+      background: var(--bg-void);
+      padding: 1.15rem;
+    }
+
+    .sim-panel-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sig-energy);
+      border-bottom: 1px solid var(--border-grid);
+      padding-bottom: 0.5rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .sim-field {
+      margin-bottom: 1rem;
+    }
+
+    .sim-field-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      margin-bottom: 0.35rem;
+    }
+
+    .sim-field-val {
+      color: var(--fg-white);
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .sim-select {
+      width: 100%;
+      background: var(--bg-void);
+      color: var(--fg-white);
+      border: 1.5px solid var(--border-grid);
+      padding: 0.5rem 0.65rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .sim-select:focus {
+      border-color: var(--sig-energy);
+      outline: none;
+    }
+
+    .sim-range {
+      width: 100%;
+      accent-color: var(--sig-energy);
+      background: var(--border-grid);
+      cursor: pointer;
+    }
+
+    .preset-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.45rem;
+      margin-bottom: 1rem;
+    }
+
+    .preset-btn {
+      font-size: 0.76rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.45rem 0.5rem;
+      border: 1px solid var(--border-grid);
+      background: var(--bg-void);
+      color: var(--fg-muted);
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .preset-btn:hover, .preset-btn.active {
+      border-color: var(--fg-white);
+      color: var(--fg-white);
+      background: var(--bg-hover);
+    }
+
+    .preset-btn.active {
+      border-left: 3px solid var(--sig-energy);
+    }
+
+    .chart-box {
+      border: 1px solid var(--border-grid);
+      background: var(--bg-void);
+      padding: 1rem;
+      margin-bottom: 1.15rem;
+    }
+
+    .chart-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .api-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 0.65rem;
+      margin-bottom: 1.15rem;
+    }
+
+    .api-card {
+      border: 1px solid var(--border-grid);
+      background: var(--bg-panel);
+      padding: 0.75rem 0.85rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.6rem;
+    }
+
+    .api-route {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--sig-energy);
+    }
+
+    .api-desc {
+      font-size: 0.82rem;
+      color: var(--fg-muted);
+      line-height: 1.35;
+    }
+
+    .event-log {
+      border: 1px solid var(--border-grid);
+      background: var(--bg-panel);
+      max-height: 260px;
+      overflow-y: auto;
+      font-size: 0.8rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .event-row {
+      padding: 0.55rem 0.85rem;
+      border-bottom: 1px solid var(--border-grid);
+      display: grid;
+      grid-template-columns: 74px 135px 1fr auto;
+      gap: 0.65rem;
+      align-items: center;
+    }
+
+    .event-row:last-child { border-bottom: none; }
+
+    .json-drawer {
+      margin-top: 1rem;
+      border: 1px solid var(--border-strong);
+      border-left: 4px solid var(--sig-nominal);
+      background: var(--bg-panel);
+      padding: 0.9rem 1rem;
+      font-size: 0.78rem;
+      color: var(--fg-muted);
+      white-space: pre-wrap;
+      overflow-x: auto;
+      max-height: 260px;
+    }
+
     /* Pilot table */
     .pilot-table { width: 100%; border-collapse: collapse; margin-top: 1.25rem; }
     .pilot-table th, .pilot-table td {
@@ -646,6 +891,16 @@
       color: var(--fg-muted);
     }
 
+    @media (max-width: 900px) {
+      .sim-layout {
+        grid-template-columns: 1fr;
+      }
+      .event-row {
+        grid-template-columns: 1fr;
+        gap: 0.2rem;
+      }
+    }
+
     @media (max-width: 720px) {
       .parity-item {
         border-right: none;
@@ -671,8 +926,7 @@
 
   <header>
     <div class="nav-wrap">
-      <a href="#top" class="brand-lockup" aria-label="OPERAE VIS OPVS">
-        <!-- Geometric Circled Dash Marker (U+229D) — White + Energy Cyan on True Black -->
+      <a href="#top" class="brand-lockup" id="brand-home" aria-label="OPERAE VIS OPVS">
         <svg width="38" height="38" viewBox="0 0 100 100" aria-hidden="true">
           <circle cx="50" cy="50" r="39" fill="none" stroke="#FFFFFF" stroke-width="11" />
           <line x1="30" y1="50" x2="70" y2="50" stroke="#00E5FF" stroke-width="11" stroke-linecap="butt" />
@@ -683,240 +937,409 @@
         </div>
       </a>
       <nav aria-label="Primary navigation">
-        <a href="#system" data-i18n="nav_system">System</a>
-        <a href="#prototype" data-i18n="nav_proto">Prototype</a>
-        <a href="#pilot" data-i18n="nav_pilot">Pilot</a>
-        <a href="#contact" data-i18n="nav_contact">Contact</a>
+        <button type="button" class="nav-tab-btn active" id="tab-btn-overview" data-i18n="nav_overview">Protocol</button>
+        <a href="#system" class="overview-anchor" data-i18n="nav_system">System</a>
+        <a href="#prototype" class="overview-anchor" data-i18n="nav_proto">Prototype</a>
+        <a href="#pilot" class="overview-anchor" data-i18n="nav_pilot">Pilot</a>
+        <a href="#contact" class="overview-anchor" data-i18n="nav_contact">Contact</a>
+        <button type="button" class="nav-tab-btn tab-sim" id="tab-btn-simulator" data-i18n="nav_sim">⚡ Simulator</button>
         <button type="button" class="lang-btn" id="lang-toggle">FR</button>
       </nav>
     </div>
   </header>
 
   <main id="top">
-    <!-- HOME / HERO -->
-    <section class="section-band">
-      <div class="section">
-        <div class="eyebrow">OPERAE PRETIVM · SPECIFICATION v2.0 · PROTOTYPE</div>
-        <h1 data-i18n="hero_title">Give robots a wage, a wallet, and an audited balance sheet.</h1>
-        <p class="lead" data-i18n="hero_lead">
-          Autonomous machines draw kilowatt-hours and accumulate actuator wear without economic accountability.
-          OPVS (Operae Vis System) anchors machine labor to conserved physical energy:
-          every unit of work is settled against real energy expenditure and verified by Kirchhoff's conservation law.
-        </p>
+    <!-- ==================== TAB 1: PROTOCOL OVERVIEW ==================== -->
+    <div id="view-overview">
+      <!-- HOME / HERO -->
+      <section class="section-band">
+        <div class="section">
+          <div class="eyebrow">OPERAE PRETIVM · SPECIFICATION v2.0 · PROTOTYPE</div>
+          <h1 data-i18n="hero_title">Give robots a wage, a wallet, and an audited balance sheet.</h1>
+          <p class="lead" data-i18n="hero_lead">
+            Autonomous machines draw kilowatt-hours and accumulate actuator wear without economic accountability.
+            OPVS (Operae Vis System) anchors machine labor to conserved physical energy:
+            every unit of work is settled against real energy expenditure and verified by Kirchhoff's conservation law.
+          </p>
 
-        <div class="parity-strip">
-          <div class="parity-item">
-            <div class="label" data-i18n="p_parity_lbl">Thermodynamic Parity</div>
-            <div class="val c-energy">⊝ 1 OPVS ≡ 1 kWh ≡ 3.6 MJ</div>
+          <div class="parity-strip">
+            <div class="parity-item">
+              <div class="label" data-i18n="p_parity_lbl">Thermodynamic Parity</div>
+              <div class="val c-energy">⊝ 1 OPVS ≡ 1 kWh ≡ 3.6 MJ</div>
+            </div>
+            <div class="parity-item">
+              <div class="label" data-i18n="p_unit_lbl">Ledger Integer Unit</div>
+              <div class="val c-white">1 µOPVS = 3.6 J (INT64)</div>
+            </div>
+            <div class="parity-item">
+              <div class="label" data-i18n="p_kpi_lbl">Canonical Cycle KPI</div>
+              <div class="val c-nominal">ΔM = Wage − E_swap − ΔR_maint</div>
+            </div>
+            <div class="parity-item">
+              <div class="label" data-i18n="p_pilot_lbl">Target Objective</div>
+              <div class="val c-caution" data-i18n="p_pilot_val">90-day pilot · 10 humanoids · 1 site</div>
+            </div>
           </div>
-          <div class="parity-item">
-            <div class="label" data-i18n="p_unit_lbl">Ledger Integer Unit</div>
-            <div class="val c-white">1 µOPVS = 3.6 J (INT64)</div>
-          </div>
-          <div class="parity-item">
-            <div class="label" data-i18n="p_kpi_lbl">Canonical Cycle KPI</div>
-            <div class="val c-nominal">ΔM = Wage − E_swap − ΔR_maint</div>
-          </div>
-          <div class="parity-item">
-            <div class="label" data-i18n="p_pilot_lbl">Target Objective</div>
-            <div class="val c-caution" data-i18n="p_pilot_val">90-day pilot · 10 humanoids · 1 site</div>
-          </div>
-        </div>
 
-        <div class="btn-row">
-          <a href="#prototype" class="btn-primary" data-i18n="cta_proto">Inspect Prototype Ledger</a>
-          <a href="#pilot" class="btn-secondary" data-i18n="cta_pilot">90-Day Pilot Architecture</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- THE SYSTEM -->
-    <section id="system" class="section-band">
-      <div class="section">
-        <div class="eyebrow" data-i18n="sys_eye">01 · THE SYSTEM</div>
-        <h2 data-i18n="sys_title">Mind, Body, and Metabolism inside a Curved Survival Manifold</h2>
-        <p class="lead" data-i18n="sys_lead">
-          Zero added hardware. OPVS plugs into existing humanoid telemetry, autonomous battery swap stations,
-          and factory MES over a private permissioned append-only ledger (mTLS, Ed25519 X-Opvs-Signature, UUID v4 Idempotency-Key).
-        </p>
-
-        <div class="grid-3">
-          <article class="card card-energy">
-            <h3 class="c-energy" data-i18n="c1_t">Work → Earn → Swap Loop</h3>
-            <p data-i18n="c1_p">
-              Every machine occupies a real-time coordinate (X, Y, Z) in phase space: mechanical work (X),
-              operational capital balance (Y), and onboard battery energy (Z). Battery swaps reset Z and isolate net margin ΔM.
-            </p>
-            <div class="formula-box">R_cycle = (ΔW, ΔM, 0) · θ = arctan(ΔM / ΔW)</div>
-          </article>
-
-          <article class="card card-caution">
-            <h3 class="c-caution" data-i18n="c2_t">Supervisor &amp; Soft Bankruptcy</h3>
-            <p data-i18n="c2_p">
-              Four zones govern fleet safety: Ascending (d_S &gt; +15 OPVS), Stasis, Conservation (&lt; 10 OPVS or τ_0 &lt; 8 h),
-              and Plane Breach. Zone 3 grants emergency swap credit so factory lines never halt while rolling back failing AI policies and severing Zombie Helices.
-            </p>
-            <div class="formula-box">d_S,i(t) = Y_i(t) − Y_S,i(X_i, Z_i, τ_i, T_i)</div>
-          </article>
-
-          <article class="card card-nominal">
-            <h3 class="c-nominal" data-i18n="c3_t">Kirchhoff Audit Closure</h3>
-            <p data-i18n="c3_p">
-              Inside a closed industrial perimeter, electrical substation meters verify every token debited across robot wallets.
-              The residual ε_drift diagnoses battery degradation, BMS sensor drift, or unauthorized draw.
-            </p>
-            <div class="formula-box">η·E_substation = Σ OPVS_swap,i + ΔE_bay_buffer + ε_drift</div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- INTERACTIVE PROTOTYPE SIMULATION -->
-    <section id="prototype" class="section-band">
-      <div class="section">
-        <div class="eyebrow" data-i18n="pr_eye">02 · INTERACTIVE PROTOTYPE CONSOLE</div>
-        <h2 data-i18n="pr_title">10-Unit Closed-Site Settlement Preview (Integer µOPVS)</h2>
-
-        <div class="proto-banner">
-          <span data-i18n="pr_warn">SIMULATED PROTOTYPE DATA — ILLUSTRATIVE ASSUMPTIONS ONLY (NOT LIVE PLANT TELEMETRY)</span>
-          <span class="mono" id="sim-clock">CYCLE: 01 · DAY: 16/90</span>
-        </div>
-
-        <div class="controls">
-          <div class="ctrl-group" role="group" aria-label="Zone filter">
-            <button type="button" class="ctrl-btn active" data-filter="ALL" data-i18n="flt_all">All (10)</button>
-            <button type="button" class="ctrl-btn" data-filter="NOMINAL" data-i18n="flt_nom">▲ Nominal / Ascending</button>
-            <button type="button" class="ctrl-btn" data-filter="ALERT" data-i18n="flt_alert">✕ Conservation / Breach</button>
-          </div>
-          <div class="ctrl-group">
-            <button type="button" class="ctrl-btn btn-action-energy" id="btn-step" data-i18n="btn_step">⚡ Step 4h Swap Cycle</button>
-            <button type="button" class="ctrl-btn" id="btn-reset" data-i18n="btn_reset">↺ Reset Seed</button>
+          <div class="btn-row">
+            <button type="button" class="btn-primary" id="hero-open-sim" data-i18n="cta_sim">Launch G5 Fleet Simulator</button>
+            <a href="#prototype" class="btn-secondary" data-i18n="cta_proto">Inspect Prototype Ledger</a>
+            <a href="#pilot" class="btn-secondary" data-i18n="cta_pilot">90-Day Pilot Architecture</a>
           </div>
         </div>
+      </section>
 
-        <div class="kpi-bar">
-          <div class="kpi-cell kpi-energy">
-            <div class="k-label" data-i18n="kpi_sub">η · E_substation (OPVS eq.)</div>
-            <div class="k-val c-energy" id="kpi-substation">—</div>
-          </div>
-          <div class="kpi-cell">
-            <div class="k-label" data-i18n="kpi_swaps">Σ OPVS_swap Debits</div>
-            <div class="k-val c-white" id="kpi-swaps">—</div>
-          </div>
-          <div class="kpi-cell kpi-caution">
-            <div class="k-label" data-i18n="kpi_buf">ΔE_bay_buffer</div>
-            <div class="k-val c-caution" id="kpi-buffer">—</div>
-          </div>
-          <div class="kpi-cell kpi-nominal">
-            <div class="k-label" data-i18n="kpi_eps">Kirchhoff Residual ε_drift</div>
-            <div class="k-val c-nominal" id="kpi-epsilon">—</div>
+      <!-- THE SYSTEM -->
+      <section id="system" class="section-band">
+        <div class="section">
+          <div class="eyebrow" data-i18n="sys_eye">01 · THE SYSTEM</div>
+          <h2 data-i18n="sys_title">Mind, Body, and Metabolism inside a Curved Survival Manifold</h2>
+          <p class="lead" data-i18n="sys_lead">
+            Zero added hardware. OPVS plugs into existing humanoid telemetry, autonomous battery swap stations,
+            and factory MES over a private permissioned append-only ledger (mTLS, Ed25519 X-Opvs-Signature, UUID v4 Idempotency-Key).
+          </p>
+
+          <div class="grid-3">
+            <article class="card card-energy">
+              <h3 class="c-energy" data-i18n="c1_t">Work → Earn → Swap Loop</h3>
+              <p data-i18n="c1_p">
+                Every machine occupies a real-time coordinate (X, Y, Z) in phase space: mechanical work (X),
+                operational capital balance (Y), and onboard battery energy (Z). Battery swaps reset Z and isolate net margin ΔM.
+              </p>
+              <div class="formula-box">R_cycle = (ΔW, ΔM, 0) · θ = arctan(ΔM / ΔW)</div>
+            </article>
+
+            <article class="card card-caution">
+              <h3 class="c-caution" data-i18n="c2_t">Supervisor &amp; Soft Bankruptcy</h3>
+              <p data-i18n="c2_p">
+                Four zones govern fleet safety: Ascending (d_S &gt; +15 OPVS), Stasis, Conservation (&lt; 10 OPVS or τ_0 &lt; 8 h),
+                and Plane Breach. Zone 3 grants emergency swap credit so factory lines never halt while rolling back failing AI policies and severing Zombie Helices.
+              </p>
+              <div class="formula-box">d_S,i(t) = Y_i(t) − Y_S,i(X_i, Z_i, τ_i, T_i)</div>
+            </article>
+
+            <article class="card card-nominal">
+              <h3 class="c-nominal" data-i18n="c3_t">Kirchhoff Audit Closure</h3>
+              <p data-i18n="c3_p">
+                Inside a closed industrial perimeter, electrical substation meters verify every token debited across robot wallets.
+                The residual ε_drift diagnoses battery degradation, BMS sensor drift, or unauthorized draw.
+              </p>
+              <div class="formula-box">η·E_substation = Σ OPVS_swap,i + ΔE_bay_buffer + ε_drift</div>
+            </article>
           </div>
         </div>
+      </section>
 
-        <div class="table-wrap">
-          <table>
+      <!-- INTERACTIVE PROTOTYPE SIMULATION -->
+      <section id="prototype" class="section-band">
+        <div class="section">
+          <div class="eyebrow" data-i18n="pr_eye">02 · INTERACTIVE PROTOTYPE CONSOLE</div>
+          <h2 data-i18n="pr_title">10-Unit Closed-Site Settlement Preview (Integer µOPVS)</h2>
+
+          <div class="proto-banner">
+            <span data-i18n="pr_warn">SIMULATED PROTOTYPE DATA — ILLUSTRATIVE ASSUMPTIONS ONLY (NOT LIVE PLANT TELEMETRY)</span>
+            <span class="mono" id="sim-clock">CYCLE: 01 · DAY: 16/90</span>
+          </div>
+
+          <div class="controls">
+            <div class="ctrl-group" role="group" aria-label="Zone filter">
+              <button type="button" class="ctrl-btn active" data-filter="ALL" data-i18n="flt_all">All (10)</button>
+              <button type="button" class="ctrl-btn" data-filter="NOMINAL" data-i18n="flt_nom">▲ Nominal / Ascending</button>
+              <button type="button" class="ctrl-btn" data-filter="ALERT" data-i18n="flt_alert">✕ Conservation / Breach</button>
+            </div>
+            <div class="ctrl-group">
+              <button type="button" class="ctrl-btn btn-action-energy" id="btn-step" data-i18n="btn_step">⚡ Step 4h Swap Cycle</button>
+              <button type="button" class="ctrl-btn" id="btn-reset" data-i18n="btn_reset">↺ Reset Seed</button>
+            </div>
+          </div>
+
+          <div class="kpi-bar">
+            <div class="kpi-cell kpi-energy">
+              <div class="k-label" data-i18n="kpi_sub">η · E_substation (OPVS eq.)</div>
+              <div class="k-val c-energy" id="kpi-substation">—</div>
+            </div>
+            <div class="kpi-cell">
+              <div class="k-label" data-i18n="kpi_swaps">Σ OPVS_swap Debits</div>
+              <div class="k-val c-white" id="kpi-swaps">—</div>
+            </div>
+            <div class="kpi-cell kpi-caution">
+              <div class="k-label" data-i18n="kpi_buf">ΔE_bay_buffer</div>
+              <div class="k-val c-caution" id="kpi-buffer">—</div>
+            </div>
+            <div class="kpi-cell kpi-nominal">
+              <div class="k-label" data-i18n="kpi_eps">Kirchhoff Residual ε_drift</div>
+              <div class="k-val c-nominal" id="kpi-epsilon">—</div>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Wallet ID</th>
+                  <th>Policy</th>
+                  <th>Liquidity (µOPVS)</th>
+                  <th>Last Swap (µOPVS)</th>
+                  <th>Net Margin ΔM (µOPVS)</th>
+                  <th>d_S (µOPVS)</th>
+                  <th>θ_intrinsic</th>
+                  <th>Mode / Zone</th>
+                </tr>
+              </thead>
+              <tbody id="fleet-tbody"></tbody>
+            </table>
+          </div>
+
+          <div class="ledger-drawer" id="ledger-inspector" data-i18n="drawer_hint">
+            Click any unit row to inspect its latest integer µOPVS double-entry ledger record and correlation key (episode_id).
+          </div>
+        </div>
+      </section>
+
+      <!-- THE PILOT -->
+      <section id="pilot" class="section-band">
+        <div class="section">
+          <div class="eyebrow" data-i18n="pil_eye">03 · THE 90-DAY REFERENCE PILOT</div>
+          <h2 data-i18n="pil_title">Four Phases to the First Audited Machine Balance Sheet</h2>
+          <p class="lead" data-i18n="pil_lead">
+            Target deployment: 10 electric humanoids with swappable batteries on 1 closed industrial site over 90 consecutive days.
+            All hardware profiles and industrial sites remain target benchmarks pending signed pilot agreements.
+          </p>
+
+          <table class="pilot-table">
             <thead>
               <tr>
-                <th>Wallet ID</th>
-                <th>Policy</th>
-                <th>Liquidity (µOPVS)</th>
-                <th>Last Swap (µOPVS)</th>
-                <th>Net Margin ΔM (µOPVS)</th>
-                <th>d_S (µOPVS)</th>
-                <th>θ_intrinsic</th>
-                <th>Mode / Zone</th>
+                <th>Phase</th>
+                <th>Window</th>
+                <th data-i18n="th_obj">Objective</th>
+                <th data-i18n="th_exit">Exit Criterion</th>
               </tr>
             </thead>
-            <tbody id="fleet-tbody"></tbody>
+            <tbody>
+              <tr>
+                <td class="phase-cell c-energy">Phase 1 · Shadow Mode</td>
+                <td class="c-white">Days 1–15</td>
+                <td data-i18n="p1_o">Read-only telemetry ingestion from swap bays, MES, and actuators; zero production interference.</td>
+                <td data-i18n="p1_e">Calibration of 1 OPVS = 1 kWh parity and manifold constants (α, β, γ).</td>
+              </tr>
+              <tr>
+                <td class="phase-cell c-white">Phase 2 · Endowed Loop</td>
+                <td class="c-white">Days 16–45</td>
+                <td data-i18n="p2_o">Activate 10 endowed wallets and run live Work → Earn → Swap settlement.</td>
+                <td data-i18n="p2_e">Autonomous loop closure without manual invoicing; Kirchhoff residual ε_drift within tolerance.</td>
+              </tr>
+              <tr>
+                <td class="phase-cell c-caution">Phase 3 · Margin AI &amp; M2M</td>
+                <td class="c-white">Days 46–75</td>
+                <td data-i18n="p3_o">5 units optimized via live margin webhooks vs. 5 control units; M2M contracting and Zombie Helix filters active.</td>
+                <td data-i18n="p3_e">Quantified divergence in net margin (OPVS/h) and θ_intrinsic between cohorts.</td>
+              </tr>
+              <tr>
+                <td class="phase-cell c-nominal">Phase 4 · End-to-End Audit</td>
+                <td class="c-white">Days 76–90</td>
+                <td data-i18n="p4_o">Freeze protocol parameters; verify cryptographic hash chains against physical substation meters.</td>
+                <td data-i18n="p4_e">Publication of the first audited machine balance sheet (P&amp;L, energy cash flow, hourly ROI).</td>
+              </tr>
+            </tbody>
           </table>
         </div>
+      </section>
 
-        <div class="ledger-drawer" id="ledger-inspector" data-i18n="drawer_hint">
-          Click any unit row to inspect its latest integer µOPVS double-entry ledger record and correlation key (episode_id).
-        </div>
-      </div>
-    </section>
-
-    <!-- THE PILOT -->
-    <section id="pilot" class="section-band">
-      <div class="section">
-        <div class="eyebrow" data-i18n="pil_eye">03 · THE 90-DAY REFERENCE PILOT</div>
-        <h2 data-i18n="pil_title">Four Phases to the First Audited Machine Balance Sheet</h2>
-        <p class="lead" data-i18n="pil_lead">
-          Target deployment: 10 electric humanoids with swappable batteries on 1 closed industrial site over 90 consecutive days.
-          All hardware profiles and industrial sites remain target benchmarks pending signed pilot agreements.
-        </p>
-
-        <table class="pilot-table">
-          <thead>
-            <tr>
-              <th>Phase</th>
-              <th>Window</th>
-              <th data-i18n="th_obj">Objective</th>
-              <th data-i18n="th_exit">Exit Criterion</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="phase-cell c-energy">Phase 1 · Shadow Mode</td>
-              <td class="c-white">Days 1–15</td>
-              <td data-i18n="p1_o">Read-only telemetry ingestion from swap bays, MES, and actuators; zero production interference.</td>
-              <td data-i18n="p1_e">Calibration of 1 OPVS = 1 kWh parity and manifold constants (α, β, γ).</td>
-            </tr>
-            <tr>
-              <td class="phase-cell c-white">Phase 2 · Endowed Loop</td>
-              <td class="c-white">Days 16–45</td>
-              <td data-i18n="p2_o">Activate 10 endowed wallets and run live Work → Earn → Swap settlement.</td>
-              <td data-i18n="p2_e">Autonomous loop closure without manual invoicing; Kirchhoff residual ε_drift within tolerance.</td>
-            </tr>
-            <tr>
-              <td class="phase-cell c-caution">Phase 3 · Margin AI &amp; M2M</td>
-              <td class="c-white">Days 46–75</td>
-              <td data-i18n="p3_o">5 units optimized via live margin webhooks vs. 5 control units; M2M contracting and Zombie Helix filters active.</td>
-              <td data-i18n="p3_e">Quantified divergence in net margin (OPVS/h) and θ_intrinsic between cohorts.</td>
-            </tr>
-            <tr>
-              <td class="phase-cell c-nominal">Phase 4 · End-to-End Audit</td>
-              <td class="c-white">Days 76–90</td>
-              <td data-i18n="p4_o">Freeze protocol parameters; verify cryptographic hash chains against physical substation meters.</td>
-              <td data-i18n="p4_e">Publication of the first audited machine balance sheet (P&amp;L, energy cash flow, hourly ROI).</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact" class="section-band">
-      <div class="section">
-        <div class="eyebrow" data-i18n="con_eye">04 · CONTACT &amp; PILOT INQUIRIES</div>
-        <h2 data-i18n="con_title">Industrial Pilots, OEMs, and Seed Inquiry</h2>
-        <div class="grid-3">
-          <div class="card card-energy">
-            <h3 class="c-energy" data-i18n="con_c1_t">Entity &amp; Domain</h3>
-            <p class="c-white">OPERAE VIS · operaevis.com</p>
-            <p style="margin-top:0.5rem;">Founder: Antonin Garrigue</p>
-          </div>
-          <div class="card card-caution">
-            <h3 class="c-caution" data-i18n="con_c2_t">Pilot Target Slots</h3>
-            <p>Industrial Site Partner: <span class="c-white">[TBD]</span></p>
-            <p>Humanoid OEM Target: <span class="c-white">[TBD]</span></p>
-            <p>Pilot Budget &amp; Seed: <span class="c-white">[TBD]</span></p>
-          </div>
-          <div class="card card-nominal">
-            <h3 class="c-nominal" data-i18n="con_c3_t">Direct Channel</h3>
-            <p>Email: <span class="c-white">[TBD]</span></p>
-            <p style="margin-top:0.5rem;" data-i18n="con_c3_p">Specification v2.0 &amp; G5 simulator demo available upon inquiry.</p>
+      <!-- CONTACT -->
+      <section id="contact" class="section-band">
+        <div class="section">
+          <div class="eyebrow" data-i18n="con_eye">04 · CONTACT &amp; PILOT INQUIRIES</div>
+          <h2 data-i18n="con_title">Industrial Pilots, OEMs, and Seed Inquiry</h2>
+          <div class="grid-3">
+            <div class="card card-energy">
+              <h3 class="c-energy" data-i18n="con_c1_t">Entity &amp; Domain</h3>
+              <p class="c-white">OPERAE VIS · operaevis.com</p>
+              <p style="margin-top:0.5rem;">Founder: Antonin Garrigue</p>
+            </div>
+            <div class="card card-caution">
+              <h3 class="c-caution" data-i18n="con_c2_t">Pilot Target Slots</h3>
+              <p>Industrial Site Partner: <span class="c-white">[TBD]</span></p>
+              <p>Humanoid OEM Target: <span class="c-white">[TBD]</span></p>
+              <p>Pilot Budget &amp; Seed: <span class="c-white">[TBD]</span></p>
+            </div>
+            <div class="card card-nominal">
+              <h3 class="c-nominal" data-i18n="con_c3_t">Direct Channel</h3>
+              <p>Email: <span class="c-white">[TBD]</span></p>
+              <p style="margin-top:0.5rem;" data-i18n="con_c3_p">Specification v2.0 &amp; G5 simulator demo available upon inquiry.</p>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
+
+    <!-- ==================== TAB 2: G5 FLEET SUPERVISOR SIMULATOR ==================== -->
+    <div id="view-simulator" class="hidden">
+      <section class="section-band">
+        <div class="section">
+          <div class="eyebrow" data-i18n="sim_eye">G5 FLEET SUPERVISOR · THERMODYNAMIC SETTLEMENT SIMULATOR</div>
+          <h1 style="font-size:clamp(1.75rem,3.8vw,2.75rem); margin-bottom:0.75rem;" data-i18n="sim_title">Survival Manifold &amp; Kirchhoff Ledger Simulator</h1>
+          <p class="lead" style="margin-bottom:1.25rem;" data-i18n="sim_lead">
+            Simulate integer µOPVS task wages, battery swaps (1 Wh = 1,000 µOPVS), curved maintenance escrow (torque² + thermal wall),
+            M2M subcontracting, and Supervisor Zone 3 Soft Bankruptcy rollbacks in real time.
+          </p>
+
+          <div class="proto-banner">
+            <span data-i18n="sim_banner">G5 INTERACTIVE SANDBOX · STRICT INT64 µOPVS ARITHMETIC · ZERO FLOATING-POINT CURRENCY</span>
+            <span id="g5-clock">SIM CYCLE: 01 · DAY: 16/90 · MERKLE ENTRIES: 01</span>
+          </div>
+
+          <div class="sim-layout">
+            <!-- LEFT: CONTROL DECK -->
+            <aside class="sim-panel">
+              <div class="sim-panel-title" data-i18n="sim_ctrl_title">01 · UNIT &amp; MANIFOLD PARAMETERS</div>
+
+              <div class="sim-field">
+                <div class="sim-field-head">
+                  <label for="g5-unit-select" data-i18n="sim_unit_lbl">Target Humanoid Wallet</label>
+                  <span class="sim-field-val c-energy" id="g5-unit-zone">ZONE 0</span>
+                </div>
+                <select id="g5-unit-select" class="sim-select"></select>
+              </div>
+
+              <div class="sim-field-head">
+                <span data-i18n="sim_preset_lbl">Stress &amp; Policy Scenario</span>
+              </div>
+              <div class="preset-grid">
+                <button type="button" class="preset-btn active" data-preset="NOMINAL" data-i18n="pre_nom">Margin AI v2.4</button>
+                <button type="button" class="preset-btn" data-preset="THERMAL" data-i18n="pre_therm">Thermal Surge</button>
+                <button type="button" class="preset-btn" data-preset="LOW_WAGE" data-i18n="pre_low">Low-Yield Shift</button>
+                <button type="button" class="preset-btn" data-preset="ZOMBIE" data-i18n="pre_zom">Exp v2.5 Breach</button>
+              </div>
+
+              <div class="sim-field">
+                <div class="sim-field-head">
+                  <label for="g5-wage" data-i18n="sim_wage_lbl">Task Wage (µOPVS)</label>
+                  <span class="sim-field-val c-nominal" id="g5-wage-val">8 581 000</span>
+                </div>
+                <input type="range" id="g5-wage" class="sim-range" min="3500000" max="11500000" step="100000" value="8581000" />
+              </div>
+
+              <div class="sim-field">
+                <div class="sim-field-head">
+                  <label for="g5-wh" data-i18n="sim_wh_lbl">Swap Energy ΔWh (1 Wh = 1k µOPVS)</label>
+                  <span class="sim-field-val c-energy" id="g5-wh-val">3 271 Wh</span>
+                </div>
+                <input type="range" id="g5-wh" class="sim-range" min="2200" max="4600" step="50" value="3271" />
+              </div>
+
+              <div class="sim-field">
+                <div class="sim-field-head">
+                  <label for="g5-temp" data-i18n="sim_temp_lbl">Peak Joint Temp (°C · Thermal Wall)</label>
+                  <span class="sim-field-val c-caution" id="g5-temp-val">54 °C</span>
+                </div>
+                <input type="range" id="g5-temp" class="sim-range" min="40" max="88" step="1" value="54" />
+              </div>
+
+              <div class="sim-field">
+                <div class="sim-field-head">
+                  <label for="g5-torque" data-i18n="sim_torq_lbl">Torque² Fatigue Integral</label>
+                  <span class="sim-field-val c-white" id="g5-torque-val">1 825</span>
+                </div>
+                <input type="range" id="g5-torque" class="sim-range" min="800" max="4800" step="100" value="1825" />
+              </div>
+
+              <div class="formula-box" id="g5-preview-formula" style="margin-top:0.5rem; margin-bottom:1rem; font-size:0.84rem;">
+                ΔR_maint = 1 000 000 µOPVS · Est ΔM = +4 310 000 µOPVS
+              </div>
+
+              <div class="ctrl-group" style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;">
+                <button type="button" class="ctrl-btn btn-action-energy" id="g5-step-1" data-i18n="g5_step1">⚡ +1 Cycle (4h)</button>
+                <button type="button" class="ctrl-btn btn-action-nominal" id="g5-step-6" data-i18n="g5_step6">⏩ +6 Cycles (24h)</button>
+                <button type="button" class="ctrl-btn btn-action-caution" id="g5-export" data-i18n="g5_export">Export Balance Sheet</button>
+                <button type="button" class="ctrl-btn" id="g5-reset" data-i18n="g5_reset">↺ Reset G5</button>
+              </div>
+            </aside>
+
+            <!-- RIGHT: LIVE TELEMETRY, MANIFOLD GRAPH, API ACTIONS & HASH LOG -->
+            <div>
+              <div class="kpi-bar">
+                <div class="kpi-cell">
+                  <div class="k-label" data-i18n="g5_k_liq">Operational Liquidity (Y)</div>
+                  <div class="k-val c-white" id="g5-kpi-liq">—</div>
+                </div>
+                <div class="kpi-cell kpi-nominal">
+                  <div class="k-label" data-i18n="g5_k_ds">Manifold Altitude d_S</div>
+                  <div class="k-val c-nominal" id="g5-kpi-ds">—</div>
+                </div>
+                <div class="kpi-cell kpi-energy">
+                  <div class="k-label" data-i18n="g5_k_dm">Last Cycle Margin ΔM</div>
+                  <div class="k-val c-energy" id="g5-kpi-dm">—</div>
+                </div>
+                <div class="kpi-cell kpi-caution">
+                  <div class="k-label" data-i18n="g5_k_esc">Maintenance Escrow R_maint</div>
+                  <div class="k-val c-caution" id="g5-kpi-esc">—</div>
+                </div>
+              </div>
+
+              <!-- PURE BLACK SVG SURVIVAL MANIFOLD CHART -->
+              <div class="chart-box">
+                <div class="chart-header">
+                  <span class="c-white" style="font-weight:700;" data-i18n="g5_chart_t">SURVIVAL MANIFOLD ALTITUDE d_S(t) — SELECTED UNIT (OPVS)</span>
+                  <span id="g5-chart-status" class="c-nominal" style="font-weight:700;">▲ ZONE 0 · ASCENDING</span>
+                </div>
+                <svg id="g5-manifold-svg" viewBox="0 0 720 210" width="100%" height="210" role="img" aria-label="Survival Manifold Trajectory"></svg>
+              </div>
+
+              <!-- OPVS CORE API DISPATCHER (DIRECTLY FROM OPENAPI 3.1.0 SPEC) -->
+              <div class="api-grid">
+                <div class="api-card">
+                  <div>
+                    <div class="api-route">POST /v1/swaps/settle</div>
+                    <div class="api-desc" data-i18n="api_swap_d">Atomic BMS battery swap debit at 1,000 µOPVS/Wh (triggers Zone 3 overdraft if Y &lt; E_swap).</div>
+                  </div>
+                  <button type="button" class="ctrl-btn btn-action-energy" id="api-swap-btn" data-i18n="api_swap_b">Dispatch Swap</button>
+                </div>
+
+                <div class="api-card">
+                  <div>
+                    <div class="api-route">POST /v1/tasks/settle</div>
+                    <div class="api-desc" data-i18n="api_task_d">Settle MES task wage &amp; curved manifold maintenance escrow; emits margin webhook.</div>
+                  </div>
+                  <button type="button" class="ctrl-btn btn-action-nominal" id="api-task-btn" data-i18n="api_task_b">Settle Task</button>
+                </div>
+
+                <div class="api-card">
+                  <div>
+                    <div class="api-route">POST /v1/m2m/transfer</div>
+                    <div class="api-desc" data-i18n="api_m2m_d">Subcontract 1.50 OPVS from wlt_unit_01 to target (422 if Zombie Helix locked).</div>
+                  </div>
+                  <button type="button" class="ctrl-btn btn-action-caution" id="api-m2m-btn" data-i18n="api_m2m_b">M2M Transfer</button>
+                </div>
+
+                <div class="api-card">
+                  <div>
+                    <div class="api-route">POST /v1/wallets/{id}/tip</div>
+                    <div class="api-desc" data-i18n="api_tip_d">Credit +250,000 µOPVS human operator edge-case recovery bonus.</div>
+                  </div>
+                  <button type="button" class="ctrl-btn" id="api-tip-btn" data-i18n="api_tip_b">Credit +0.25 OPVS Tip</button>
+                </div>
+              </div>
+
+              <!-- APPEND-ONLY HASH-CHAINED LEDGER & WEBHOOK STREAM -->
+              <div class="sim-panel" style="padding:0;">
+                <div style="padding:0.7rem 0.9rem; border-bottom:1px solid var(--border-grid); display:flex; justify-content:space-between; align-items:center;">
+                  <span style="font-size:0.78rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--fg-white);" data-i18n="g5_log_t">APPEND-ONLY LEDGER &amp; WEBHOOK STREAM (SHA-256 CHAIN)</span>
+                  <span style="font-size:0.74rem; color:var(--sig-nominal); font-weight:700;" id="g5-kirchhoff-badge">KIRCHHOFF: CLOSED_WITHIN_TOLERANCE</span>
+                </div>
+                <div class="event-log" id="g5-event-log"></div>
+              </div>
+
+              <pre class="json-drawer hidden" id="g5-json-drawer"></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
   </main>
 
   <footer>
     <div class="footer-wrap">
       <div class="seal-block">
-        <!-- Seal OPERAE VIS: Circled Dash Marker (U+229D) — White + Energy Cyan on True Black -->
         <svg width="46" height="46" viewBox="0 0 100 100" aria-label="OPERAE VIS Seal">
           <circle cx="50" cy="50" r="44" fill="none" stroke="#FFFFFF" stroke-width="4" />
           <circle cx="50" cy="50" r="28" fill="none" stroke="#FFFFFF" stroke-width="8" />
@@ -940,10 +1363,12 @@
           leg_z0: "▲ Z0 ASCENDING (+ΔM)",
           leg_z12: "◆ Z1/Z2 STASIS · CONSERVE",
           leg_z3: "✕ Z3 BREACH · ROLLBACK",
+          nav_overview: "Protocol",
           nav_system: "System",
           nav_proto: "Prototype",
           nav_pilot: "Pilot",
           nav_contact: "Contact",
+          nav_sim: "⚡ Simulator",
           hero_title: "Give robots a wage, a wallet, and an audited balance sheet.",
           hero_lead: "Autonomous machines draw kilowatt-hours and accumulate actuator wear without economic accountability. OPVS (Operae Vis System) anchors machine labor to conserved physical energy: every unit of work is settled against real energy expenditure and verified by Kirchhoff's conservation law.",
           p_parity_lbl: "Thermodynamic Parity",
@@ -951,6 +1376,7 @@
           p_kpi_lbl: "Canonical Cycle KPI",
           p_pilot_lbl: "Target Objective",
           p_pilot_val: "90-day pilot · 10 humanoids · 1 site",
+          cta_sim: "Launch G5 Fleet Simulator",
           cta_proto: "Inspect Prototype Ledger",
           cta_pilot: "90-Day Pilot Architecture",
           sys_eye: "01 · THE SYSTEM",
@@ -993,7 +1419,40 @@
           con_c1_t: "Entity & Domain",
           con_c2_t: "Pilot Target Slots",
           con_c3_t: "Direct Channel",
-          con_c3_p: "Specification v2.0 & G5 simulator demo available upon inquiry."
+          con_c3_p: "Specification v2.0 & G5 simulator demo available upon inquiry.",
+          sim_eye: "G5 FLEET SUPERVISOR · THERMODYNAMIC SETTLEMENT SIMULATOR",
+          sim_title: "Survival Manifold & Kirchhoff Ledger Simulator",
+          sim_lead: "Simulate integer µOPVS task wages, battery swaps (1 Wh = 1,000 µOPVS), curved maintenance escrow (torque² + thermal wall), M2M subcontracting, and Supervisor Zone 3 Soft Bankruptcy rollbacks in real time.",
+          sim_banner: "G5 INTERACTIVE SANDBOX · STRICT INT64 µOPVS ARITHMETIC · ZERO FLOATING-POINT CURRENCY",
+          sim_ctrl_title: "01 · UNIT & MANIFOLD PARAMETERS",
+          sim_unit_lbl: "Target Humanoid Wallet",
+          sim_preset_lbl: "Stress & Policy Scenario",
+          pre_nom: "Margin AI v2.4",
+          pre_therm: "Thermal Surge",
+          pre_low: "Low-Yield Shift",
+          pre_zom: "Exp v2.5 Breach",
+          sim_wage_lbl: "Task Wage (µOPVS)",
+          sim_wh_lbl: "Swap Energy ΔWh (1 Wh = 1k µOPVS)",
+          sim_temp_lbl: "Peak Joint Temp (°C · Thermal Wall)",
+          sim_torq_lbl: "Torque² Fatigue Integral",
+          g5_step1: "⚡ +1 Cycle (4h)",
+          g5_step6: "⏩ +6 Cycles (24h)",
+          g5_export: "Export Balance Sheet",
+          g5_reset: "↺ Reset G5",
+          g5_k_liq: "Operational Liquidity (Y)",
+          g5_k_ds: "Manifold Altitude d_S",
+          g5_k_dm: "Last Cycle Margin ΔM",
+          g5_k_esc: "Maintenance Escrow R_maint",
+          g5_chart_t: "SURVIVAL MANIFOLD ALTITUDE d_S(t) — SELECTED UNIT (OPVS)",
+          api_swap_d: "Atomic BMS battery swap debit at 1,000 µOPVS/Wh (triggers Zone 3 overdraft if Y < E_swap).",
+          api_swap_b: "Dispatch Swap",
+          api_task_d: "Settle MES task wage & curved manifold maintenance escrow; emits margin webhook.",
+          api_task_b: "Settle Task",
+          api_m2m_d: "Subcontract 1.50 OPVS from wlt_unit_01 to target (422 if Zombie Helix locked).",
+          api_m2m_b: "M2M Transfer",
+          api_tip_d: "Credit +250,000 µOPVS human operator edge-case recovery bonus.",
+          api_tip_b: "Credit +0.25 OPVS Tip",
+          g5_log_t: "APPEND-ONLY LEDGER & WEBHOOK STREAM (SHA-256 CHAIN)"
         },
         fr: {
           leg_id: "IDENTITÉ / REGISTRE",
@@ -1001,10 +1460,12 @@
           leg_z0: "▲ Z0 ASCENDING (+ΔM)",
           leg_z12: "◆ Z1/Z2 STASIS · CONSERVE",
           leg_z3: "✕ Z3 RUPTURE · ROLLBACK",
+          nav_overview: "Protocole",
           nav_system: "Système",
           nav_proto: "Prototype",
           nav_pilot: "Pilote",
           nav_contact: "Contact",
+          nav_sim: "⚡ Simulateur",
           hero_title: "Donner aux robots un salaire, un portefeuille et un bilan audité.",
           hero_lead: "Les machines autonomes consomment des kilowattheures et usent leurs actionneurs sans identité comptable. OPVS (Operae Vis System) indexe le travail machine sur l'énergie physique conservée : chaque tâche est réglée à parité réelle et auditée par la loi de Kirchhoff.",
           p_parity_lbl: "Parité thermodynamique",
@@ -1012,6 +1473,7 @@
           p_kpi_lbl: "KPI canonique de cycle",
           p_pilot_lbl: "Objectif du pilote",
           p_pilot_val: "90 jours · 10 humanoïdes · 1 site fermé",
+          cta_sim: "Lancer le Simulateur G5",
           cta_proto: "Inspecter le registre prototype",
           cta_pilot: "Architecture du pilote 90 jours",
           sys_eye: "01 · LE SYSTÈME",
@@ -1054,24 +1516,58 @@
           con_c1_t: "Société & Domaine",
           con_c2_t: "Cibles du pilote",
           con_c3_t: "Canal direct",
-          con_c3_p: "Spécification v2.0 et démonstration du simulateur sur demande."
+          con_c3_p: "Spécification v2.0 et démonstration du simulateur sur demande.",
+          sim_eye: "SUPERVISEUR FLOTTE G5 · SIMULATEUR THERMODYNAMIQUE",
+          sim_title: "Variété de survie & Simulateur de registre Kirchhoff",
+          sim_lead: "Simulez en temps réel les salaires en entiers µOPVS, les swaps batterie (1 Wh = 1 000 µOPVS), la réserve de maintenance courbe (couple² + mur thermique), la sous-traitance M2M et les rollbacks Zone 3.",
+          sim_banner: "BAC À SABLE INTERACTIF G5 · ARITHMÉTIQUE ENTIÈRE INT64 µOPVS · ZÉRO FLOTTANT",
+          sim_ctrl_title: "01 · PARAMÈTRES UNITÉ & VARIÉTÉ",
+          sim_unit_lbl: "Portefeuille Humanoïde Cible",
+          sim_preset_lbl: "Scénario de contrainte & politique",
+          pre_nom: "Margin AI v2.4",
+          pre_therm: "Pic Thermique",
+          pre_low: "Poste Sous-Rendement",
+          pre_zom: "Rupture Exp v2.5",
+          sim_wage_lbl: "Salaire Tâche (µOPVS)",
+          sim_wh_lbl: "Énergie Swap ΔWh (1 Wh = 1k µOPVS)",
+          sim_temp_lbl: "Temp. Articulation Max (°C · Mur Thermique)",
+          sim_torq_lbl: "Intégrale Fatigue Couple²",
+          g5_step1: "⚡ +1 Cycle (4h)",
+          g5_step6: "⏩ +6 Cycles (24h)",
+          g5_export: "Exporter Bilan JSON",
+          g5_reset: "↺ Réinitialiser G5",
+          g5_k_liq: "Liquidité Opérationnelle (Y)",
+          g5_k_ds: "Altitude Variété d_S",
+          g5_k_dm: "Marge Dernier Cycle ΔM",
+          g5_k_esc: "Réserve Maintenance R_maint",
+          g5_chart_t: "TRAJECTOIRE D'ALTITUDE d_S(t) — UNITÉ SÉLECTIONNÉE (OPVS)",
+          api_swap_d: "Débit atomique swap BMS à 1 000 µOPVS/Wh (découvert Zone 3 si Y < E_swap).",
+          api_swap_b: "Exécuter Swap",
+          api_task_d: "Règlement salaire MES & réserve de maintenance courbe ; émet webhook de marge.",
+          api_task_b: "Régler Tâche",
+          api_m2m_d: "Sous-traitance 1,50 OPVS de wlt_unit_01 vers cible (422 si Hélice Zombie).",
+          api_m2m_b: "Transfert M2M",
+          api_tip_d: "Créditer +250 000 µOPVS pour récupération opérateur humain.",
+          api_tip_b: "Pourboire +0.25 OPVS",
+          g5_log_t: "FLUX APPEND-ONLY & WEBHOOKS (CHAÎNE SHA-256)"
         }
       };
 
       const SEED_FLEET = [
-        { id: "wlt_unit_01", policy: "policy_v2.4_margin", liq: 518420000, swap: 3120000, dm: 4610000, ds: 58420000, pitch: 8.2, mode: "NOMINAL", zone: "0 · Ascending", tx: "tx_swap_01JDF9A101", ep: "ep_20261123_01_019" },
-        { id: "wlt_unit_02", policy: "policy_v2.4_margin", liq: 509150000, swap: 3190000, dm: 4120000, ds: 49150000, pitch: 7.4, mode: "NOMINAL", zone: "0 · Ascending", tx: "tx_swap_01JDF9A204", ep: "ep_20261123_02_019" },
-        { id: "wlt_unit_03", policy: "policy_v2.4_margin", liq: 496300000, swap: 3250000, dm: 3890000, ds: 36300000, pitch: 6.8, mode: "NOMINAL", zone: "0 · Ascending", tx: "tx_swap_01JDF9A311", ep: "ep_20261123_03_019" },
-        { id: "wlt_unit_04", policy: "policy_v2.4_margin", liq: 482150000, swap: 3271000, dm: 4310000, ds: 42180000, pitch: 7.1, mode: "NOMINAL", zone: "0 · Ascending", tx: "tx_swap_01JDF9X8K2", ep: "ep_20261123_04_019" },
-        { id: "wlt_unit_05", policy: "policy_v2.4_margin", liq: 474800000, swap: 3305000, dm: 3450000, ds: 29800000, pitch: 5.9, mode: "NOMINAL", zone: "0 · Ascending", tx: "tx_swap_01JDF9B019", ep: "ep_20261123_05_019" },
-        { id: "wlt_unit_06", policy: "policy_v2.1_base",   liq: 451200000, swap: 3480000, dm: 820000,  ds: 11200000, pitch: 1.5, mode: "NOMINAL", zone: "1 · Stasis Band", tx: "tx_swap_01JDF9B402", ep: "ep_20261123_06_019" },
-        { id: "wlt_unit_07", policy: "policy_v2.1_base",   liq: 446900000, swap: 3510000, dm: 310000,  ds: 6900000,  pitch: 0.6, mode: "NOMINAL", zone: "1 · Stasis Band", tx: "tx_swap_01JDF9C118", ep: "ep_20261123_07_019" },
-        { id: "wlt_unit_08", policy: "policy_v2.1_base",   liq: 9420000,   swap: 3610000, dm: -680000, ds: 4120000,  pitch: -1.4, mode: "CONSERVATION", zone: "2 · Conservation", tx: "tx_swap_01JDF9D007", ep: "ep_20261123_08_019" },
-        { id: "wlt_unit_09", policy: "policy_v2.5_exp",    liq: 2140000,   swap: 3410000, dm: -2450000, ds: -1270000, pitch: -6.4, mode: "SOFT_BANKRUPTCY", zone: "3 · Plane Breach (Zombie)", tx: "tx_breach_01JDF9E99", ep: "ep_20261123_09_019" },
-        { id: "wlt_unit_10", policy: "policy_v2.1_base",   liq: 462000000, swap: 3390000, dm: 1940000, ds: 22000000, pitch: 3.4, mode: "NOMINAL", zone: "0 · Ascending", tx: "tx_swap_01JDF9F512", ep: "ep_20261123_10_019" }
+        { id: "wlt_unit_01", policy: "policy_v2.4_margin", liq: 518420000, swap: 3120000, dm: 4610000, ds: 58420000, pitch: 8.2, mode: "NOMINAL", zone: "0 · Ascending", tx: "tx_swap_01JDF9A101", ep: "ep_20261123_01_019", esc: 41200000, wageSum: 26800000, swapSum: 9360000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 9360, zombie: false },
+        { id: "wlt_unit_02", policy: "policy_v2.4_margin", liq: 509150000, swap: 3190000, dm: 4120000, ds: 49150000, pitch: 7.4, mode: "NOMINAL", zone: "0 · Ascending", tx: "tx_swap_01JDF9A204", ep: "ep_20261123_02_019", esc: 39800000, wageSum: 24900000, swapSum: 9570000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 9570, zombie: false },
+        { id: "wlt_unit_03", policy: "policy_v2.4_margin", liq: 496300000, swap: 3250000, dm: 3890000, ds: 36300000, pitch: 6.8, mode: "NOMINAL", zone: "0 · Ascending", tx: "tx_swap_01JDF9A311", ep: "ep_20261123_03_019", esc: 38900000, wageSum: 24200000, swapSum: 9750000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 9750, zombie: false },
+        { id: "wlt_unit_04", policy: "policy_v2.4_margin", liq: 482150000, swap: 3271000, dm: 4310000, ds: 42180000, pitch: 7.1, mode: "NOMINAL", zone: "0 · Ascending", tx: "tx_swap_01JDF9X8K2", ep: "ep_20261123_04_019", esc: 38200000, wageSum: 25743000, swapSum: 9813000, escSum: 3000000, tipSum: 250000, m2mSum: 0, whSum: 9813, zombie: false },
+        { id: "wlt_unit_05", policy: "policy_v2.4_margin", liq: 474800000, swap: 3305000, dm: 3450000, ds: 29800000, pitch: 5.9, mode: "NOMINAL", zone: "0 · Ascending", tx: "tx_swap_01JDF9B019", ep: "ep_20261123_05_019", esc: 37600000, wageSum: 22900000, swapSum: 9915000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 9915, zombie: false },
+        { id: "wlt_unit_06", policy: "policy_v2.1_base",   liq: 451200000, swap: 3480000, dm: 820000,  ds: 11200000, pitch: 1.5, mode: "NOMINAL", zone: "1 · Stasis Band", tx: "tx_swap_01JDF9B402", ep: "ep_20261123_06_019", esc: 34100000, wageSum: 15900000, swapSum: 10440000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 10440, zombie: false },
+        { id: "wlt_unit_07", policy: "policy_v2.1_base",   liq: 446900000, swap: 3510000, dm: 310000,  ds: 6900000,  pitch: 0.6, mode: "NOMINAL", zone: "1 · Stasis Band", tx: "tx_swap_01JDF9C118", ep: "ep_20261123_07_019", esc: 33200000, wageSum: 14460000, swapSum: 10530000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 10530, zombie: false },
+        { id: "wlt_unit_08", policy: "policy_v2.1_base",   liq: 9420000,   swap: 3610000, dm: -680000, ds: 4120000,  pitch: -1.4, mode: "CONSERVATION", zone: "2 · Conservation", tx: "tx_swap_01JDF9D007", ep: "ep_20261123_08_019", esc: 29400000, wageSum: 11800000, swapSum: 10830000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 10830, zombie: false },
+        { id: "wlt_unit_09", policy: "policy_v2.5_exp",    liq: 2140000,   swap: 3410000, dm: -2450000, ds: -1270000, pitch: -6.4, mode: "SOFT_BANKRUPTCY", zone: "3 · Plane Breach (Zombie)", tx: "tx_breach_01JDF9E99", ep: "ep_20261123_09_019", esc: 24500000, wageSum: 5880000, swapSum: 10230000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 10230, zombie: true },
+        { id: "wlt_unit_10", policy: "policy_v2.1_base",   liq: 462000000, swap: 3390000, dm: 1940000, ds: 22000000, pitch: 3.4, mode: "NOMINAL", zone: "0 · Ascending", tx: "tx_swap_01JDF9F512", ep: "ep_20261123_10_019", esc: 35600000, wageSum: 19000000, swapSum: 10170000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 10170, zombie: false }
       ];
 
       let lang = "en";
+      let activeTab = "overview";
       let cycle = 1;
       let filter = "ALL";
       let selectedWalletId = null;
@@ -1079,8 +1575,67 @@
       const bayBufferDelta = 1150000;
       let residualEps = 12000;
 
-      const fmtInt = (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+      // G5 Simulator independent sandbox state
+      let g5Cycle = 1;
+      let g5Fleet = JSON.parse(JSON.stringify(SEED_FLEET));
+      let g5SelectedId = "wlt_unit_04";
+      let g5History = {};
+      let g5Events = [];
+      let g5JsonOpen = false;
 
+      const fmtInt = (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+      const hashStub = (s) => {
+        let h = 2166136261;
+        for (let i = 0; i < s.length; i += 1) {
+          h ^= s.charCodeAt(i);
+          h = Math.imul(h, 16777619);
+        }
+        return "sha256:" + ((h >>> 0).toString(16).padStart(8, "0")) + "9a4f7c...";
+      };
+
+      function switchTab(tab, scrollTarget) {
+        activeTab = tab;
+        const ov = document.getElementById("view-overview");
+        const sim = document.getElementById("view-simulator");
+        const btnOv = document.getElementById("tab-btn-overview");
+        const btnSim = document.getElementById("tab-btn-simulator");
+
+        if (tab === "simulator") {
+          ov.classList.add("hidden");
+          sim.classList.remove("hidden");
+          btnOv.classList.remove("active");
+          btnSim.classList.add("active");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          renderG5();
+        } else {
+          sim.classList.add("hidden");
+          ov.classList.remove("hidden");
+          btnSim.classList.remove("active");
+          btnOv.classList.add("active");
+          if (scrollTarget) {
+            const el = document.querySelector(scrollTarget);
+            if (el) el.scrollIntoView({ behavior: "smooth" });
+          } else {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }
+        }
+      }
+
+      document.getElementById("tab-btn-overview").addEventListener("click", () => switchTab("overview"));
+      document.getElementById("tab-btn-simulator").addEventListener("click", () => switchTab("simulator"));
+      document.getElementById("hero-open-sim").addEventListener("click", () => switchTab("simulator"));
+      document.getElementById("brand-home").addEventListener("click", (e) => {
+        e.preventDefault();
+        switchTab("overview");
+      });
+      document.querySelectorAll(".overview-anchor").forEach((a) => {
+        a.addEventListener("click", (e) => {
+          e.preventDefault();
+          switchTab("overview", a.getAttribute("href"));
+        });
+      });
+
+      /* ==================== OVERVIEW PROTOTYPE CONSOLE ==================== */
       function resetLedgerDrawer() {
         selectedWalletId = null;
         const drawer = document.getElementById("ledger-inspector");
@@ -1134,18 +1689,6 @@
         drawer.appendChild(grid);
       }
 
-      function applyI18n() {
-        document.documentElement.lang = lang;
-        document.querySelectorAll("[data-i18n]").forEach((el) => {
-          const k = el.getAttribute("data-i18n");
-          if (I18N[lang][k]) {
-            if (el.id === "ledger-inspector" && selectedWalletId) return;
-            el.textContent = I18N[lang][k];
-          }
-        });
-        document.getElementById("lang-toggle").textContent = lang === "en" ? "FR" : "EN";
-      }
-
       function render() {
         const tbody = document.getElementById("fleet-tbody");
         tbody.innerHTML = "";
@@ -1196,11 +1739,6 @@
           tbody.appendChild(tr);
         });
       }
-
-      document.getElementById("lang-toggle").addEventListener("click", () => {
-        lang = lang === "en" ? "fr" : "en";
-        applyI18n();
-      });
 
       document.querySelectorAll("[data-filter]").forEach((btn) => {
         btn.addEventListener("click", () => {
@@ -1259,8 +1797,498 @@
         render();
       });
 
+      /* ==================== G5 FLEET SUPERVISOR SIMULATOR ==================== */
+      function initG5History() {
+        g5History = {};
+        g5Fleet.forEach((u) => {
+          g5History[u.id] = [u.ds];
+        });
+        g5Events = [
+          {
+            cycle: 1,
+            type: "WEBHOOK",
+            route: "reward.margin_settled",
+            wallet: "wlt_unit_04",
+            detail: "net_margin=+4 310 000 µOPVS · d_S=+42 180 000 · NOMINAL",
+            cls: "c-nominal",
+            hash: hashStub("seed_04")
+          },
+          {
+            cycle: 1,
+            type: "BREACH",
+            route: "supervisor.plane_breach",
+            wallet: "wlt_unit_09",
+            detail: "d_S=-1 270 000 µOPVS · AUTHORIZED_OVERDRAFT · QUARANTINED policy_v2.5_exp",
+            cls: "c-breach",
+            hash: hashStub("seed_09")
+          }
+        ];
+      }
+
+      function computeMaintEscrow(torqueSq, tempC) {
+        const base = 450000;
+        const torqueTerm = Math.round(torqueSq * 220);
+        const thermalOver = Math.max(0, tempC - 52);
+        const thermalWall = Math.round(Math.pow(1.14, thermalOver) * 140000 - 140000);
+        return base + torqueTerm + thermalWall;
+      }
+
+      function classifyUnit(u) {
+        if (u.ds <= 0 || u.liq <= 0) {
+          return { mode: "SOFT_BANKRUPTCY", zone: "3 · Plane Breach (Zombie)", zombie: true };
+        }
+        if (u.liq < 10000000 || u.ds < 10000000) {
+          return { mode: "CONSERVATION", zone: "2 · Conservation", zombie: false };
+        }
+        if (u.ds <= 15000000) {
+          return { mode: "NOMINAL", zone: "1 · Stasis Band", zombie: false };
+        }
+        return { mode: "NOMINAL", zone: "0 · Ascending", zombie: false };
+      }
+
+      function updateSliderPreview() {
+        const wage = Number(document.getElementById("g5-wage").value);
+        const wh = Number(document.getElementById("g5-wh").value);
+        const temp = Number(document.getElementById("g5-temp").value);
+        const torque = Number(document.getElementById("g5-torque").value);
+
+        document.getElementById("g5-wage-val").textContent = fmtInt(wage);
+        document.getElementById("g5-wh-val").textContent = fmtInt(wh) + " Wh";
+        document.getElementById("g5-temp-val").textContent = `${temp} °C`;
+        document.getElementById("g5-torque-val").textContent = fmtInt(torque);
+
+        const maint = computeMaintEscrow(torque, temp);
+        const swapCost = wh * 1000;
+        const estDm = wage - swapCost - maint;
+        const box = document.getElementById("g5-preview-formula");
+        box.textContent = `ΔR_maint = ${fmtInt(maint)} µOPVS · Est ΔM = ${estDm >= 0 ? "+" : ""}${fmtInt(estDm)} µOPVS`;
+        box.style.borderLeftColor = estDm >= 0 ? "var(--sig-nominal)" : "var(--sig-breach)";
+        box.style.color = estDm >= 0 ? "var(--sig-nominal)" : "var(--sig-breach)";
+      }
+
+      function pushG5Event(type, route, wallet, detail, cls) {
+        g5Events.unshift({
+          cycle: g5Cycle,
+          type,
+          route,
+          wallet,
+          detail,
+          cls,
+          hash: hashStub(`${g5Cycle}_${route}_${wallet}_${g5Events.length}`)
+        });
+        if (g5Events.length > 40) g5Events.pop();
+      }
+
+      function stepG5Cycle(count) {
+        const wage = Number(document.getElementById("g5-wage").value);
+        const wh = Number(document.getElementById("g5-wh").value);
+        const temp = Number(document.getElementById("g5-temp").value);
+        const torque = Number(document.getElementById("g5-torque").value);
+        const maint = computeMaintEscrow(torque, temp);
+        const swapMicro = wh * 1000;
+
+        for (let step = 0; step < count; step += 1) {
+          g5Cycle += 1;
+          g5Fleet = g5Fleet.map((u) => {
+            const isTarget = u.id === g5SelectedId;
+            if (u.mode === "SOFT_BANKRUPTCY") {
+              // Supervisor Zone 3 auto-rollback recovery
+              const rbWage = isTarget ? Math.max(wage, 7800000) : 7800000;
+              const rbSwap = isTarget ? swapMicro : 3200000;
+              const rbMaint = isTarget ? Math.min(maint, 1200000) : 850000;
+              const dm = rbWage - rbSwap - rbMaint;
+              const nextLiq = Math.max(0, u.liq + dm);
+              const nextDs = u.ds + dm;
+              const next = {
+                ...u,
+                policy: "policy_v2.4_margin [ROLLBACK]",
+                liq: nextLiq,
+                swap: rbSwap,
+                dm,
+                ds: nextDs,
+                esc: u.esc + rbMaint,
+                wageSum: u.wageSum + rbWage,
+                swapSum: u.swapSum + rbSwap,
+                escSum: u.escSum + rbMaint,
+                whSum: u.whSum + Math.round(rbSwap / 1000),
+                pitch: Number((Math.atan2(dm, 18000000) * 180 / Math.PI).toFixed(1)),
+                tx: `tx_rb_${String(g5Cycle).padStart(2, "0")}_${u.id.slice(-2)}`
+              };
+              const cls = classifyUnit(next);
+              next.mode = cls.mode;
+              next.zone = cls.zone;
+              next.zombie = cls.zombie;
+              g5History[u.id].push(next.ds);
+              if (isTarget) {
+                pushG5Event("ROLLBACK", "supervisor.rollback", u.id, `Quarantined failing policy → policy_v2.4_margin · ΔM=${dm >= 0 ? "+" : ""}${fmtInt(dm)} µOPVS`, "c-caution");
+              }
+              return next;
+            }
+
+            const uWage = isTarget ? wage : (u.policy.includes("v2.4") ? 8200000 : 4500000);
+            const uSwap = isTarget ? swapMicro : u.swap;
+            const uMaint = isTarget ? maint : 780000;
+            const dm = uWage - uSwap - uMaint;
+            const nextLiq = Math.max(0, u.liq + dm);
+            const nextDs = u.ds + dm;
+            const next = {
+              ...u,
+              liq: nextLiq,
+              swap: uSwap,
+              dm,
+              ds: nextDs,
+              esc: u.esc + uMaint,
+              wageSum: u.wageSum + uWage,
+              swapSum: u.swapSum + uSwap,
+              escSum: u.escSum + uMaint,
+              whSum: u.whSum + Math.round(uSwap / 1000),
+              pitch: Number((Math.atan2(dm, 18000000) * 180 / Math.PI).toFixed(1)),
+              tx: `tx_cyc_${String(g5Cycle).padStart(2, "0")}_${u.id.slice(-2)}`
+            };
+            const cls = classifyUnit(next);
+            next.mode = cls.mode;
+            next.zone = cls.zone;
+            next.zombie = cls.zombie;
+            g5History[u.id].push(next.ds);
+
+            if (isTarget) {
+              if (next.mode === "SOFT_BANKRUPTCY") {
+                pushG5Event("BREACH", "supervisor.plane_breach", u.id, `d_S=${fmtInt(next.ds)} µOPVS · AUTHORIZED_OVERDRAFT · QUARANTINED`, "c-breach");
+              } else {
+                pushG5Event("SETTLED", "reward.margin_settled", u.id, `ΔM=${dm >= 0 ? "+" : ""}${fmtInt(dm)} µOPVS · d_S=${fmtInt(next.ds)} · ${next.zone}`, dm >= 0 ? "c-nominal" : "c-caution");
+              }
+            }
+            return next;
+          });
+        }
+        renderG5();
+      }
+
+      function renderManifoldChart(unit) {
+        const svg = document.getElementById("g5-manifold-svg");
+        svg.innerHTML = "";
+        const pts = (g5History[unit.id] || [unit.ds]).slice(-24);
+        const W = 720, H = 210, padL = 62, padR = 20, padT = 18, padB = 28;
+        const plotW = W - padL - padR;
+        const plotH = H - padT - padB;
+
+        const opvsPts = pts.map((v) => v / 1000000);
+        const minV = Math.min(-10, ...opvsPts) - 5;
+        const maxV = Math.max(25, ...opvsPts) + 5;
+        const yOf = (val) => padT + ((maxV - val) / (maxV - minV)) * plotH;
+        const xOf = (i) => pts.length === 1 ? padL + plotW / 2 : padL + (i / (pts.length - 1)) * plotW;
+
+        const ns = "http://www.w3.org/2000/svg";
+        const addEl = (tag, attrs, text) => {
+          const el = document.createElementNS(ns, tag);
+          Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, String(v)));
+          if (text !== undefined) el.textContent = text;
+          svg.appendChild(el);
+          return el;
+        };
+
+        // Threshold bands (Z0 +15, Z2 +10, Z3 0)
+        const bands = [
+          { val: 15, color: "#00E676", label: "+15 Z0" },
+          { val: 10, color: "#FFAB00", label: "+10 Z2" },
+          { val: 0,  color: "#FF3B30", label: "0 BREACH" }
+        ];
+        bands.forEach((b) => {
+          if (b.val >= minV && b.val <= maxV) {
+            const y = yOf(b.val);
+            addEl("line", { x1: padL, y1: y, x2: W - padR, y2: y, stroke: b.color, "stroke-width": b.val === 0 ? 1.5 : 1, "stroke-dasharray": b.val === 0 ? "4 3" : "2 4", opacity: 0.8 });
+            addEl("text", { x: 6, y: y + 4, fill: b.color, "font-size": 10, "font-weight": 700 }, b.label);
+          }
+        });
+
+        // Axes
+        addEl("line", { x1: padL, y1: padT, x2: padL, y2: H - padB, stroke: "#262626", "stroke-width": 1 });
+        addEl("line", { x1: padL, y1: H - padB, x2: W - padR, y2: H - padB, stroke: "#262626", "stroke-width": 1 });
+
+        // Trajectory Polyline
+        const lineColor = unit.mode === "SOFT_BANKRUPTCY" ? "#FF3B30" : (unit.mode === "CONSERVATION" || unit.zone.startsWith("1") ? "#FFAB00" : "#00E676");
+        if (opvsPts.length > 1) {
+          const d = opvsPts.map((v, i) => `${i === 0 ? "M" : "L"}${xOf(i).toFixed(1)},${yOf(v).toFixed(1)}`).join(" ");
+          addEl("path", { d, fill: "none", stroke: lineColor, "stroke-width": 2.5 });
+        }
+
+        opvsPts.forEach((v, i) => {
+          const cx = xOf(i);
+          const cy = yOf(v);
+          const isLast = i === opvsPts.length - 1;
+          addEl("circle", { cx, cy, r: isLast ? 4.5 : 2.5, fill: isLast ? "#FFFFFF" : lineColor, stroke: lineColor, "stroke-width": 1.5 });
+          if (isLast) {
+            addEl("text", { x: Math.min(W - 85, cx + 8), y: Math.max(padT + 12, cy - 6), fill: "#FFFFFF", "font-size": 11, "font-weight": 700 }, `${v.toFixed(2)} OPVS`);
+          }
+        });
+
+        addEl("text", { x: padL, y: H - 8, fill: "#7A7A7A", "font-size": 10 }, `C01`);
+        addEl("text", { x: W - padR - 28, y: H - 8, fill: "#00E5FF", "font-size": 10, "font-weight": 700 }, `C${String(g5Cycle).padStart(2, "0")}`);
+      }
+
+      function renderG5() {
+        const select = document.getElementById("g5-unit-select");
+        if (select.options.length === 0) {
+          g5Fleet.forEach((u) => {
+            const opt = document.createElement("option");
+            opt.value = u.id;
+            opt.textContent = `${u.id} · ${u.policy}`;
+            select.appendChild(opt);
+          });
+        }
+        select.value = g5SelectedId;
+
+        const u = g5Fleet.find((item) => item.id === g5SelectedId) || g5Fleet[0];
+        const zoneEl = document.getElementById("g5-unit-zone");
+        zoneEl.textContent = u.zone.toUpperCase();
+        zoneEl.className = "sim-field-val " + (u.mode === "SOFT_BANKRUPTCY" ? "c-breach" : (u.mode === "NOMINAL" && u.zone.startsWith("0") ? "c-nominal" : "c-caution"));
+
+        document.getElementById("g5-clock").textContent = `SIM CYCLE: ${String(g5Cycle).padStart(2, "0")} · DAY: ${Math.min(90, 15 + Math.ceil(g5Cycle / 6))}/90 · ENTRIES: ${String(g5Events.length).padStart(2, "0")}`;
+
+        document.getElementById("g5-kpi-liq").textContent = fmtInt(u.liq) + " µOPVS";
+        const dsEl = document.getElementById("g5-kpi-ds");
+        dsEl.textContent = (u.ds >= 0 ? "+" : "") + fmtInt(u.ds) + " µOPVS";
+        dsEl.className = "k-val " + (u.ds < 0 ? "c-breach" : (u.ds > 15000000 ? "c-nominal" : "c-caution"));
+
+        const dmEl = document.getElementById("g5-kpi-dm");
+        dmEl.textContent = (u.dm >= 0 ? "+" : "") + fmtInt(u.dm) + " µOPVS";
+        dmEl.className = "k-val " + (u.dm >= 0 ? "c-nominal" : "c-breach");
+
+        document.getElementById("g5-kpi-esc").textContent = fmtInt(u.esc) + " µOPVS";
+
+        const chartStatus = document.getElementById("g5-chart-status");
+        const marker = u.mode === "SOFT_BANKRUPTCY" ? "✕" : (u.mode === "CONSERVATION" ? "▼" : (u.zone.startsWith("1") ? "◆" : "▲"));
+        chartStatus.textContent = `${marker} ${u.mode} · ${u.zone.toUpperCase()}`;
+        chartStatus.className = u.mode === "SOFT_BANKRUPTCY" ? "c-breach" : (u.mode === "NOMINAL" && u.zone.startsWith("0") ? "c-nominal" : "c-caution");
+
+        renderManifoldChart(u);
+
+        const logEl = document.getElementById("g5-event-log");
+        logEl.innerHTML = "";
+        g5Events.forEach((ev) => {
+          const row = document.createElement("div");
+          row.className = "event-row";
+          row.innerHTML = `
+            <span class="${ev.cls}" style="font-weight:700;">C${String(ev.cycle).padStart(2, "0")} · ${ev.type}</span>
+            <span class="c-energy">${ev.route}</span>
+            <span class="c-white">${ev.wallet} · <span style="color:var(--fg-muted);">${ev.detail}</span></span>
+            <span style="color:var(--fg-dim);">${ev.hash}</span>
+          `;
+          logEl.appendChild(row);
+        });
+
+        if (g5JsonOpen) {
+          renderAuditExport(u);
+        }
+      }
+
+      function renderAuditExport(u) {
+        const drawer = document.getElementById("g5-json-drawer");
+        drawer.classList.remove("hidden");
+        const payload = {
+          wallet_id: u.id,
+          parity_invariant: "1 OPVS = 1 kWh = 1000000 micro_opvs",
+          income_statement: {
+            total_wage_micro_opvs: u.wageSum,
+            total_tips_micro_opvs: u.tipSum,
+            total_swap_energy_micro_opvs: u.swapSum,
+            total_maintenance_escrow_micro_opvs: u.escSum,
+            total_m2m_net_micro_opvs: u.m2mSum,
+            net_margin_micro_opvs: u.wageSum + u.tipSum - u.swapSum - u.escSum + u.m2mSum
+          },
+          energy_cash_flow: {
+            closing_liquidity_micro_opvs: u.liq,
+            total_energy_debited_wh: u.whSum,
+            avg_intrinsic_pitch_deg: u.pitch
+          },
+          merkle_proof: {
+            merkle_root: hashStub(`merkle_${u.id}_${g5Cycle}`),
+            entry_count: g5Events.length,
+            kirchhoff_site_status: "CLOSED_WITHIN_TOLERANCE"
+          }
+        };
+        drawer.textContent = JSON.stringify(payload, null, 2);
+      }
+
+      document.getElementById("g5-unit-select").addEventListener("change", (e) => {
+        g5SelectedId = e.target.value;
+        renderG5();
+      });
+
+      ["g5-wage", "g5-wh", "g5-temp", "g5-torque"].forEach((id) => {
+        document.getElementById(id).addEventListener("input", updateSliderPreview);
+      });
+
+      document.querySelectorAll("[data-preset]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll("[data-preset]").forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          const p = btn.getAttribute("data-preset");
+          if (p === "NOMINAL") {
+            document.getElementById("g5-wage").value = 8581000;
+            document.getElementById("g5-wh").value = 3271;
+            document.getElementById("g5-temp").value = 54;
+            document.getElementById("g5-torque").value = 1825;
+          } else if (p === "THERMAL") {
+            document.getElementById("g5-wage").value = 8100000;
+            document.getElementById("g5-wh").value = 3900;
+            document.getElementById("g5-temp").value = 78;
+            document.getElementById("g5-torque").value = 3800;
+          } else if (p === "LOW_WAGE") {
+            document.getElementById("g5-wage").value = 4300000;
+            document.getElementById("g5-wh").value = 3600;
+            document.getElementById("g5-temp").value = 58;
+            document.getElementById("g5-torque").value = 2100;
+          } else if (p === "ZOMBIE") {
+            document.getElementById("g5-wage").value = 3600000;
+            document.getElementById("g5-wh").value = 4400;
+            document.getElementById("g5-temp").value = 84;
+            document.getElementById("g5-torque").value = 4400;
+          }
+          updateSliderPreview();
+        });
+      });
+
+      document.getElementById("g5-step-1").addEventListener("click", () => stepG5Cycle(1));
+      document.getElementById("g5-step-6").addEventListener("click", () => stepG5Cycle(6));
+      document.getElementById("g5-export").addEventListener("click", () => {
+        g5JsonOpen = !g5JsonOpen;
+        const drawer = document.getElementById("g5-json-drawer");
+        if (!g5JsonOpen) {
+          drawer.classList.add("hidden");
+        } else {
+          const u = g5Fleet.find((item) => item.id === g5SelectedId) || g5Fleet[0];
+          renderAuditExport(u);
+        }
+      });
+      document.getElementById("g5-reset").addEventListener("click", () => {
+        g5Cycle = 1;
+        g5Fleet = JSON.parse(JSON.stringify(SEED_FLEET));
+        g5JsonOpen = false;
+        document.getElementById("g5-json-drawer").classList.add("hidden");
+        initG5History();
+        updateSliderPreview();
+        renderG5();
+      });
+
+      // Individual OpenAPI Endpoint Dispatchers
+      document.getElementById("api-swap-btn").addEventListener("click", () => {
+        const wh = Number(document.getElementById("g5-wh").value);
+        const debit = wh * 1000;
+        const u = g5Fleet.find((item) => item.id === g5SelectedId);
+        const overdraft = u.liq < debit ? debit - u.liq : 0;
+        u.liq = Math.max(0, u.liq - debit);
+        u.ds -= debit;
+        u.swap = debit;
+        u.swapSum += debit;
+        u.whSum += wh;
+        const cls = classifyUnit(u);
+        u.mode = overdraft > 0 ? "SOFT_BANKRUPTCY" : cls.mode;
+        u.zone = overdraft > 0 ? "3 · Plane Breach (Zombie)" : cls.zone;
+        u.zombie = overdraft > 0 || cls.zombie;
+        g5History[u.id].push(u.ds);
+        pushG5Event(
+          overdraft > 0 ? "OVERDRAFT" : "200 OK",
+          "/v1/swaps/settle",
+          u.id,
+          `debited=${fmtInt(debit)} µOPVS (${wh} Wh) · overdraft=${fmtInt(overdraft)} · mode=${u.mode}`,
+          overdraft > 0 ? "c-breach" : "c-energy"
+        );
+        renderG5();
+      });
+
+      document.getElementById("api-task-btn").addEventListener("click", () => {
+        const wage = Number(document.getElementById("g5-wage").value);
+        const temp = Number(document.getElementById("g5-temp").value);
+        const torque = Number(document.getElementById("g5-torque").value);
+        const maint = computeMaintEscrow(torque, temp);
+        const u = g5Fleet.find((item) => item.id === g5SelectedId);
+        const net = wage - maint;
+        u.liq += net;
+        u.ds += net;
+        u.dm = wage - u.swap - maint;
+        u.esc += maint;
+        u.wageSum += wage;
+        u.escSum += maint;
+        const cls = classifyUnit(u);
+        u.mode = cls.mode;
+        u.zone = cls.zone;
+        u.zombie = cls.zombie;
+        g5History[u.id].push(u.ds);
+        pushG5Event(
+          "200 OK",
+          "/v1/tasks/settle",
+          u.id,
+          `wage=+${fmtInt(wage)} · escrow=${fmtInt(maint)} · ΔM=${u.dm >= 0 ? "+" : ""}${fmtInt(u.dm)} µOPVS`,
+          "c-nominal"
+        );
+        renderG5();
+      });
+
+      document.getElementById("api-m2m-btn").addEventListener("click", () => {
+        const sender = g5Fleet.find((item) => item.id === "wlt_unit_01");
+        const target = g5Fleet.find((item) => item.id === g5SelectedId);
+        const amt = 1500000;
+        if (target.id === sender.id) {
+          pushG5Event("422 ERR", "/v1/m2m/transfer", target.id, "SELF_TRANSFER_REJECTED · choose another target wallet", "c-caution");
+          renderG5();
+          return;
+        }
+        if (target.zombie || target.mode === "SOFT_BANKRUPTCY") {
+          pushG5Event("422 LOCK", "/v1/m2m/transfer", target.id, "ZOMBIE_HELIX_INBOUND_REVOKED · transfer blocked by Supervisor", "c-breach");
+          renderG5();
+          return;
+        }
+        sender.liq = Math.max(0, sender.liq - amt);
+        sender.m2mSum -= amt;
+        target.liq += amt;
+        target.ds += amt;
+        target.m2mSum += amt;
+        const cls = classifyUnit(target);
+        target.mode = cls.mode;
+        target.zone = cls.zone;
+        g5History[target.id].push(target.ds);
+        pushG5Event("200 OK", "/v1/m2m/transfer", target.id, `SUBCONTRACT +1 500 000 µOPVS from wlt_unit_01`, "c-caution");
+        renderG5();
+      });
+
+      document.getElementById("api-tip-btn").addEventListener("click", () => {
+        const tip = 250000;
+        const u = g5Fleet.find((item) => item.id === g5SelectedId);
+        u.liq += tip;
+        u.ds += tip;
+        u.tipSum += tip;
+        const cls = classifyUnit(u);
+        u.mode = cls.mode;
+        u.zone = cls.zone;
+        u.zombie = cls.zombie;
+        g5History[u.id].push(u.ds);
+        pushG5Event("200 OK", `/v1/wallets/${u.id}/tip`, u.id, `+250 000 µOPVS (EDGE_CASE_RECOVERY · op_tech_07)`, "c-nominal");
+        renderG5();
+      });
+
+      function applyI18n() {
+        document.documentElement.lang = lang;
+        document.querySelectorAll("[data-i18n]").forEach((el) => {
+          const k = el.getAttribute("data-i18n");
+          if (I18N[lang][k]) {
+            if (el.id === "ledger-inspector" && selectedWalletId) return;
+            el.textContent = I18N[lang][k];
+          }
+        });
+        document.getElementById("lang-toggle").textContent = lang === "en" ? "FR" : "EN";
+      }
+
+      document.getElementById("lang-toggle").addEventListener("click", () => {
+        lang = lang === "en" ? "fr" : "en";
+        applyI18n();
+      });
+
+      initG5History();
+      updateSliderPreview();
       applyI18n();
       render();
+      renderG5();
     })();
   </script>
 </body>
