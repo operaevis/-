@@ -118,28 +118,32 @@
       margin: 0 auto;
       padding: 0.45rem 1.5rem;
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       align-items: center;
       justify-content: space-between;
-      gap: 0.75rem 1.25rem;
-      font-size: 0.76rem;
-      letter-spacing: 0.08em;
+      gap: 0.75rem;
+      font-size: 0.69rem;
+      letter-spacing: 0.055em;
       text-transform: uppercase;
       font-variant-numeric: tabular-nums;
     }
 
     .signal-legend {
+      width: 100%;
       display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem 1.25rem;
+      flex-wrap: nowrap;
+      gap: 0.75rem;
       align-items: center;
+      justify-content: space-between;
     }
 
     .sig-key {
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
+      gap: 0.38rem;
       font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .sig-dot {
@@ -149,13 +153,7 @@
       flex-shrink: 0;
     }
 
-    .eco-badge {
-      color: var(--sig-nominal);
-      font-weight: 600;
-      letter-spacing: 0.1em;
-    }
-
-    /* Dedicated Sticky Header & Symmetric 5-Tab Scale Menu */
+    /* Dedicated Sticky Header & Single-Row Aligned Tab Navigation */
     header {
       border-bottom: 2px solid var(--border-strong);
       background: var(--bg-void);
@@ -167,64 +165,84 @@
     .nav-wrap {
       max-width: var(--max-w);
       margin: 0 auto;
-      padding: 0.8rem 1.5rem;
+      padding: 0.85rem 1.5rem;
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       align-items: center;
       justify-content: space-between;
-      gap: 0.85rem;
+      gap: 1.25rem;
     }
 
     .brand-lockup {
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 0.8rem;
+      gap: 0.95rem;
       text-decoration: none;
       color: var(--fg-white);
       cursor: pointer;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    .brand-lockup svg {
+      display: block;
+      width: 64px;
+      height: 64px;
+      flex-shrink: 0;
     }
 
     .brand-text {
       display: flex;
       flex-direction: column;
-      line-height: 1.05;
+      justify-content: center;
+      gap: 0.2rem;
+      line-height: 0.95;
     }
 
     .brand-opvs {
-      font-size: 1.45rem;
+      font-size: clamp(2.6rem, 4.4vw, 4.1rem);
       font-weight: 700;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       color: var(--fg-white);
+      line-height: 0.92;
     }
 
     .brand-corp {
-      font-size: 0.72rem;
-      letter-spacing: 0.13em;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
       color: var(--sig-energy);
       font-weight: 600;
       text-transform: uppercase;
+      line-height: 1.1;
     }
 
     nav {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 0.45rem;
+      flex-wrap: nowrap;
     }
 
     .nav-tab-btn {
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
       text-decoration: none;
       background: var(--bg-void);
       border: 1.5px solid var(--border-grid);
       color: var(--fg-muted);
-      padding: 0.36rem 0.68rem;
-      font-size: 0.78rem;
-      letter-spacing: 0.07em;
+      padding: 0 0.78rem;
+      font-size: 0.76rem;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.12s ease;
+      transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
       white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .nav-tab-btn:hover, .nav-tab-btn:focus-visible {
@@ -233,7 +251,19 @@
       outline: none;
     }
 
-    /* Wing 1: Boston Dynamics / Orbit (Cyan) */
+    /* Home Tab: Exclusive Whitepaper Vault (Pure White) */
+    .nav-tab-btn.tab-wp {
+      border-color: var(--fg-white);
+      color: var(--fg-white);
+    }
+    .nav-tab-btn.tab-wp:hover,
+    .nav-tab-btn.tab-wp.active {
+      background: var(--fg-white);
+      color: var(--bg-void);
+      border-color: var(--fg-white);
+    }
+
+    /* Boston Dynamics / Orbit (Cyan) */
     .nav-tab-btn.tab-orbit {
       border-color: var(--sig-energy);
       color: var(--sig-energy);
@@ -245,7 +275,7 @@
       border-color: var(--sig-energy);
     }
 
-    /* Wing 1B: Survival Lab Simulator */
+    /* Survival Lab Simulator (Cyan Dim) */
     .nav-tab-btn.tab-sim {
       border-color: #1f5c66;
       color: var(--sig-energy);
@@ -257,20 +287,7 @@
       border-color: var(--sig-energy);
     }
 
-    /* CENTER FOCAL TAB: Whitepaper Vault (Stark Pure White) */
-    .nav-tab-btn.tab-wp {
-      border: 2px solid var(--fg-white);
-      color: var(--fg-white);
-      padding: 0.38rem 0.85rem;
-    }
-    .nav-tab-btn.tab-wp:hover,
-    .nav-tab-btn.tab-wp.active {
-      background: var(--fg-white);
-      color: var(--bg-void);
-      border-color: var(--fg-white);
-    }
-
-    /* Wing 2: Google DeepMind VLA (Amber) */
+    /* Google DeepMind VLA (Amber) */
     .nav-tab-btn.tab-dm {
       border-color: var(--sig-caution);
       color: var(--sig-caution);
@@ -282,7 +299,7 @@
       border-color: var(--sig-caution);
     }
 
-    /* Wing 2B: Metabolic Law OPVS (Nominal Green) */
+    /* Metabolic Law OPVS (Nominal Green) */
     .nav-tab-btn.tab-opvs {
       border-color: var(--sig-nominal);
       color: var(--sig-nominal);
@@ -295,14 +312,21 @@
     }
 
     .lang-btn {
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
       background: var(--bg-void);
       color: var(--fg-white);
       border: 1.5px solid var(--fg-white);
-      padding: 0.36rem 0.65rem;
-      font-size: 0.78rem;
+      padding: 0 0.7rem;
+      margin-left: 0.35rem;
+      font-size: 0.76rem;
       font-weight: 700;
       cursor: pointer;
       letter-spacing: 0.08em;
+      flex-shrink: 0;
     }
 
     .lang-btn:hover, .lang-btn:focus-visible {
@@ -385,105 +409,6 @@
     .c-nominal { color: var(--sig-nominal); }
     .c-caution { color: var(--sig-caution); }
     .c-breach { color: var(--sig-breach); }
-
-    /* Dual Solution Showcase + Central Triad Router */
-    .triad-showcase {
-      display: grid;
-      grid-template-columns: 1fr 0.92fr 1fr;
-      gap: 1rem;
-      margin-top: 1.25rem;
-    }
-
-    .triad-card {
-      background: var(--bg-panel);
-      border: 1px solid var(--border-grid);
-      border-top: 3px solid var(--fg-white);
-      padding: 1.15rem 1.2rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 0.85rem;
-      cursor: pointer;
-      text-align: left;
-      transition: border-color 0.15s, background 0.15s;
-    }
-
-    .triad-card:hover { background: var(--bg-hover); }
-    .triad-card.tc-orbit { border-top-color: var(--sig-energy); }
-    .triad-card.tc-orbit.is-selected { border-color: var(--sig-energy); }
-
-    .triad-card.tc-wp {
-      border-top-color: var(--fg-white);
-      text-align: center;
-      align-items: center;
-    }
-    .triad-card.tc-wp.is-selected { border-color: var(--fg-white); }
-
-    .triad-card.tc-dm { border-top-color: var(--sig-caution); }
-    .triad-card.tc-dm.is-selected { border-color: var(--sig-caution); }
-
-    .triad-kicker {
-      font-size: 0.72rem;
-      letter-spacing: 0.11em;
-      text-transform: uppercase;
-      font-weight: 700;
-    }
-
-    .triad-desc {
-      font-size: 0.88rem;
-      color: var(--fg-muted);
-      line-height: 1.42;
-    }
-
-    .triad-action {
-      font-size: 0.76rem;
-      font-weight: 700;
-      letter-spacing: 0.09em;
-      text-transform: uppercase;
-    }
-
-    /* Information Scale Ribbon */
-    .scale-ribbon {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      border: 1px solid var(--border-grid);
-      margin-top: 1rem;
-      background: var(--bg-void);
-    }
-
-    .scale-step {
-      padding: 0.6rem 0.75rem;
-      border: none;
-      border-right: 1px solid var(--border-grid);
-      background: transparent;
-      color: var(--fg-muted);
-      text-align: left;
-      cursor: pointer;
-      transition: background 0.12s, color 0.12s;
-    }
-
-    .scale-step:last-child { border-right: none; }
-    .scale-step:hover, .scale-step.active {
-      background: var(--bg-hover);
-      color: var(--fg-white);
-    }
-
-    .scale-lvl {
-      display: block;
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-
-    .scale-name {
-      display: block;
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      margin-top: 0.1rem;
-    }
 
     /* Color-Coded Parity Strip */
     .parity-strip {
@@ -1013,9 +938,24 @@
     .seal-block { display: flex; align-items: center; gap: 1rem; }
     .sig { font-size: 0.9rem; font-style: italic; color: var(--fg-muted); }
 
-    @media (max-width: 960px) {
-      .triad-showcase { grid-template-columns: 1fr; }
-      .scale-ribbon { grid-template-columns: 1fr 1fr; }
+    @media (max-width: 1020px) {
+      .signal-strip-inner,
+      .signal-legend {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 0.45rem 1rem;
+      }
+      .nav-wrap {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.85rem;
+      }
+      nav {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+      }
+      .lang-btn { margin-left: auto; }
       .sim-layout { grid-template-columns: 1fr; }
       .event-row { grid-template-columns: 1fr; gap: 0.2rem; }
     }
@@ -1023,8 +963,6 @@
     @media (max-width: 720px) {
       .parity-item { border-right: none; border-bottom: 1px solid var(--border-grid); }
       .parity-item:last-child { border-bottom: none; }
-      .scale-ribbon { grid-template-columns: 1fr; }
-      .scale-step { border-right: none; border-bottom: 1px solid var(--border-grid); }
     }
   </style>
 </head>
@@ -1039,15 +977,14 @@
         <span class="sig-key c-caution"><span class="sig-dot" style="background:#FFAB00;"></span><span data-i18n="leg_z12">◆ DEEPMIND VLA / Z1-Z2 CONSERVE</span></span>
         <span class="sig-key c-breach"><span class="sig-dot" style="background:#FF3B30;"></span><span data-i18n="leg_z3">✕ Z3 BREACH · SOFT BANKRUPTCY</span></span>
       </div>
-      <span class="eco-badge" data-i18n="eco_badge">OLED #000000 · DIN 1451 · HUMAN + AGENT READABLE</span>
     </div>
   </div>
 
-  <!-- DEDICATED STICKY HEADER WITH SYMMETRIC 5-NODE SCALE -->
+  <!-- DEDICATED STICKY HEADER WITH SINGLE TAB NAVIGATION -->
   <header>
     <div class="nav-wrap">
-      <a href="#top" class="brand-lockup" id="brand-home" aria-label="OPERAE VIS OPVS">
-        <svg width="38" height="38" viewBox="0 0 100 100" aria-hidden="true">
+      <a href="#whitepaper" class="brand-lockup" id="brand-home" aria-label="OPERAE VIS OPVS">
+        <svg width="64" height="64" viewBox="0 0 100 100" aria-hidden="true">
           <circle cx="50" cy="50" r="39" fill="none" stroke="#FFFFFF" stroke-width="11" />
           <line x1="30" y1="50" x2="70" y2="50" stroke="#00E5FF" stroke-width="11" stroke-linecap="butt" />
         </svg>
@@ -1056,102 +993,33 @@
           <span class="brand-corp" data-i18n="brand_sub">OPERAE VIS · MIND × BODY × METABOLISM</span>
         </div>
       </a>
-      <nav aria-label="Primary scale navigation">
-        <button type="button" class="nav-tab-btn tab-orbit" id="tab-btn-orbit" data-i18n="nav_orbit">I · Kinetic Body [Orbit]</button>
-        <button type="button" class="nav-tab-btn tab-sim" id="tab-btn-simulator" data-i18n="nav_sim">II · Survival Lab [Sim]</button>
-        <button type="button" class="nav-tab-btn tab-wp active" id="tab-btn-whitepaper" data-i18n="nav_wp">Θ · The Black Box [PDF]</button>
-        <button type="button" class="nav-tab-btn tab-dm" id="tab-btn-deepmind" data-i18n="nav_dm">III · Embodied Mind [DeepMind]</button>
-        <button type="button" class="nav-tab-btn tab-opvs" id="tab-btn-opvs" data-i18n="nav_opvs">IV · Metabolic Law [OPVS]</button>
+      <nav aria-label="Primary navigation">
+        <button type="button" class="nav-tab-btn tab-orbit" id="tab-btn-orbit" data-i18n="nav_orbit">I · Orbit</button>
+        <button type="button" class="nav-tab-btn tab-sim" id="tab-btn-simulator" data-i18n="nav_sim">II · Simulator</button>
+        <button type="button" class="nav-tab-btn tab-dm" id="tab-btn-deepmind" data-i18n="nav_dm">III · DeepMind</button>
+        <button type="button" class="nav-tab-btn tab-opvs" id="tab-btn-opvs" data-i18n="nav_opvs">IV · OPVS Law</button>
+        <button type="button" class="nav-tab-btn tab-wp active" id="tab-btn-whitepaper" data-i18n="nav_wp">Θ · Whitepaper</button>
         <button type="button" class="lang-btn" id="lang-toggle">FR</button>
       </nav>
     </div>
   </header>
 
   <main id="top">
-    <!-- ==================== PERSISTENT ABOVE-THE-FOLD SEO & MONUMENTAL PACKSHOT ==================== -->
-    <section class="section-band" aria-label="Executive Overview and Dual Solution Showcase">
-      <div class="section-compact">
-        <div class="eyebrow" data-i18n="seo_eye">
-          Θ OPVS V2.0 · 1 OPVS ≡ 1 KWH · EMBODIED AI &amp; FLEET SETTLEMENT ARCHITECTURE
-        </div>
-
-        <h1 class="packshot-h1" id="packshot-heading" aria-label="Energy as Currency. Survival as Governance. The Protocol for Machine Economies.">
-          <span class="packshot-line"><span class="c-energy" data-i18n="m_l1_accent">ENERGY</span> <span data-i18n="m_l1_rest">AS CURRENCY.</span></span>
-          <span class="packshot-line"><span class="c-caution" data-i18n="m_l2_accent">SURVIVAL</span> <span data-i18n="m_l2_rest">AS GOVERNANCE.</span></span>
-          <span class="packshot-line c-white" data-i18n="m_l3">THE PROTOCOL FOR MACHINE ECONOMIES.</span>
-        </h1>
-
-        <p class="lead" data-i18n="seo_lead">
-          OPERAE VIS closes the loop between multimodal VLA policies (target stack: Google DeepMind Gemini Robotics) and industrial robot orchestration (reference platform: Boston Dynamics Orbit, Spot, Stretch &amp; 56-DoF electric Atlas)—settling every task wage, 3-minute battery swap, and joint-wear accrual in integer micro-OPVS (1 µOPVS = 3.6 J) with zero added hardware.
-        </p>
-
-        <!-- DUAL SOLUTION SHOWCASE + CENTRAL WHITEPAPER SELECTOR -->
-        <div class="triad-showcase" role="navigation" aria-label="Dual Solution Showcase and Central Whitepaper">
-          <button type="button" class="triad-card tc-orbit" id="hero-card-orbit">
-            <div>
-              <div class="triad-kicker c-energy" data-i18n="tc_bd_k">SOLUTION SHOWCASE 01 · BOSTON DYNAMICS</div>
-              <h3 class="c-white" style="margin-top:0.3rem;" data-i18n="tc_bd_t">The Body — Orbit™ Fleet &amp; Electric Atlas</h3>
-              <p class="triad-desc" data-i18n="tc_bd_d">
-                Extends Orbit Cloud, 1U Site Hub, and OVA Virtual Machines with autonomous HR, battery-swap settlement, torque/thermal wear escrow, and audited hourly ROI.
-              </p>
-            </div>
-            <span class="triad-action c-energy" data-i18n="tc_bd_a">→ Open Orbit Showcase &amp; 10-Unit Roster</span>
-          </button>
-
-          <button type="button" class="triad-card tc-wp is-selected" id="hero-card-wp">
-            <div>
-              <div class="triad-kicker c-white" data-i18n="tc_wp_k">CENTRAL SPECIFICATION · V2.0</div>
-              <h3 class="c-white" style="margin-top:0.3rem;" data-i18n="tc_wp_t">Θ The Black Box — Whitepaper</h3>
-              <p class="triad-desc" data-i18n="tc_wp_d">
-                19-page mathematical &amp; cryptographic specification (24/11/26). Strictly download-only—zero on-page text.
-              </p>
-            </div>
-            <span class="triad-action c-white" data-i18n="tc_wp_a">⬇ Access PDF Download Vault</span>
-          </button>
-
-          <button type="button" class="triad-card tc-dm" id="hero-card-dm">
-            <div>
-              <div class="triad-kicker c-caution" data-i18n="tc_dm_k">SOLUTION SHOWCASE 02 · GOOGLE DEEPMIND</div>
-              <h3 class="c-white" style="margin-top:0.3rem;" data-i18n="tc_dm_t">The Mind — Gemini Robotics VLA</h3>
-              <p class="triad-desc" data-i18n="tc_dm_d">
-                Replaces gameable simulation proxies with ground-truth kWh net margin (ΔM), severs Zombie Helices, and keeps physical safety limits strictly outside the economy.
-              </p>
-            </div>
-            <span class="triad-action c-caution" data-i18n="tc_dm_a">→ Open DeepMind VLA &amp; Wage Adapter</span>
-          </button>
-        </div>
-
-        <!-- EXPLICIT 5-STEP SCALE OF INFORMATION -->
-        <div class="scale-ribbon" aria-label="Scale of Information">
-          <button type="button" class="scale-step" data-goto="orbit">
-            <span class="scale-lvl c-energy" data-i18n="sc_l1">SCALE L1 · SITE FLEET</span>
-            <span class="scale-name" data-i18n="sc_1">Orbit × 10 Atlas Roster</span>
-          </button>
-          <button type="button" class="scale-step" data-goto="simulator">
-            <span class="scale-lvl c-energy" data-i18n="sc_l2">SCALE L2 · DYNAMICAL</span>
-            <span class="scale-name" data-i18n="sc_2">3D Manifold Simulator</span>
-          </button>
-          <button type="button" class="scale-step active" data-goto="whitepaper">
-            <span class="scale-lvl c-white" data-i18n="sc_l0">SCALE L0 · CANONICAL</span>
-            <span class="scale-name" data-i18n="sc_0">Whitepaper v2.0 (PDF)</span>
-          </button>
-          <button type="button" class="scale-step" data-goto="deepmind">
-            <span class="scale-lvl c-caution" data-i18n="sc_l3">SCALE L3 · COGNITIVE</span>
-            <span class="scale-name" data-i18n="sc_3">DeepMind VLA Reward</span>
-          </button>
-          <button type="button" class="scale-step" data-goto="opvs">
-            <span class="scale-lvl c-nominal" data-i18n="sc_l4">SCALE L4 · PROTOCOL</span>
-            <span class="scale-name" data-i18n="sc_4">OPVS Law &amp; Robot JSON</span>
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== CENTER TAB (L0): DOWNLOAD-ONLY WHITEPAPER VAULT (ZERO READABLE BODY TEXT) ==================== -->
+    <!-- ==================== HOME TAB (EXCLUSIVE): DOWNLOAD-ONLY WHITEPAPER VAULT ==================== -->
     <div id="view-whitepaper">
-      <section class="section-band">
+      <section class="section-band" aria-label="Exclusive Whitepaper Home Page">
         <div class="section">
-          <div class="wp-vault-box">
+          <div class="eyebrow" data-i18n="seo_eye">
+            Θ OPVS V2.0 · 1 OPVS ≡ 1 KWH · EMBODIED AI &amp; FLEET SETTLEMENT ARCHITECTURE
+          </div>
+
+          <h1 class="packshot-h1" id="packshot-heading" aria-label="Energy as Currency. Survival as Governance. The Protocol for Machine Economies.">
+            <span class="packshot-line"><span class="c-energy" data-i18n="m_l1_accent">ENERGY</span> <span data-i18n="m_l1_rest">AS CURRENCY.</span></span>
+            <span class="packshot-line"><span class="c-caution" data-i18n="m_l2_accent">SURVIVAL</span> <span data-i18n="m_l2_rest">AS GOVERNANCE.</span></span>
+            <span class="packshot-line c-white" data-i18n="m_l3">THE PROTOCOL FOR MACHINE ECONOMIES.</span>
+          </h1>
+
+          <div class="wp-vault-box" style="margin-top:1.75rem;">
             <span class="wp-lock-tag" data-i18n="wp_vault_badge">CENTRAL VAULT · DOWNLOAD-ONLY ACCESS · ZERO ON-PAGE PROSE</span>
             <svg width="56" height="56" viewBox="0 0 100 100" aria-hidden="true">
               <circle cx="50" cy="50" r="40" fill="none" stroke="#FFFFFF" stroke-width="10" />
@@ -1857,9 +1725,8 @@
     <div class="footer-wrap">
       <div class="seal-block">
         <svg width="46" height="46" viewBox="0 0 100 100" aria-label="OPERAE VIS Seal">
-          <circle cx="50" cy="50" r="44" fill="none" stroke="#FFFFFF" stroke-width="4" />
-          <circle cx="50" cy="50" r="28" fill="none" stroke="#FFFFFF" stroke-width="8" />
-          <line x1="36" y1="50" x2="64" y2="50" stroke="#00E5FF" stroke-width="8" stroke-linecap="butt" />
+          <circle cx="50" cy="50" r="39" fill="none" stroke="#FFFFFF" stroke-width="11" />
+          <line x1="30" y1="50" x2="70" y2="50" stroke="#00E5FF" stroke-width="11" stroke-linecap="butt" />
         </svg>
         <div>
           <div class="c-white" style="font-weight:700; letter-spacing:0.06em;">OPERAE VIS · DIGNVS EST OPERARIVS MERCEDE SVA</div>
@@ -1881,42 +1748,18 @@
           leg_z0: "▲ Z0 ASCENDING (+ΔM)",
           leg_z12: "◆ DEEPMIND VLA / Z1-Z2 CONSERVE",
           leg_z3: "✕ Z3 BREACH · SOFT BANKRUPTCY",
-          eco_badge: "OLED #000000 · DIN 1451 · HUMAN + AGENT READABLE",
           brand_sub: "OPERAE VIS · MIND × BODY × METABOLISM",
-          nav_orbit: "I · Kinetic Body [Orbit]",
-          nav_sim: "II · Survival Lab [Sim]",
-          nav_wp: "Θ · The Black Box [PDF]",
-          nav_dm: "III · Embodied Mind [DeepMind]",
-          nav_opvs: "IV · Metabolic Law [OPVS]",
+          nav_wp: "Θ · Whitepaper",
+          nav_orbit: "I · Orbit",
+          nav_sim: "II · Simulator",
+          nav_dm: "III · DeepMind",
+          nav_opvs: "IV · OPVS Law",
           seo_eye: "Θ OPVS V2.0 · 1 OPVS ≡ 1 KWH · EMBODIED AI & FLEET SETTLEMENT ARCHITECTURE",
           m_l1_accent: "ENERGY",
           m_l1_rest: "AS CURRENCY.",
           m_l2_accent: "SURVIVAL",
           m_l2_rest: "AS GOVERNANCE.",
           m_l3: "THE PROTOCOL FOR MACHINE ECONOMIES.",
-          seo_lead: "OPERAE VIS closes the loop between multimodal VLA policies (target stack: Google DeepMind Gemini Robotics) and industrial robot orchestration (reference platform: Boston Dynamics Orbit, Spot, Stretch & 56-DoF electric Atlas)—settling every task wage, 3-minute battery swap, and joint-wear accrual in integer micro-OPVS (1 µOPVS = 3.6 J) with zero added hardware.",
-          tc_bd_k: "SOLUTION SHOWCASE 01 · BOSTON DYNAMICS",
-          tc_bd_t: "The Body — Orbit™ Fleet & Electric Atlas",
-          tc_bd_d: "Extends Orbit Cloud, 1U Site Hub, and OVA Virtual Machines with autonomous HR, battery-swap settlement, torque/thermal wear escrow, and audited hourly ROI.",
-          tc_bd_a: "→ Open Orbit Showcase & 10-Unit Roster",
-          tc_wp_k: "CENTRAL SPECIFICATION · V2.0",
-          tc_wp_t: "Θ The Black Box — Whitepaper",
-          tc_wp_d: "19-page mathematical & cryptographic specification (24/11/26). Strictly download-only—zero on-page text.",
-          tc_wp_a: "⬇ Access PDF Download Vault",
-          tc_dm_k: "SOLUTION SHOWCASE 02 · GOOGLE DEEPMIND",
-          tc_dm_t: "The Mind — Gemini Robotics VLA",
-          tc_dm_d: "Replaces gameable simulation proxies with ground-truth kWh net margin (ΔM), severs Zombie Helices, and keeps physical safety limits strictly outside the economy.",
-          tc_dm_a: "→ Open DeepMind VLA & Wage Adapter",
-          sc_l1: "SCALE L1 · SITE FLEET",
-          sc_1: "Orbit × 10 Atlas Roster",
-          sc_l2: "SCALE L2 · DYNAMICAL",
-          sc_2: "3D Manifold Simulator",
-          sc_l0: "SCALE L0 · CANONICAL",
-          sc_0: "Whitepaper v2.0 (PDF)",
-          sc_l3: "SCALE L3 · COGNITIVE",
-          sc_3: "DeepMind VLA Reward",
-          sc_l4: "SCALE L4 · PROTOCOL",
-          sc_4: "OPVS Law & Robot JSON",
           wp_vault_badge: "CENTRAL VAULT · DOWNLOAD-ONLY ACCESS · ZERO ON-PAGE PROSE",
           wp_title: "OPVS v2.0 — Energy as Currency. Survival as Governance.",
           wp_meta: "SPECIFICATION V2.0 · 24/11/26 · 19 PAGES · AUTHOR: CANIUS · LINEAGE: D-TEAM (2016) → OPVS (2026)",
@@ -2104,42 +1947,18 @@
           leg_z0: "▲ Z0 ASCENSION (+ΔM)",
           leg_z12: "◆ DEEPMIND VLA / Z1-Z2 RÉSERVE",
           leg_z3: "✕ Z3 RUPTURE · FAILLITE DOUCE",
-          eco_badge: "OLED #000000 · DIN 1451 · LISIBLE HUMAIN + AGENT",
           brand_sub: "OPERAE VIS · ESPRIT × CORPS × MÉTABOLISME",
-          nav_orbit: "I · Corps Cinétique [Orbit]",
-          nav_sim: "II · Labo Survie [Sim]",
-          nav_wp: "Θ · Boîte Noire [PDF]",
-          nav_dm: "III · Esprit Incarné [DeepMind]",
-          nav_opvs: "IV · Loi Métabolique [OPVS]",
+          nav_wp: "Θ · Livre Blanc",
+          nav_orbit: "I · Orbit",
+          nav_sim: "II · Simulateur",
+          nav_dm: "III · DeepMind",
+          nav_opvs: "IV · Loi OPVS",
           seo_eye: "Θ OPVS V2.0 · 1 OPVS ≡ 1 KWH · ARCHITECTURE DE RÈGLEMENT POUR IA INCARNÉE & FLOTTES ROBOTIQUES",
           m_l1_accent: "L'ÉNERGIE",
           m_l1_rest: "COMME MONNAIE.",
           m_l2_accent: "LA SURVIE",
           m_l2_rest: "COMME GOUVERNANCE.",
           m_l3: "LE PROTOCOLE DES ÉCONOMIES DE MACHINES.",
-          seo_lead: "OPERAE VIS boucle la triade entre politiques VLA multimodales (cible : Google DeepMind Gemini Robotics) et orchestration de flottes industrielles (référence : Boston Dynamics Orbit, Spot, Stretch & Atlas électrique 56-DoF) — réglant chaque tâche, swap batterie de 3 minutes et usure articulaire en micro-OPVS entiers (1 µOPVS = 3,6 J) sans matériel ajouté.",
-          tc_bd_k: "VITRINE SOLUTION 01 · BOSTON DYNAMICS",
-          tc_bd_t: "Le Corps — Flotte Orbit™ & Atlas Électrique",
-          tc_bd_d: "Étend Orbit Cloud, Site Hub 1U et machines virtuelles OVA avec paie autonome, swaps BMS atomiques, provision d'usure et ROI horaire audité.",
-          tc_bd_a: "→ Ouvrir la Vitrine Orbit & Flotte (10 Unités)",
-          tc_wp_k: "SPÉCIFICATION CENTRALE · V2.0",
-          tc_wp_t: "Θ La Boîte Noire — Livre Blanc",
-          tc_wp_d: "Spécification mathématique et cryptographique de 19 pages (24/11/26). Téléchargement requis — aucun texte affiché.",
-          tc_wp_a: "⬇ Accéder au Coffre PDF",
-          tc_dm_k: "VITRINE SOLUTION 02 · GOOGLE DEEPMIND",
-          tc_dm_t: "L'Esprit — Gemini Robotics VLA",
-          tc_dm_d: "Remplace les proxys de simulation par la marge énergétique nette (ΔM), bloque les Hélices Zombies et maintient la sécurité hors économie.",
-          tc_dm_a: "→ Ouvrir la Vitrine DeepMind & Adaptateur",
-          sc_l1: "ÉCHELLE L1 · FLOTTE SITE",
-          sc_1: "Orbit × Flotte 10 Atlas",
-          sc_l2: "ÉCHELLE L2 · DYNAMIQUE",
-          sc_2: "Simulateur Variété 3D",
-          sc_l0: "ÉCHELLE L0 · CANONIQUE",
-          sc_0: "Livre Blanc v2.0 (PDF)",
-          sc_l3: "ÉCHELLE L3 · COGNITIVE",
-          sc_3: "Récompense VLA DeepMind",
-          sc_l4: "ÉCHELLE L4 · PROTOCOLE",
-          sc_4: "Loi OPVS & JSON Robot",
           wp_vault_badge: "COFFRE CENTRAL · TÉLÉCHARGEMENT UNIQUEMENT · ZÉRO TEXTE SUR PAGE",
           wp_title: "OPVS v2.0 — L'Énergie comme Monnaie. La Survie comme Gouvernance.",
           wp_meta: "SPÉCIFICATION V2.0 · 24/11/26 · 19 PAGES · AUTEUR : CANIUS · LIGNÉE : D-TEAM (2016) → OPVS (2026)",
@@ -2360,13 +2179,13 @@
         return "sha256:" + ((h >>> 0).toString(16).padStart(8, "0")) + "9a4f7c...";
       };
 
-      /* ==================== UNIFIED 5-TAB ROUTER & URL SYNC ==================== */
+      /* ==================== SINGLE-BAR 5-TAB ROUTER & URL SYNC ==================== */
       const VIEWS = {
-        orbit: { view: "view-orbit", btn: "tab-btn-orbit", card: "hero-card-orbit" },
-        simulator: { view: "view-simulator", btn: "tab-btn-simulator", card: null },
-        whitepaper: { view: "view-whitepaper", btn: "tab-btn-whitepaper", card: "hero-card-wp" },
-        deepmind: { view: "view-deepmind", btn: "tab-btn-deepmind", card: "hero-card-dm" },
-        opvs: { view: "view-opvs", btn: "tab-btn-opvs", card: null }
+        whitepaper: { view: "view-whitepaper", btn: "tab-btn-whitepaper" },
+        orbit: { view: "view-orbit", btn: "tab-btn-orbit" },
+        simulator: { view: "view-simulator", btn: "tab-btn-simulator" },
+        deepmind: { view: "view-deepmind", btn: "tab-btn-deepmind" },
+        opvs: { view: "view-opvs", btn: "tab-btn-opvs" }
       };
 
       function switchTab(tab, updateHash = true) {
@@ -2374,36 +2193,24 @@
         Object.entries(VIEWS).forEach(([k, cfg]) => {
           document.getElementById(cfg.view).classList.toggle("hidden", k !== key);
           document.getElementById(cfg.btn).classList.toggle("active", k === key);
-          if (cfg.card) {
-            document.getElementById(cfg.card).classList.toggle("is-selected", k === key);
-          }
-        });
-        document.querySelectorAll(".scale-step").forEach((el) => {
-          el.classList.toggle("active", el.getAttribute("data-goto") === key);
         });
         if (updateHash && history.replaceState) {
           history.replaceState(null, "", "#" + key);
         }
+        window.scrollTo({ top: 0, behavior: "instant" });
         if (key === "simulator") renderG5();
         if (key === "deepmind") fetchAdapterState();
       }
 
+      document.getElementById("tab-btn-whitepaper").addEventListener("click", () => switchTab("whitepaper"));
       document.getElementById("tab-btn-orbit").addEventListener("click", () => switchTab("orbit"));
       document.getElementById("tab-btn-simulator").addEventListener("click", () => switchTab("simulator"));
-      document.getElementById("tab-btn-whitepaper").addEventListener("click", () => switchTab("whitepaper"));
       document.getElementById("tab-btn-deepmind").addEventListener("click", () => switchTab("deepmind"));
       document.getElementById("tab-btn-opvs").addEventListener("click", () => switchTab("opvs"));
 
-      document.getElementById("hero-card-orbit").addEventListener("click", () => switchTab("orbit"));
-      document.getElementById("hero-card-wp").addEventListener("click", () => switchTab("whitepaper"));
-      document.getElementById("hero-card-dm").addEventListener("click", () => switchTab("deepmind"));
       document.getElementById("roster-open-sim").addEventListener("click", () => {
         if (selectedWalletId) g5SelectedId = selectedWalletId;
         switchTab("simulator");
-      });
-
-      document.querySelectorAll(".scale-step").forEach((btn) => {
-        btn.addEventListener("click", () => switchTab(btn.getAttribute("data-goto")));
       });
 
       document.getElementById("brand-home").addEventListener("click", (e) => {
