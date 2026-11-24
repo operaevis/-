@@ -227,7 +227,21 @@
       font-weight: 700;
     }
 
-    .nav-tab-btn.active:not(.tab-sim) {
+    .nav-tab-btn.tab-dm {
+      border: 1.5px solid var(--sig-caution);
+      color: var(--sig-caution);
+      padding: 0.32rem 0.7rem;
+    }
+
+    .nav-tab-btn.tab-dm:hover,
+    .nav-tab-btn.tab-dm.active {
+      background: var(--sig-caution);
+      color: var(--bg-void);
+      border-color: var(--sig-caution);
+      font-weight: 700;
+    }
+
+    .nav-tab-btn.active:not(.tab-sim):not(.tab-dm) {
       color: var(--fg-white);
       border-bottom-color: var(--fg-white);
     }
@@ -908,6 +922,43 @@
       }
       .parity-item:last-child { border-bottom: none; }
     }
+
+    .dm-pipeline {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .dm-step {
+      border: 1px solid var(--border-grid);
+      border-top: 3px solid var(--fg-white);
+      background: var(--bg-panel);
+      padding: 0.75rem 0.9rem;
+    }
+
+    .dm-step-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.2rem;
+    }
+
+    .sim-input {
+      width: 100%;
+      background: var(--bg-void);
+      color: var(--fg-white);
+      border: 1.5px solid var(--border-grid);
+      padding: 0.45rem 0.65rem;
+      font-size: 0.86rem;
+      font-weight: 600;
+    }
+
+    .sim-input:focus {
+      border-color: var(--sig-caution);
+      outline: none;
+    }
   </style>
 </head>
 <body>
@@ -943,6 +994,7 @@
         <a href="#pilot" class="overview-anchor" data-i18n="nav_pilot">Pilot</a>
         <a href="#contact" class="overview-anchor" data-i18n="nav_contact">Contact</a>
         <button type="button" class="nav-tab-btn tab-sim" id="tab-btn-simulator" data-i18n="nav_sim">⚡ Simulator</button>
+        <button type="button" class="nav-tab-btn tab-dm" id="tab-btn-deepmind" data-i18n="nav_dm">DeepMind Prep</button>
         <button type="button" class="lang-btn" id="lang-toggle">FR</button>
       </nav>
     </div>
@@ -1335,6 +1387,173 @@
         </div>
       </section>
     </div>
+
+    <!-- ==================== TAB 3: DEEPMIND PREP · ORBIT ↔ AIVI ↔ ATLAS ADAPTER ==================== -->
+    <div id="view-deepmind" class="hidden">
+      <section class="section-band">
+        <div class="section">
+          <div class="eyebrow" style="color:var(--sig-caution);" data-i18n="dm_eye">GOOGLE DEEPMIND PREP · EMBODIED AGENT WAGE ADAPTER</div>
+          <h1 style="font-size:clamp(1.75rem,3.8vw,2.75rem); margin-bottom:0.75rem;" data-i18n="dm_title">Orbit ↔ AIVI-Learning ↔ AtlasWageService → OPVS</h1>
+          <p class="lead" style="margin-bottom:1.25rem;" data-i18n="dm_lead">
+            Live integration sandbox bridging embodied AI learning &amp; adoption events (LearningEvent) through OrbitAiviAdapter and idempotent AtlasWageService into integer µOPVS thermodynamic settlement (1 CREDIT = 0.25 OPVS = 250,000 µOPVS).
+          </p>
+
+          <div class="dm-pipeline">
+            <div class="dm-step" style="border-top-color:var(--sig-energy);">
+              <div class="dm-step-tag c-energy">01 · EVENT SOURCE</div>
+              <div class="c-white" style="font-weight:700;">Orbit / AIVI-Learning</div>
+              <div style="font-size:0.8rem; color:var(--fg-muted);" data-i18n="dm_p1">Bidirectional state sync on every LearningEvent</div>
+            </div>
+            <div class="dm-step" style="border-top-color:var(--sig-caution);">
+              <div class="dm-step-tag c-caution">02 · ADAPTER GATE</div>
+              <div class="c-white" style="font-weight:700;">OrbitAiviAdapter</div>
+              <div style="font-size:0.8rem; color:var(--fg-muted);" data-i18n="dm_p2">Filters agent="atlas" &amp; qualifying actions</div>
+            </div>
+            <div class="dm-step" style="border-top-color:var(--sig-white, #FFFFFF);">
+              <div class="dm-step-tag c-white">03 · IDEMPOTENCY</div>
+              <div class="c-white" style="font-weight:700;">AtlasWageService</div>
+              <div style="font-size:0.8rem; color:var(--fg-muted);" data-i18n="dm_p3">ROUND_HALF_UP wage + _processed_events lock</div>
+            </div>
+            <div class="dm-step" style="border-top-color:var(--sig-nominal);">
+              <div class="dm-step-tag c-nominal">04 · OPVS SETTLEMENT</div>
+              <div class="c-white" style="font-weight:700;">wlt_atlas_01 (µOPVS)</div>
+              <div style="font-size:0.8rem; color:var(--fg-muted);" data-i18n="dm_p4">Credits INT64 µOPVS at 1 OPVS = 1 kWh parity</div>
+            </div>
+          </div>
+
+          <div class="sim-layout">
+            <aside class="sim-panel">
+              <div class="sim-panel-title" style="color:var(--sig-caution);" data-i18n="dm_ctrl_t">LEARNING EVENT DISPATCHER</div>
+
+              <div class="sim-field">
+                <div class="sim-field-head">
+                  <label for="dm-event-id">event_id (Idempotency Key)</label>
+                  <button type="button" class="ctrl-btn" id="dm-new-uuid" style="padding:0.15rem 0.45rem; font-size:0.72rem;" data-i18n="dm_new_id">New ID</button>
+                </div>
+                <input type="text" id="dm-event-id" class="sim-input" value="evt_dm_atlas_001" />
+              </div>
+
+              <div class="sim-field">
+                <div class="sim-field-head">
+                  <label for="dm-source">source (EventSource)</label>
+                </div>
+                <select id="dm-source" class="sim-select">
+                  <option value="aivi_learning">aivi_learning → synced_to_orbit</option>
+                  <option value="orbit">orbit → synced_to_aivi</option>
+                </select>
+              </div>
+
+              <div class="sim-field">
+                <div class="sim-field-head">
+                  <label for="dm-agent">user_or_agent_id</label>
+                </div>
+                <select id="dm-agent" class="sim-select">
+                  <option value="atlas">atlas (Qualifying Embodied Agent)</option>
+                  <option value="unit_07">unit_07 (Non-Atlas — Sync Only)</option>
+                </select>
+              </div>
+
+              <div class="sim-field">
+                <div class="sim-field-head">
+                  <label for="dm-module">module_id</label>
+                </div>
+                <select id="dm-module" class="sim-select">
+                  <option value="mod_bimanual_grasp_v3">mod_bimanual_grasp_v3</option>
+                  <option value="mod_thermal_safe_walk">mod_thermal_safe_walk</option>
+                  <option value="mod_swap_docking_02">mod_swap_docking_02</option>
+                </select>
+              </div>
+
+              <div class="sim-field">
+                <div class="sim-field-head">
+                  <label for="dm-action">action</label>
+                </div>
+                <select id="dm-action" class="sim-select">
+                  <option value="module_completed">module_completed (Qualifying)</option>
+                  <option value="system_adopted">system_adopted (Qualifying)</option>
+                  <option value="assessment_passed">assessment_passed (Qualifying)</option>
+                  <option value="telemetry_heartbeat">telemetry_heartbeat (Non-Qualifying)</option>
+                </select>
+              </div>
+
+              <div class="sim-field">
+                <div class="sim-field-head">
+                  <label for="dm-duration">duration_minutes</label>
+                  <span class="sim-field-val c-energy" id="dm-dur-val">45 min</span>
+                </div>
+                <input type="range" id="dm-duration" class="sim-range" min="0" max="180" step="5" value="45" />
+              </div>
+
+              <div class="sim-field">
+                <div class="sim-field-head">
+                  <label for="dm-score">score (0.0 – 1.0)</label>
+                  <span class="sim-field-val c-nominal" id="dm-score-val">0.95</span>
+                </div>
+                <input type="range" id="dm-score" class="sim-range" min="0" max="1" step="0.05" value="0.95" />
+              </div>
+
+              <div class="formula-box" id="dm-calc-preview" style="margin-top:0.5rem; margin-bottom:1rem; font-size:0.82rem; border-left-color:var(--sig-caution); color:var(--sig-caution);">
+                Payout = 23.50 CREDITS → +5 875 000 µOPVS
+              </div>
+
+              <div class="ctrl-group" style="display:grid; grid-template-columns:1fr; gap:0.5rem;">
+                <button type="button" class="ctrl-btn btn-action-caution" id="dm-dispatch-btn" data-i18n="dm_send">⚡ Dispatch LearningEvent (/api/adapter/events)</button>
+                <button type="button" class="ctrl-btn btn-action-energy" id="dm-replay-btn" data-i18n="dm_replay">↻ Replay Last event_id (Test Idempotency)</button>
+                <button type="button" class="ctrl-btn" id="dm-reset-btn" data-i18n="dm_reset">↺ Reset Adapter State</button>
+              </div>
+            </aside>
+
+            <div>
+              <div class="kpi-bar">
+                <div class="kpi-cell kpi-nominal">
+                  <div class="k-label" data-i18n="dm_k_wlt">Atlas OPVS Balance (wlt_atlas_01)</div>
+                  <div class="k-val c-nominal" id="dm-kpi-wallet">482 150 000 µOPVS</div>
+                </div>
+                <div class="kpi-cell kpi-caution">
+                  <div class="k-label" data-i18n="dm_k_cred">Total Atlas CREDITS</div>
+                  <div class="k-val c-caution" id="dm-kpi-credits">0.00 CREDITS</div>
+                </div>
+                <div class="kpi-cell kpi-energy">
+                  <div class="k-label" data-i18n="dm_k_proc">Processed Events (_processed_events)</div>
+                  <div class="k-val c-energy" id="dm-kpi-proc">0</div>
+                </div>
+                <div class="kpi-cell">
+                  <div class="k-label" data-i18n="dm_k_sync">Last Adapter Sync Result</div>
+                  <div class="k-val c-white" id="dm-kpi-sync">—</div>
+                </div>
+              </div>
+
+              <div class="sim-panel" style="padding:0; margin-bottom:1.15rem;">
+                <div style="padding:0.7rem 0.9rem; border-bottom:1px solid var(--border-grid); display:flex; justify-content:space-between; align-items:center;">
+                  <span style="font-size:0.78rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--fg-white);" data-i18n="dm_log_t">ORBIT ↔ AIVI ↔ ATLAS ADAPTER EXECUTION LOG</span>
+                  <span style="font-size:0.74rem; color:var(--sig-caution); font-weight:700;" id="dm-idemp-badge">IDEMPOTENCY GUARD: READY</span>
+                </div>
+                <div class="event-log" id="dm-event-log">
+                  <div style="padding:0.85rem; color:var(--fg-muted);" data-i18n="dm_log_empty">Dispatch a LearningEvent to run bidirectional sync, wage calculation, and idempotent OPVS settlement.</div>
+                </div>
+              </div>
+
+              <pre class="json-drawer" id="dm-last-json" style="margin-top:0; border-left-color:var(--sig-caution);">// POST /api/adapter/events response payload will appear here</pre>
+
+              <div class="grid-3" style="margin-top:1.25rem;">
+                <article class="card card-energy">
+                  <h3 class="c-energy" data-i18n="dm_c1_t">Bidirectional System Sync</h3>
+                  <p data-i18n="dm_c1_p">AIVI-Learning completions push to Orbit; Orbit state updates trigger AIVI adoption syncs before wage evaluation.</p>
+                </article>
+                <article class="card card-caution">
+                  <h3 class="c-caution" data-i18n="dm_c2_t">Strict Idempotency</h3>
+                  <p data-i18n="dm_c2_p">Duplicate event_id retries sync safely without double-paying Atlas, matching OPVS Idempotency-Key semantics.</p>
+                </article>
+                <article class="card card-nominal">
+                  <h3 class="c-nominal" data-i18n="dm_c3_t">Energy-Backed Rewards</h3>
+                  <p data-i18n="dm_c3_p">Converts Decimal CREDITS into INT64 µOPVS so embodied policies optimize thermodynamic margin, not ungrounded tokens.</p>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
   </main>
 
   <footer>
@@ -1452,7 +1671,32 @@
           api_m2m_b: "M2M Transfer",
           api_tip_d: "Credit +250,000 µOPVS human operator edge-case recovery bonus.",
           api_tip_b: "Credit +0.25 OPVS Tip",
-          g5_log_t: "APPEND-ONLY LEDGER & WEBHOOK STREAM (SHA-256 CHAIN)"
+          g5_log_t: "APPEND-ONLY LEDGER & WEBHOOK STREAM (SHA-256 CHAIN)",
+          nav_dm: "DeepMind Prep",
+          dm_eye: "GOOGLE DEEPMIND PREP · EMBODIED AGENT WAGE ADAPTER",
+          dm_title: "Orbit ↔ AIVI-Learning ↔ AtlasWageService → OPVS",
+          dm_lead: "Live integration sandbox bridging embodied AI learning & adoption events (LearningEvent) through OrbitAiviAdapter and idempotent AtlasWageService into integer µOPVS thermodynamic settlement (1 CREDIT = 0.25 OPVS = 250,000 µOPVS).",
+          dm_p1: "Bidirectional state sync on every LearningEvent",
+          dm_p2: "Filters agent=\"atlas\" & qualifying actions",
+          dm_p3: "ROUND_HALF_UP wage + _processed_events lock",
+          dm_p4: "Credits INT64 µOPVS at 1 OPVS = 1 kWh parity",
+          dm_ctrl_t: "LEARNING EVENT DISPATCHER",
+          dm_new_id: "New ID",
+          dm_send: "⚡ Dispatch LearningEvent (/api/adapter/events)",
+          dm_replay: "↻ Replay Last event_id (Test Idempotency)",
+          dm_reset: "↺ Reset Adapter State",
+          dm_k_wlt: "Atlas OPVS Balance (wlt_atlas_01)",
+          dm_k_cred: "Total Atlas CREDITS",
+          dm_k_proc: "Processed Events (_processed_events)",
+          dm_k_sync: "Last Adapter Sync Result",
+          dm_log_t: "ORBIT ↔ AIVI ↔ ATLAS ADAPTER EXECUTION LOG",
+          dm_log_empty: "Dispatch a LearningEvent to run bidirectional sync, wage calculation, and idempotent OPVS settlement.",
+          dm_c1_t: "Bidirectional System Sync",
+          dm_c1_p: "AIVI-Learning completions push to Orbit; Orbit state updates trigger AIVI adoption syncs before wage evaluation.",
+          dm_c2_t: "Strict Idempotency",
+          dm_c2_p: "Duplicate event_id retries sync safely without double-paying Atlas, matching OPVS Idempotency-Key semantics.",
+          dm_c3_t: "Energy-Backed Rewards",
+          dm_c3_p: "Converts Decimal CREDITS into INT64 µOPVS so embodied policies optimize thermodynamic margin, not ungrounded tokens."
         },
         fr: {
           leg_id: "IDENTITÉ / REGISTRE",
@@ -1549,7 +1793,32 @@
           api_m2m_b: "Transfert M2M",
           api_tip_d: "Créditer +250 000 µOPVS pour récupération opérateur humain.",
           api_tip_b: "Pourboire +0.25 OPVS",
-          g5_log_t: "FLUX APPEND-ONLY & WEBHOOKS (CHAÎNE SHA-256)"
+          g5_log_t: "FLUX APPEND-ONLY & WEBHOOKS (CHAÎNE SHA-256)",
+          nav_dm: "DeepMind Prep",
+          dm_eye: "PRÉPA GOOGLE DEEPMIND · ADAPTATEUR SALAIRE AGENT INCARNÉ",
+          dm_title: "Orbit ↔ AIVI-Learning ↔ AtlasWageService → OPVS",
+          dm_lead: "Bac à sable reliant les événements d'apprentissage (LearningEvent) via OrbitAiviAdapter et AtlasWageService idempotent vers le règlement thermodynamique en entiers µOPVS (1 CREDIT = 0,25 OPVS = 250 000 µOPVS).",
+          dm_p1: "Synchronisation bidirectionnelle sur chaque LearningEvent",
+          dm_p2: "Filtre agent=\"atlas\" & actions qualifiantes",
+          dm_p3: "Salaire ROUND_HALF_UP + verrou _processed_events",
+          dm_p4: "Crédit INT64 µOPVS à parité 1 OPVS = 1 kWh",
+          dm_ctrl_t: "ÉMETTEUR LEARNING EVENT",
+          dm_new_id: "Nouvel ID",
+          dm_send: "⚡ Envoyer LearningEvent (/api/adapter/events)",
+          dm_replay: "↻ Rejouer Dernier event_id (Test Idempotence)",
+          dm_reset: "↺ Réinitialiser l'Adaptateur",
+          dm_k_wlt: "Solde Atlas OPVS (wlt_atlas_01)",
+          dm_k_cred: "Total CREDITS Atlas",
+          dm_k_proc: "Événements Traités (_processed_events)",
+          dm_k_sync: "Dernière Synchro Adaptateur",
+          dm_log_t: "JOURNAL D'EXÉCUTION ORBIT ↔ AIVI ↔ ATLAS",
+          dm_log_empty: "Envoyez un LearningEvent pour exécuter la synchro bidirectionnelle, le calcul de salaire et le règlement OPVS idempotent.",
+          dm_c1_t: "Synchro Bidirectionnelle",
+          dm_c1_p: "AIVI-Learning pousse vers Orbit ; Orbit déclenche la synchro d'adoption AIVI avant l'évaluation salariale.",
+          dm_c2_t: "Idempotence Stricte",
+          dm_c2_p: "Un event_id rejoué synchronise sans double paiement d'Atlas, aligné sur Idempotency-Key OPVS.",
+          dm_c3_t: "Récompenses Indexées Énergie",
+          dm_c3_p: "Convertit les CREDITS Decimal en entiers INT64 µOPVS pour ancrer les politiques incarnées sur la marge physique."
         }
       };
 
@@ -1597,20 +1866,30 @@
         activeTab = tab;
         const ov = document.getElementById("view-overview");
         const sim = document.getElementById("view-simulator");
+        const dm = document.getElementById("view-deepmind");
         const btnOv = document.getElementById("tab-btn-overview");
         const btnSim = document.getElementById("tab-btn-simulator");
+        const btnDm = document.getElementById("tab-btn-deepmind");
+
+        ov.classList.add("hidden");
+        sim.classList.add("hidden");
+        dm.classList.add("hidden");
+        btnOv.classList.remove("active");
+        btnSim.classList.remove("active");
+        btnDm.classList.remove("active");
 
         if (tab === "simulator") {
-          ov.classList.add("hidden");
           sim.classList.remove("hidden");
-          btnOv.classList.remove("active");
           btnSim.classList.add("active");
           window.scrollTo({ top: 0, behavior: "smooth" });
           renderG5();
+        } else if (tab === "deepmind") {
+          dm.classList.remove("hidden");
+          btnDm.classList.add("active");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          fetchAdapterState();
         } else {
-          sim.classList.add("hidden");
           ov.classList.remove("hidden");
-          btnSim.classList.remove("active");
           btnOv.classList.add("active");
           if (scrollTarget) {
             const el = document.querySelector(scrollTarget);
@@ -1623,6 +1902,7 @@
 
       document.getElementById("tab-btn-overview").addEventListener("click", () => switchTab("overview"));
       document.getElementById("tab-btn-simulator").addEventListener("click", () => switchTab("simulator"));
+      document.getElementById("tab-btn-deepmind").addEventListener("click", () => switchTab("deepmind"));
       document.getElementById("hero-open-sim").addEventListener("click", () => switchTab("simulator"));
       document.getElementById("brand-home").addEventListener("click", (e) => {
         e.preventDefault();
@@ -2284,11 +2564,139 @@
         applyI18n();
       });
 
+      /* ==================== DEEPMIND PREP ADAPTER ==================== */
+      let dmLastEventId = "evt_dm_atlas_001";
+      let dmSeq = 2;
+
+      function updateDmPreview() {
+        const dur = Number(document.getElementById("dm-duration").value);
+        const score = Number(document.getElementById("dm-score").value);
+        const agent = document.getElementById("dm-agent").value;
+        const action = document.getElementById("dm-action").value;
+        document.getElementById("dm-dur-val").textContent = `${dur} min`;
+        document.getElementById("dm-score-val").textContent = score.toFixed(2);
+
+        const qualifying = agent === "atlas" && ["module_completed", "system_adopted", "assessment_passed"].includes(action);
+        const box = document.getElementById("dm-calc-preview");
+        if (!qualifying) {
+          box.textContent = "Payout = 0.00 CREDITS (Sync only — non-qualifying agent/action)";
+          box.style.borderLeftColor = "var(--fg-muted)";
+          box.style.color = "var(--fg-muted)";
+          return;
+        }
+        const cents = Math.floor(((dur / 60) * 2500 + 500 * score) + 0.5 + 1e-12);
+        const microOpvs = Math.round((cents / 100) * 250000);
+        box.textContent = `Payout = ${(cents / 100).toFixed(2)} CREDITS → +${fmtInt(microOpvs)} µOPVS`;
+        box.style.borderLeftColor = "var(--sig-caution)";
+        box.style.color = "var(--sig-caution)";
+      }
+
+      function renderAdapterHistory(state) {
+        document.getElementById("dm-kpi-wallet").textContent = fmtInt(state.atlas_wallet_micro_opvs) + " µOPVS";
+        document.getElementById("dm-kpi-credits").textContent = `${state.atlas_credits_total} CREDITS`;
+        document.getElementById("dm-kpi-proc").textContent = String(state.processed_count);
+        const hist = state.history || [];
+        document.getElementById("dm-kpi-sync").textContent = hist.length > 0 ? hist[0].sync_result : "—";
+
+        const logEl = document.getElementById("dm-event-log");
+        if (hist.length === 0) {
+          logEl.innerHTML = `<div style="padding:0.85rem; color:var(--fg-muted);">${I18N[lang].dm_log_empty}</div>`;
+          return;
+        }
+        logEl.innerHTML = "";
+        hist.forEach((rec) => {
+          const row = document.createElement("div");
+          row.className = "event-row";
+          const isPaid = Boolean(rec.wage_payout);
+          const isDup = rec.idempotency_status === "IDEMPOTENT_DUPLICATE_BLOCKED";
+          const cls = isPaid ? "c-nominal" : (isDup ? "c-breach" : "c-caution");
+          const badge = isPaid ? "PAID" : (isDup ? "DUP_BLOCK" : "SYNC_ONLY");
+          const amountText = isPaid
+            ? `+${rec.wage_payout.amount} CREDITS (+${fmtInt(rec.wage_payout.opvs_equivalent_micro_opvs)} µOPVS)`
+            : rec.idempotency_status;
+
+          row.innerHTML = `
+            <span class="${cls}" style="font-weight:700;">${badge}</span>
+            <span class="c-energy">${rec.sync_result}</span>
+            <span class="c-white">${rec.event_id} · <span style="color:var(--fg-muted);">${rec.user_or_agent_id} · ${rec.action}</span></span>
+            <span class="${cls}" style="font-weight:600;">${amountText}</span>
+          `;
+          logEl.appendChild(row);
+        });
+      }
+
+      async function fetchAdapterState() {
+        try {
+          const res = await fetch("/api/adapter/state");
+          if (!res.ok) return;
+          const data = await res.json();
+          renderAdapterHistory(data);
+        } catch {
+          // ignore transient network errors
+        }
+      }
+
+      async function dispatchLearningEvent(overrideEventId) {
+        const eventId = overrideEventId || document.getElementById("dm-event-id").value.trim() || `evt_dm_atlas_${String(dmSeq).padStart(3, "0")}`;
+        dmLastEventId = eventId;
+        const payload = {
+          event_id: eventId,
+          source: document.getElementById("dm-source").value,
+          user_or_agent_id: document.getElementById("dm-agent").value,
+          module_id: document.getElementById("dm-module").value,
+          action: document.getElementById("dm-action").value,
+          duration_minutes: Number(document.getElementById("dm-duration").value),
+          score: Number(document.getElementById("dm-score").value),
+        };
+        const res = await fetch("/api/adapter/events", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const record = await res.json();
+        document.getElementById("dm-last-json").textContent = JSON.stringify(record, null, 2);
+        const badge = document.getElementById("dm-idemp-badge");
+        if (record.idempotency_status === "IDEMPOTENT_DUPLICATE_BLOCKED") {
+          badge.textContent = "IDEMPOTENCY GUARD: DUPLICATE BLOCKED";
+          badge.style.color = "var(--sig-breach)";
+        } else if (record.wage_payout) {
+          badge.textContent = "IDEMPOTENCY GUARD: SETTLED & RECORDED";
+          badge.style.color = "var(--sig-nominal)";
+        } else {
+          badge.textContent = `IDEMPOTENCY GUARD: ${record.idempotency_status}`;
+          badge.style.color = "var(--sig-caution)";
+        }
+        await fetchAdapterState();
+      }
+
+      document.getElementById("dm-new-uuid").addEventListener("click", () => {
+        dmSeq += 1;
+        document.getElementById("dm-event-id").value = `evt_dm_atlas_${String(dmSeq).padStart(3, "0")}`;
+      });
+      ["dm-duration", "dm-score", "dm-agent", "dm-action"].forEach((id) => {
+        document.getElementById(id).addEventListener("input", updateDmPreview);
+        document.getElementById(id).addEventListener("change", updateDmPreview);
+      });
+      document.getElementById("dm-dispatch-btn").addEventListener("click", () => dispatchLearningEvent());
+      document.getElementById("dm-replay-btn").addEventListener("click", () => dispatchLearningEvent(dmLastEventId));
+      document.getElementById("dm-reset-btn").addEventListener("click", async () => {
+        await fetch("/api/adapter/reset", { method: "POST" });
+        dmSeq = 1;
+        dmLastEventId = "evt_dm_atlas_001";
+        document.getElementById("dm-event-id").value = dmLastEventId;
+        document.getElementById("dm-last-json").textContent = "// POST /api/adapter/events response payload will appear here";
+        document.getElementById("dm-idemp-badge").textContent = "IDEMPOTENCY GUARD: READY";
+        document.getElementById("dm-idemp-badge").style.color = "var(--sig-caution)";
+        await fetchAdapterState();
+      });
+
       initG5History();
       updateSliderPreview();
+      updateDmPreview();
       applyI18n();
       render();
       renderG5();
+      fetchAdapterState();
     })();
   </script>
 </body>
