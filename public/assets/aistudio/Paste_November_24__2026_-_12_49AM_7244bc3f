@@ -1,0 +1,1110 @@
+openapi: 3.1.0
+info:
+  title: OPVS Core API
+  version: 1.0.0
+  summary: Thermodynamic settlement protocol API for autonomous machine economies
+  description: |
+    Private permissioned ledger API for OPVS (Operae Vis System), operated by OPERAE VIS (operaevis.com).
+    Strict physical parity: 1 OPVS = 1 kWh = 3.6 MJ = 1,000,000 micro-OPVS (1 µOPVS = 3.6 J).
+    All monetary balances, debits, credits, margins, and survival manifold altitudes are strictly
+    represented as signed or unsigned 64-bit integers in µOPVS. Zero floating-point amounts.
+  contact:
+    name: OPERAE VIS
+    url: https://operaevis.com
+  license:
+    name: Proprietary
+
+servers:
+  - url: https://ledger.site.internal
+    description: Isolated site VPC hosting the private permissioned OPVS Core Ledger
+
+security:
+  - mTLS: []
+    OpvsSignature: []
+
+tags:
+  - name: Settlements
+    description: Atomic battery swap and verified task settlements
+  - name: Wallets
+    description: Real-time geometric state, M2M transfers, and human tipping
+  - name: Audit
+    description: Verifiable machine balance sheets and Merkle closure proofs
+  - name: Webhooks
+    description: Signed outbound events for AI policy rewards and Supervisor breaches
+
+paths:
+  /v1/swaps/settle:
+    post:
+      operationId: settleBatterySwap
+      summary: Atomic battery swap settlement
+      description: |
+        Triggered by the swap station BMS the instant a fresh battery pack locks into a unit.
+        Debits the robot wallet at strict energy parity (1,000 µOPVS per Wh). If operational
+        liquidity is insufficient, authorizes an emergency overdraft (SOFT_BANKRUPTCY) so physical
+        production never halts while quarantining the active AI policy.
+      tags:
+        - Settlements
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SwapSettleRequest'
+            examples:
+              whitepaperContract1:
+                summary: Representative Contract 1 (3,271 Wh = 3,271,000 µOPVS)
+                value:
+                  wallet_id: wlt_unit_04
+                  station_id: swap_bay_site_02
+                  episode_id: ep_20261123_04_019
+                  pack_returned:
+                    pack_id: bat_8812
+                    soc_pct: 11.4
+                    wh_remaining: 422
+                  pack_dispensed:
+                    pack_id: bat_9041
+                    soc_pct: 99.8
+                    wh_available: 3693
+                  energy_delta_wh: 3271
+                  swap_duration_sec: 148
+                  bms_signature: "ed25519:a8f4c19d2e7b03..."
+      responses:
+        '200':
+          description: Swap settled (NOMINAL, CONSERVATION, or SOFT_BANKRUPTCY emergency credit)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwapSettleResponse'
+              examples:
+                whitepaperContract1Ok:
+                  summary: Representative Contract 1 Response
+                  value:
+                    tx_id: tx_swap_01JDF9X8K2
+                    status: SETTLED
+                    amount_debited_micro_opvs: 3271000
+                    balance_after_micro_opvs: 482150000
+                    overdraft_granted_micro_opvs: 0
+                    economic_mode: NOMINAL
+                    ledger_hash: "sha256:7e3b90f12a44c8..."
+        '409':
+          $ref: '#/components/responses/IdempotencyConflict'
+        '422':
+          $ref: '#/components/responses/UnprocessablePayload'
+
+  /v1/tasks/settle:
+    post:
+      operationId: settleTask
+      summary: Settle verified industrial task wage and maintenance escrow
+      description: |
+        Called by the factory MES or Dispatcher upon task completion. Credits verified task wage,
+        computes maintenance escrow via the curved Survival Manifold S (baseline depreciation,
+        quadratic torque fatigue, exponential thermal wall), and settles canonical net margin
+        (ΔM = Wage - E_swap - ΔR_maint) in integer µOPVS.
+      tags:
+        - Settlements
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskSettleRequest'
+            examples:
+              nominalTask:
+                summary: Verified handling task settlement
+                value:
+                  wallet_id: wlt_unit_04
+                  task_id: tsk_frame_weld_884
+                  episode_id: ep_20261123_04_019
+                  policy_version: policy_v2.4_margin
+                  action_plan_hash: "sha256:4b91e0..."
+                  started_at: "2026-11-23T14:01:00.000Z"
+                  ended_at: "2026-11-23T14:22:08.500Z"
+                  wage_micro_opvs: 8581000
+                  work_delta_mj: 44.2
+                  torque_squared_integral: 1824.5
+                  peak_joint_temp_c: 54.2
+                  mes_signature: "ed25519:19bc02..."
+      responses:
+        '200':
+          description: Task wage credited and maintenance escrow settled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskSettleResponse'
+              examples:
+                taskSettledOk:
+                  summary: Nominal task margin settlement
+                  value:
+                    tx_id: tx_task_01JDFB2M90
+                    status: SETTLED
+                    wage_credited_micro_opvs: 8581000
+                    maintenance_escrow_micro_opvs: 1000000
+                    net_margin_micro_opvs: 4310000
+                    balance_after_micro_opvs: 486460000
+                    manifold_altitude_micro_opvs: 42180000
+                    governance_zone: ZONE_0_ASCENDING
+                    economic_mode: NOMINAL
+                    ledger_hash: "sha256:88ac12..."
+        '409':
+          $ref: '#/components/responses/IdempotencyConflict'
+        '422':
+          $ref: '#/components/responses/UnprocessablePayload'
+
+  /v1/wallets/{id}/state:
+    get:
+      operationId: getWalletState
+      summary: Read wallet sub-ledgers and Survival Manifold state scalars
+      description: |
+        Returns operational liquidity, maintenance escrow, cumulative income statement, signed
+        manifold altitude d_S, apparent/intrinsic climb pitch, time-to-zero, and active
+        Supervisor governance zone.
+      tags:
+        - Wallets
+      parameters:
+        - $ref: '#/components/parameters/WalletId'
+      responses:
+        '200':
+          description: Current wallet and Supervisor geometric state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WalletStateResponse'
+              examples:
+                ascendingUnit:
+                  summary: Zone 0 Ascending unit
+                  value:
+                    wallet_id: wlt_unit_04
+                    timestamp: "2026-11-23T14:22:09.114Z"
+                    operational_liquidity_micro_opvs: 486460000
+                    maintenance_escrow_micro_opvs: 38200000
+                    cumulative_income_micro_opvs: 141200000
+                    manifold_altitude_micro_opvs: 42180000
+                    altitude_velocity_micro_opvs_per_hour: 920000
+                    climb_pitch_apparent_deg: 7.1
+                    climb_pitch_intrinsic_deg: 7.1
+                    time_to_zero_hours: null
+                    governance_zone: ZONE_0_ASCENDING
+                    economic_mode: NOMINAL
+                    policy_authority: SURVIVOR
+                    zombie_helix_flag: false
+                    active_policy_version: policy_v2.4_margin
+        '422':
+          $ref: '#/components/responses/UnprocessablePayload'
+
+  /v1/m2m/transfer:
+    post:
+      operationId: executeM2mTransfer
+      summary: Execute peer-to-peer M2M settlement or liquidity transfer
+      description: |
+        Executes M2M subcontracting, peer tipping, or authorized liquidity lending between two
+        robot wallets. Rejected (422) if the recipient is under Zombie Helix inbound credit
+        revocation or if M2M lending caps are exceeded.
+      tags:
+        - Wallets
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/M2mTransferRequest'
+            examples:
+              subcontractTransfer:
+                summary: Peer task subcontracting transfer
+                value:
+                  from_wallet_id: wlt_unit_01
+                  to_wallet_id: wlt_unit_08
+                  episode_id: ep_20261123_01_020
+                  transfer_type: SUBCONTRACT
+                  amount_micro_opvs: 1500000
+                  task_ref: tsk_seq_204
+                  sender_signature: "ed25519:5c01ef..."
+      responses:
+        '200':
+          description: M2M transfer settled on ledger
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/M2mTransferResponse'
+              examples:
+                m2mSettledOk:
+                  summary: Settled peer subcontracting transfer
+                  value:
+                    tx_id: tx_m2m_01JDFC40AA
+                    status: SETTLED
+                    amount_micro_opvs: 1500000
+                    sender_balance_after_micro_opvs: 516920000
+                    recipient_balance_after_micro_opvs: 10920000
+                    economic_mode: NOMINAL
+                    ledger_hash: "sha256:2f990d..."
+        '409':
+          $ref: '#/components/responses/IdempotencyConflict'
+        '422':
+          $ref: '#/components/responses/UnprocessablePayload'
+
+  /v1/wallets/{id}/tip:
+    post:
+      operationId: creditHumanTip
+      summary: Credit manual human-to-robot tip (TIP)
+      description: |
+        Credits a human-in-the-loop micro-tip in integer µOPVS from an authorized factory
+        supervisor or technician (2016 conceptual lineage).
+      tags:
+        - Wallets
+      parameters:
+        - $ref: '#/components/parameters/WalletId'
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TipRequest'
+            examples:
+              precisionTip:
+                summary: Human technician tip for safe edge-case recovery
+                value:
+                  episode_id: ep_20261123_04_019
+                  operator_id: op_tech_07
+                  amount_micro_opvs: 250000
+                  reason_code: EDGE_CASE_RECOVERY
+                  operator_signature: "ed25519:c204ab..."
+      responses:
+        '200':
+          description: Human tip credited to operational liquidity and income statement
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TipResponse'
+              examples:
+                tipSettledOk:
+                  summary: Settled tip response
+                  value:
+                    tx_id: tx_tip_01JDFC881P
+                    wallet_id: wlt_unit_04
+                    status: SETTLED
+                    amount_micro_opvs: 250000
+                    balance_after_micro_opvs: 486710000
+                    ledger_hash: "sha256:6b310a..."
+        '409':
+          $ref: '#/components/responses/IdempotencyConflict'
+        '422':
+          $ref: '#/components/responses/UnprocessablePayload'
+
+  /v1/audit/balance-sheet/{id}:
+    get:
+      operationId: getAuditBalanceSheet
+      summary: Export audited machine balance sheet and Merkle proof
+      description: |
+        Generates a cryptographically verifiable machine financial statement combining income
+        statement, energy cash flow, and Merkle audit proof anchored to Kirchhoff site closure.
+      tags:
+        - Audit
+      parameters:
+        - $ref: '#/components/parameters/WalletId'
+        - name: from
+          in: query
+          required: false
+          description: Start of audit window (ISO 8601 UTC)
+          schema:
+            type: string
+            format: date-time
+        - name: to
+          in: query
+          required: false
+          description: End of audit window (ISO 8601 UTC)
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: Machine income statement, energy cash flow, and Merkle proof
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditBalanceSheetResponse'
+              examples:
+                balanceSheetDay90:
+                  summary: Audited unit balance sheet export
+                  value:
+                    wallet_id: wlt_unit_04
+                    period_start: "2026-11-23T00:00:00Z"
+                    period_end: "2026-11-23T23:59:59Z"
+                    parity_invariant: "1 OPVS = 1 kWh = 1000000 micro_opvs"
+                    income_statement:
+                      total_wage_micro_opvs: 25743000
+                      total_tips_micro_opvs: 250000
+                      total_swap_energy_micro_opvs: 9813000
+                      total_maintenance_escrow_micro_opvs: 3000000
+                      total_m2m_net_micro_opvs: 0
+                      total_overdraft_penalties_micro_opvs: 0
+                      net_margin_micro_opvs: 13180000
+                    energy_cash_flow:
+                      opening_liquidity_micro_opvs: 473530000
+                      closing_liquidity_micro_opvs: 486710000
+                      total_energy_debited_wh: 9813
+                      avg_intrinsic_pitch_deg: 7.1
+                    merkle_proof:
+                      merkle_root: "sha256:99d41e..."
+                      ledger_head_hash: "sha256:6b310a..."
+                      entry_count: 14
+                      kirchhoff_site_status: CLOSED_WITHIN_TOLERANCE
+        '422':
+          $ref: '#/components/responses/UnprocessablePayload'
+
+webhooks:
+  reward.margin_settled:
+    post:
+      operationId: webhookRewardMarginSettled
+      summary: Ground-truth margin reward webhook to embodied AI policy server
+      description: |
+        Emitted immediately after task or swap settlement so embodied AI policies train and
+        evaluate directly against real net margin in integer µOPVS.
+      tags:
+        - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RewardMarginSettledWebhook'
+            examples:
+              whitepaperContract2:
+                summary: Representative Contract 2 (integer-migrated µOPVS fields)
+                value:
+                  event_id: evt_01JDFB2N11
+                  timestamp: "2026-11-23T14:22:09.114Z"
+                  wallet_id: wlt_unit_04
+                  episode_id: ep_20261123_04_019
+                  policy_version: policy_v2.4_margin
+                  reward_signal:
+                    net_margin_micro_opvs: 4310000
+                    manifold_altitude_micro_opvs: 42180000
+                    energy_efficiency_ratio: 6.91
+                    economic_mode: NOMINAL
+                    overdraft_penalty_micro_opvs: 0
+      responses:
+        '200':
+          description: Webhook acknowledged by AI Policy Server
+
+  supervisor.plane_breach:
+    post:
+      operationId: webhookSupervisorPlaneBreach
+      summary: Supervisor Plane Breach or Zombie Helix revocation event
+      description: |
+        Emitted whenever a unit crosses below d_S = 0 (or Y = 0) or triggers Zombie Helix
+        inbound credit revocation. Signals authorized emergency swap overdraft and policy rollback.
+      tags:
+        - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupervisorPlaneBreachWebhook'
+            examples:
+              whitepaperContract3:
+                summary: Representative Contract 3 (integer-migrated µOPVS fields)
+                value:
+                  event: supervisor.plane_breach
+                  timestamp: "2026-11-23T00:11:04.220Z"
+                  wallet_id: wlt_unit_09
+                  policy_version: policy_v2.5_exp
+                  geometry:
+                    x_work_mj: 412.8
+                    y_balance_micro_opvs: 2140000
+                    z_swap_cost_micro_opvs: 3410000
+                    d_s_altitude_micro_opvs: -1270000
+                    intrinsic_pitch_deg: -6.4
+                  auto_action:
+                    physical_swap: AUTHORIZED_OVERDRAFT
+                    policy_state: QUARANTINED
+                    rollback_target: policy_v2.4_margin
+      responses:
+        '200':
+          description: Breach event acknowledged by Supervisor Console and AI Policy Server
+
+components:
+  securitySchemes:
+    mTLS:
+      type: mutualTLS
+      description: Mutual TLS 1.3 client certificate authentication inside isolated site VPC
+    OpvsSignature:
+      type: apiKey
+      in: header
+      name: X-Opvs-Signature
+      description: Detached Ed25519 signature over canonical request payload (prefixed with ed25519:)
+
+  parameters:
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      description: Unique UUID v4 generated per logical write request to guarantee idempotent retries
+      schema:
+        type: string
+        format: uuid
+    WalletId:
+      name: id
+      in: path
+      required: true
+      description: Unique robot wallet identifier
+      schema:
+        type: string
+        pattern: '^wlt_[a-z0-9_]+$'
+
+  responses:
+    IdempotencyConflict:
+      description: Reused Idempotency-Key with altered payload; write rejected and escalated to OT security
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            conflict409:
+              value:
+                error_code: IDEMPOTENCY_PAYLOAD_MISMATCH
+                message: Reused Idempotency-Key with altered request body; escalated to OT security.
+                ot_security_alert: true
+    UnprocessablePayload:
+      description: Invalid Ed25519 signature, physically impossible ΔWh, or invariant violation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            invalidDelta422:
+              value:
+                error_code: PHYSICALLY_IMPOSSIBLE_DELTA_WH
+                message: Transaction quarantined to anomaly log; bay-level fallback swap authorization preserved.
+                quarantine_log_id: anom_01JDF9Z01
+
+  schemas:
+    EconomicMode:
+      type: string
+      enum:
+        - NOMINAL
+        - CONSERVATION
+        - SOFT_BANKRUPTCY
+
+    GovernanceZone:
+      type: string
+      enum:
+        - ZONE_0_ASCENDING
+        - ZONE_1_STASIS
+        - ZONE_2_CONSERVATION
+        - ZONE_3_PLANE_BREACH
+
+    BatteryPackTelemetry:
+      type: object
+      additionalProperties: false
+      required:
+        - pack_id
+        - soc_pct
+      properties:
+        pack_id:
+          type: string
+        soc_pct:
+          type: number
+          minimum: 0
+          maximum: 100
+        wh_remaining:
+          type: integer
+          format: int64
+          minimum: 0
+        wh_available:
+          type: integer
+          format: int64
+          minimum: 0
+
+    SwapSettleRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - wallet_id
+        - station_id
+        - episode_id
+        - pack_returned
+        - pack_dispensed
+        - energy_delta_wh
+        - swap_duration_sec
+        - bms_signature
+      properties:
+        wallet_id:
+          type: string
+        station_id:
+          type: string
+        episode_id:
+          type: string
+        pack_returned:
+          $ref: '#/components/schemas/BatteryPackTelemetry'
+        pack_dispensed:
+          $ref: '#/components/schemas/BatteryPackTelemetry'
+        energy_delta_wh:
+          type: integer
+          format: int64
+          minimum: 0
+          description: Net energy replenished in integer Wh (1 Wh = 1,000 µOPVS)
+        swap_duration_sec:
+          type: integer
+          format: int32
+          minimum: 1
+        bms_signature:
+          type: string
+          pattern: '^ed25519:[a-f0-9]+'
+
+    SwapSettleResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - tx_id
+        - status
+        - amount_debited_micro_opvs
+        - balance_after_micro_opvs
+        - economic_mode
+        - ledger_hash
+      properties:
+        tx_id:
+          type: string
+        status:
+          type: string
+          enum:
+            - SETTLED
+        amount_debited_micro_opvs:
+          type: integer
+          format: int64
+          minimum: 0
+        balance_after_micro_opvs:
+          type: integer
+          format: int64
+          minimum: 0
+        overdraft_granted_micro_opvs:
+          type: integer
+          format: int64
+          minimum: 0
+        economic_mode:
+          $ref: '#/components/schemas/EconomicMode'
+        ledger_hash:
+          type: string
+
+    TaskSettleRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - wallet_id
+        - task_id
+        - episode_id
+        - policy_version
+        - action_plan_hash
+        - started_at
+        - ended_at
+        - wage_micro_opvs
+        - work_delta_mj
+        - torque_squared_integral
+        - peak_joint_temp_c
+        - mes_signature
+      properties:
+        wallet_id:
+          type: string
+        task_id:
+          type: string
+        episode_id:
+          type: string
+        policy_version:
+          type: string
+        action_plan_hash:
+          type: string
+        started_at:
+          type: string
+          format: date-time
+        ended_at:
+          type: string
+          format: date-time
+        wage_micro_opvs:
+          type: integer
+          format: int64
+          minimum: 0
+        work_delta_mj:
+          type: number
+          minimum: 0
+        torque_squared_integral:
+          type: number
+          minimum: 0
+        peak_joint_temp_c:
+          type: number
+        mes_signature:
+          type: string
+
+    TaskSettleResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - tx_id
+        - status
+        - wage_credited_micro_opvs
+        - maintenance_escrow_micro_opvs
+        - net_margin_micro_opvs
+        - balance_after_micro_opvs
+        - manifold_altitude_micro_opvs
+        - governance_zone
+        - economic_mode
+        - ledger_hash
+      properties:
+        tx_id:
+          type: string
+        status:
+          type: string
+          enum:
+            - SETTLED
+        wage_credited_micro_opvs:
+          type: integer
+          format: int64
+          minimum: 0
+        maintenance_escrow_micro_opvs:
+          type: integer
+          format: int64
+          minimum: 0
+        net_margin_micro_opvs:
+          type: integer
+          format: int64
+        balance_after_micro_opvs:
+          type: integer
+          format: int64
+          minimum: 0
+        manifold_altitude_micro_opvs:
+          type: integer
+          format: int64
+        governance_zone:
+          $ref: '#/components/schemas/GovernanceZone'
+        economic_mode:
+          $ref: '#/components/schemas/EconomicMode'
+        ledger_hash:
+          type: string
+
+    WalletStateResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - wallet_id
+        - timestamp
+        - operational_liquidity_micro_opvs
+        - maintenance_escrow_micro_opvs
+        - cumulative_income_micro_opvs
+        - manifold_altitude_micro_opvs
+        - altitude_velocity_micro_opvs_per_hour
+        - climb_pitch_apparent_deg
+        - climb_pitch_intrinsic_deg
+        - governance_zone
+        - economic_mode
+        - policy_authority
+        - zombie_helix_flag
+        - active_policy_version
+      properties:
+        wallet_id:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        operational_liquidity_micro_opvs:
+          type: integer
+          format: int64
+          minimum: 0
+        maintenance_escrow_micro_opvs:
+          type: integer
+          format: int64
+          minimum: 0
+        cumulative_income_micro_opvs:
+          type: integer
+          format: int64
+        manifold_altitude_micro_opvs:
+          type: integer
+          format: int64
+        altitude_velocity_micro_opvs_per_hour:
+          type: integer
+          format: int64
+        climb_pitch_apparent_deg:
+          type: number
+        climb_pitch_intrinsic_deg:
+          type: number
+        time_to_zero_hours:
+          type:
+            - number
+            - 'null'
+          minimum: 0
+        governance_zone:
+          $ref: '#/components/schemas/GovernanceZone'
+        economic_mode:
+          $ref: '#/components/schemas/EconomicMode'
+        policy_authority:
+          type: string
+          enum:
+            - SURVIVOR
+            - FROZEN
+            - RESTRICTED
+            - QUARANTINED
+        zombie_helix_flag:
+          type: boolean
+        active_policy_version:
+          type: string
+
+    M2mTransferRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - from_wallet_id
+        - to_wallet_id
+        - episode_id
+        - transfer_type
+        - amount_micro_opvs
+        - sender_signature
+      properties:
+        from_wallet_id:
+          type: string
+        to_wallet_id:
+          type: string
+        episode_id:
+          type: string
+        transfer_type:
+          type: string
+          enum:
+            - SUBCONTRACT
+            - LIQUIDITY_LOAN
+            - M2M_TIP
+        amount_micro_opvs:
+          type: integer
+          format: int64
+          minimum: 1
+        task_ref:
+          type: string
+        sender_signature:
+          type: string
+
+    M2mTransferResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - tx_id
+        - status
+        - amount_micro_opvs
+        - sender_balance_after_micro_opvs
+        - recipient_balance_after_micro_opvs
+        - economic_mode
+        - ledger_hash
+      properties:
+        tx_id:
+          type: string
+        status:
+          type: string
+          enum:
+            - SETTLED
+        amount_micro_opvs:
+          type: integer
+          format: int64
+          minimum: 1
+        sender_balance_after_micro_opvs:
+          type: integer
+          format: int64
+          minimum: 0
+        recipient_balance_after_micro_opvs:
+          type: integer
+          format: int64
+          minimum: 0
+        economic_mode:
+          $ref: '#/components/schemas/EconomicMode'
+        ledger_hash:
+          type: string
+
+    TipRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - episode_id
+        - operator_id
+        - amount_micro_opvs
+        - reason_code
+        - operator_signature
+      properties:
+        episode_id:
+          type: string
+        operator_id:
+          type: string
+        amount_micro_opvs:
+          type: integer
+          format: int64
+          minimum: 1
+        reason_code:
+          type: string
+          enum:
+            - PRECISION_BONUS
+            - EDGE_CASE_RECOVERY
+            - SAFETY_ASSIST
+        operator_signature:
+          type: string
+
+    TipResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - tx_id
+        - wallet_id
+        - status
+        - amount_micro_opvs
+        - balance_after_micro_opvs
+        - ledger_hash
+      properties:
+        tx_id:
+          type: string
+        wallet_id:
+          type: string
+        status:
+          type: string
+          enum:
+            - SETTLED
+        amount_micro_opvs:
+          type: integer
+          format: int64
+          minimum: 1
+        balance_after_micro_opvs:
+          type: integer
+          format: int64
+          minimum: 0
+        ledger_hash:
+          type: string
+
+    AuditBalanceSheetResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - wallet_id
+        - period_start
+        - period_end
+        - parity_invariant
+        - income_statement
+        - energy_cash_flow
+        - merkle_proof
+      properties:
+        wallet_id:
+          type: string
+        period_start:
+          type: string
+          format: date-time
+        period_end:
+          type: string
+          format: date-time
+        parity_invariant:
+          type: string
+        income_statement:
+          type: object
+          additionalProperties: false
+          required:
+            - total_wage_micro_opvs
+            - total_tips_micro_opvs
+            - total_swap_energy_micro_opvs
+            - total_maintenance_escrow_micro_opvs
+            - total_m2m_net_micro_opvs
+            - total_overdraft_penalties_micro_opvs
+            - net_margin_micro_opvs
+          properties:
+            total_wage_micro_opvs:
+              type: integer
+              format: int64
+            total_tips_micro_opvs:
+              type: integer
+              format: int64
+            total_swap_energy_micro_opvs:
+              type: integer
+              format: int64
+            total_maintenance_escrow_micro_opvs:
+              type: integer
+              format: int64
+            total_m2m_net_micro_opvs:
+              type: integer
+              format: int64
+            total_overdraft_penalties_micro_opvs:
+              type: integer
+              format: int64
+            net_margin_micro_opvs:
+              type: integer
+              format: int64
+        energy_cash_flow:
+          type: object
+          additionalProperties: false
+          required:
+            - opening_liquidity_micro_opvs
+            - closing_liquidity_micro_opvs
+            - total_energy_debited_wh
+            - avg_intrinsic_pitch_deg
+          properties:
+            opening_liquidity_micro_opvs:
+              type: integer
+              format: int64
+            closing_liquidity_micro_opvs:
+              type: integer
+              format: int64
+            total_energy_debited_wh:
+              type: integer
+              format: int64
+              minimum: 0
+            avg_intrinsic_pitch_deg:
+              type: number
+        merkle_proof:
+          type: object
+          additionalProperties: false
+          required:
+            - merkle_root
+            - ledger_head_hash
+            - entry_count
+            - kirchhoff_site_status
+          properties:
+            merkle_root:
+              type: string
+            ledger_head_hash:
+              type: string
+            entry_count:
+              type: integer
+              format: int64
+              minimum: 0
+            kirchhoff_site_status:
+              type: string
+              enum:
+                - CLOSED_WITHIN_TOLERANCE
+                - DRIFT_WARNING
+                - INTEGRITY_LOCK
+
+    RewardMarginSettledWebhook:
+      type: object
+      additionalProperties: false
+      required:
+        - event_id
+        - timestamp
+        - wallet_id
+        - episode_id
+        - policy_version
+        - reward_signal
+      properties:
+        event_id:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        wallet_id:
+          type: string
+        episode_id:
+          type: string
+        policy_version:
+          type: string
+        reward_signal:
+          type: object
+          additionalProperties: false
+          required:
+            - net_margin_micro_opvs
+            - manifold_altitude_micro_opvs
+            - energy_efficiency_ratio
+            - economic_mode
+            - overdraft_penalty_micro_opvs
+          properties:
+            net_margin_micro_opvs:
+              type: integer
+              format: int64
+            manifold_altitude_micro_opvs:
+              type: integer
+              format: int64
+            energy_efficiency_ratio:
+              type: number
+              description: Dimensionless cycle efficiency ratio (formula to be frozen in v1.1)
+            economic_mode:
+              $ref: '#/components/schemas/EconomicMode'
+            overdraft_penalty_micro_opvs:
+              type: integer
+              format: int64
+              minimum: 0
+
+    SupervisorPlaneBreachWebhook:
+      type: object
+      additionalProperties: false
+      required:
+        - event
+        - timestamp
+        - wallet_id
+        - policy_version
+        - geometry
+        - auto_action
+      properties:
+        event:
+          type: string
+          enum:
+            - supervisor.plane_breach
+        timestamp:
+          type: string
+          format: date-time
+        wallet_id:
+          type: string
+        policy_version:
+          type: string
+        geometry:
+          type: object
+          additionalProperties: false
+          required:
+            - x_work_mj
+            - y_balance_micro_opvs
+            - z_swap_cost_micro_opvs
+            - d_s_altitude_micro_opvs
+            - intrinsic_pitch_deg
+          properties:
+            x_work_mj:
+              type: number
+              minimum: 0
+            delta_w_cycle_mj:
+              type: number
+              minimum: 0
+            y_balance_micro_opvs:
+              type: integer
+              format: int64
+            z_swap_cost_micro_opvs:
+              type: integer
+              format: int64
+              minimum: 0
+            d_s_altitude_micro_opvs:
+              type: integer
+              format: int64
+            intrinsic_pitch_deg:
+              type: number
+        auto_action:
+          type: object
+          additionalProperties: false
+          required:
+            - physical_swap
+            - policy_state
+            - rollback_target
+          properties:
+            physical_swap:
+              type: string
+              enum:
+                - AUTHORIZED_OVERDRAFT
+            policy_state:
+              type: string
+              enum:
+                - QUARANTINED
+            rollback_target:
+              type: string
+
+    ErrorResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - error_code
+        - message
+      properties:
+        error_code:
+          type: string
+        message:
+          type: string
+        ot_security_alert:
+          type: boolean
+        quarantine_log_id:
+          type: string
