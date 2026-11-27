@@ -153,6 +153,15 @@ app.get('/whitepaper.pdf', (_req, res) => {
   );
 });
 
+app.get(['/workforce-os', '/simulator-3d'], (_req, res) => {
+  res.sendFile(
+    path.join(
+      __dirname,
+      'public/assets/aistudio/opvs_workforce_os_simulateur_3d_phalange_sirh_robotique_0c03274d.html'
+    )
+  );
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(__dirname));
 

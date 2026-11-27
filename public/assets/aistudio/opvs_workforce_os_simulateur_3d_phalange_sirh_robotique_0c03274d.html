@@ -1,0 +1,2535 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#000000" />
+  <title>OPVS — Thermodynamic Settlement &amp; Robot Workforce Protocol</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Importmap Three.js r160 -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+
+  <style>
+    /* Typographie industrielle DIN 1451 (DINish) */
+    @font-face {
+      font-family: "DIN 1451";
+      src: url("https://cdn.jsdelivr.net/gh/playbeing/dinish@4.007/fonts/woff2/DINish/DINish-Regular.woff2") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "DIN 1451";
+      src: url("https://cdn.jsdelivr.net/gh/playbeing/dinish@4.007/fonts/woff2/DINish/DINish-Medium.woff2") format("woff2");
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "DIN 1451";
+      src: url("https://cdn.jsdelivr.net/gh/playbeing/dinish@4.007/fonts/woff2/DINish/DINish-SemiBold.woff2") format("woff2");
+      font-weight: 600;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "DIN 1451";
+      src: url("https://cdn.jsdelivr.net/gh/playbeing/dinish@4.007/fonts/woff2/DINish/DINish-Bold.woff2") format("woff2");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      color-scheme: dark;
+      --bg-void: #000000;
+      --bg-panel: rgba(7, 7, 9, 0.94);
+      --bg-card: #0B0B0F;
+      --bg-hover: #14141B;
+      --border-grid: #222228;
+      --border-strong: #3F3F48;
+
+      --fg-white: #FFFFFF;
+      --fg-muted: #D4D4D8;
+      --fg-dim: #9CA3AF;
+
+      /* Sémantique Couleur OPVS v2.0 (DeepMind = Indigo Spectral, jamais Orange d'alerte) */
+      --c-vla: #4C8DFF;      /* Google DeepMind Gemini Robotics VLA Brain */
+      --c-energy: #00E5FF;   /* Parité 1 OPVS = 1 kWh, veines métaboliques, arcs M2M */
+      --c-nom: #00E676;      /* Zone 0 Ascending (+ΔM, Grade S/A) */
+      --c-clay: #B67349;     /* Terre cuite Xi'an (Statues non dotées) */
+      --c-clay-bg: #3D271D;
+      --c-caution: #FFAB00;  /* Alerte Couple τ² / Température Bobinage Z1/Z2 */
+      --c-breach: #FF3B30;   /* Rupture Variété S (d_S <= 0), Faillite Douce, Hélice Zombie */
+
+      --font-din: "DIN 1451", "Bahnschrift", "DIN Alternate", system-ui, sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      border-radius: 0 !important;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: var(--bg-void);
+      color: var(--fg-white);
+      font-family: var(--font-din);
+      font-variant-numeric: tabular-nums;
+      -webkit-font-smoothing: antialiased;
+      font-size: 14px;
+    }
+
+    .font-din { font-family: var(--font-din); font-variant-numeric: tabular-nums; }
+    .font-crypto { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+    /* Barres de défilement SCADA fines */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: #050507; }
+    ::-webkit-scrollbar-thumb { background: #2A2A35; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--c-energy); }
+
+    /* Boutons HUD industriels */
+    .hud-btn {
+      background: rgba(10, 10, 14, 0.9);
+      border: 1px solid var(--border-grid);
+      color: var(--fg-muted);
+      font-family: var(--font-din);
+      font-size: 0.76rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.42rem 0.72rem;
+      cursor: pointer;
+      transition: background 0.14s ease, color 0.14s ease, border-color 0.14s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.38rem;
+      white-space: nowrap;
+      user-select: none;
+    }
+    .hud-btn:hover {
+      border-color: var(--fg-white);
+      color: var(--fg-white);
+      background: #15151D;
+    }
+    .hud-btn.active {
+      background: var(--fg-white);
+      color: var(--bg-void);
+      border-color: var(--fg-white);
+      font-weight: 700;
+    }
+    .hud-btn.btn-energy { border-color: rgba(0, 229, 255, 0.55); color: var(--c-energy); }
+    .hud-btn.btn-energy:hover, .hud-btn.btn-energy.active { background: var(--c-energy); color: #000; border-color: var(--c-energy); }
+
+    .hud-btn.btn-vla { border-color: rgba(76, 141, 255, 0.65); color: var(--c-vla); }
+    .hud-btn.btn-vla:hover, .hud-btn.btn-vla.active { background: var(--c-vla); color: #000; border-color: var(--c-vla); }
+
+    .hud-btn.btn-nom { border-color: rgba(0, 230, 118, 0.55); color: var(--c-nom); }
+    .hud-btn.btn-nom:hover, .hud-btn.btn-nom.active { background: var(--c-nom); color: #000; border-color: var(--c-nom); }
+
+    .hud-btn.btn-clay { border-color: rgba(182, 115, 73, 0.65); color: var(--c-clay); }
+    .hud-btn.btn-clay:hover, .hud-btn.btn-clay.active { background: var(--c-clay); color: #000; border-color: var(--c-clay); }
+
+    .hud-btn.btn-caution { border-color: rgba(255, 171, 0, 0.55); color: var(--c-caution); }
+    .hud-btn.btn-caution:hover { background: var(--c-caution); color: #000; border-color: var(--c-caution); }
+
+    .hud-btn.btn-breach { border-color: rgba(255, 59, 48, 0.65); color: var(--c-breach); }
+    .hud-btn.btn-breach:hover, .hud-btn.btn-breach.active { background: var(--c-breach); color: #000; border-color: var(--c-breach); }
+
+    /* Curseurs Sliders */
+    input[type="range"].opvs-range {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 5px;
+      background: #1E1E26;
+      border: 1px solid #2E2E3A;
+      outline: none;
+      cursor: pointer;
+    }
+    input[type="range"].opvs-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 13px;
+      height: 13px;
+      background: var(--c-energy);
+      border: 1px solid #FFFFFF;
+      cursor: pointer;
+    }
+    input[type="range"].opvs-range.range-caution::-webkit-slider-thumb { background: var(--c-caution); }
+    input[type="range"].opvs-range.range-nom::-webkit-slider-thumb { background: var(--c-nom); }
+
+    /* Tableau Bulletin de Paie */
+    .payslip-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+    .payslip-table th, .payslip-table td {
+      padding: 0.42rem 0.5rem;
+      border-bottom: 1px solid #1C1C24;
+    }
+    .payslip-table th {
+      font-size: 0.72rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--fg-dim);
+      font-weight: 600;
+      border-bottom: 1px solid var(--border-strong);
+    }
+
+    /* Animation pulsation alerte / dotation */
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(0, 229, 255, 0.35); }
+      50% { box-shadow: 0 0 18px 2px rgba(0, 229, 255, 0.65); }
+    }
+    .awaken-cta {
+      animation: pulseGlow 2.2s infinite;
+    }
+
+    /* Tooltip 3D survol */
+    #hover-tooltip {
+      position: fixed;
+      pointer-events: none;
+      z-index: 60;
+      background: rgba(5, 5, 8, 0.95);
+      border: 1px solid var(--fg-white);
+      border-left: 3px solid var(--c-energy);
+      padding: 0.5rem 0.68rem;
+      min-width: 215px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.85);
+      transform: translate(14px, -50%);
+      transition: opacity 0.08s ease;
+    }
+
+    /* Tiroir RH Droit responsive */
+    #hr-drawer {
+      width: 430px;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #hr-drawer.collapsed {
+      transform: translateX(100%);
+    }
+    @media (max-width: 1024px) {
+      #hr-drawer {
+        width: 100%;
+        max-width: 420px;
+      }
+    }
+  </style>
+</head>
+<body class="flex flex-col h-screen w-screen overflow-hidden select-none">
+
+  <!-- ==================== 1. TOP PAYROLL & GENESIS POOL HUD ==================== -->
+  <header class="z-30 w-full bg-[#050507]/95 border-b border-[#262630] px-3 lg:px-4 py-2 flex flex-wrap items-center justify-between gap-x-3 gap-y-2 shrink-0">
+    <!-- Sceau Θ OPVS -->
+    <div class="flex items-center gap-2.5 shrink-0 order-1">
+      <svg width="36" height="36" viewBox="0 0 100 100" aria-label="OPERAE VIS Theta Seal" class="shrink-0">
+        <rect width="100" height="100" fill="#000000" stroke="#262630" stroke-width="3"/>
+        <circle cx="50" cy="50" r="36" fill="none" stroke="#FFFFFF" stroke-width="10" />
+        <line x1="28" y1="50" x2="72" y2="50" stroke="#00E5FF" stroke-width="10" />
+      </svg>
+      <div class="leading-tight">
+        <div class="flex items-center gap-2">
+          <span class="text-lg font-bold tracking-[0.09em] text-white">OPVS</span>
+          <span class="text-[11px] font-semibold tracking-[0.08em] px-1.5 py-0.5 bg-[#101829] text-[#4C8DFF] border border-[#4C8DFF]/40" data-i18n="hdr_badge">WORKFORCE OS v2.0</span>
+        </div>
+        <div class="text-[11px] tracking-[0.06em] text-[#00E5FF] font-semibold uppercase" data-i18n="hdr_sub">
+          1 OPVS ≡ 1 kWh · Phalange &amp; SIRH Thermodynamique
+        </div>
+      </div>
+    </div>
+
+    <!-- KPIs Macro-RH Centraux -->
+    <div class="hidden md:grid grid-cols-4 gap-2 w-full order-3 2xl:order-2 2xl:w-auto 2xl:flex-1 2xl:max-w-4xl 2xl:mx-2">
+      <!-- Effectif -->
+      <div class="bg-[#0A0A0E] border border-[#22222A] border-l-2 border-l-white px-2.5 py-1.5 min-w-0">
+        <div class="text-[11px] uppercase tracking-[0.05em] text-[#D4D4D8] font-medium truncate" data-i18n="kpi_headcount_lbl">Effectif Phalange (Fosse #1)</div>
+        <div class="text-sm font-bold text-white mt-0.5 flex items-center justify-between gap-2 whitespace-nowrap">
+          <span id="kpi-awake-count">40 Éveillés</span>
+          <span class="text-[#B67349] text-xs font-semibold" id="kpi-clay-count">8 Statues</span>
+        </div>
+      </div>
+
+      <!-- Masse Salariale Nette -->
+      <div class="bg-[#0A0A0E] border border-[#22222A] border-l-2 border-l-[#00E676] px-2.5 py-1.5 min-w-0">
+        <div class="text-[11px] uppercase tracking-[0.05em] text-[#D4D4D8] font-medium truncate" data-i18n="kpi_payroll_lbl">Masse Salariale Nette / 4h</div>
+        <div class="text-sm font-bold text-[#00E676] mt-0.5 flex items-baseline justify-between gap-2 whitespace-nowrap">
+          <span id="kpi-net-payroll">+118.40 OPVS</span>
+          <span class="text-[11px] text-[#D4D4D8] font-normal" id="kpi-net-usd">≈ $16.58</span>
+        </div>
+      </div>
+
+      <!-- Genesis Pool (Auto-Recrutement) -->
+      <div class="bg-[#0A0A0E] border border-[#22222A] border-l-2 border-l-[#00E5FF] px-2.5 py-1.5 min-w-0" title="Dès 500 OPVS accumulés par l'excédent flotte, une statue de terre cuite est automatiquement dotée et éveillée.">
+        <div class="flex items-center justify-between gap-2 text-[11px] uppercase tracking-[0.04em] whitespace-nowrap">
+          <span class="text-[#00E5FF] font-semibold truncate" data-i18n="kpi_genesis_lbl">Genesis Pool (Auto-Embauche)</span>
+          <span class="text-white font-bold shrink-0" id="kpi-genesis-txt">425 / 500 OPVS</span>
+        </div>
+        <div class="w-full h-2 bg-[#16161E] border border-[#2A2A36] mt-1 overflow-hidden">
+          <div id="kpi-genesis-bar" class="h-full bg-gradient-to-r from-[#00E5FF] to-[#00E676] transition-all duration-300" style="width: 85%;"></div>
+        </div>
+      </div>
+
+      <!-- Audit Kirchhoff -->
+      <div class="bg-[#0A0A0E] border border-[#22222A] border-l-2 border-l-[#4C8DFF] px-2.5 py-1.5 min-w-0">
+        <div class="text-[11px] uppercase tracking-[0.05em] text-[#D4D4D8] font-medium truncate" data-i18n="kpi_kirch_lbl">Audit Kirchhoff Sous-Station</div>
+        <div class="text-sm font-bold text-white mt-0.5 flex items-center justify-between gap-2 whitespace-nowrap">
+          <span class="text-[#00E676]" data-i18n="kpi_kirch_ok">BOUCLÉ</span>
+          <span class="font-crypto text-[11px] text-[#00E5FF]" id="kpi-kirch-eps">ε = 0.012 kWh</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contrôles Transport, Gemini VLA Bridge & Langue -->
+    <div class="flex items-center gap-1.5 flex-wrap shrink-0 order-2 2xl:order-3">
+      <span class="hidden sm:inline-block font-crypto text-[11.5px] text-[#D4D4D8] bg-[#0D0D12] border border-[#24242E] px-2 py-1.5" id="shift-clock">
+        POSTE #01 · H+04h
+      </span>
+      <button type="button" id="btn-live-sim" class="hud-btn btn-nom" data-i18n="btn_live_off">▶ Lecture Temps Réel</button>
+      <button type="button" id="btn-step-shift" class="hud-btn btn-energy" data-i18n="btn_step_shift">⚡ +1 Poste (4h)</button>
+      <button type="button" id="btn-reset-all" class="hud-btn" title="Reset" data-i18n="btn_reset">↺ Reset</button>
+      <button type="button" id="btn-open-vla" class="hud-btn btn-vla" data-i18n="btn_vla_bridge">🧠 Gemini VLA Bridge</button>
+      <button type="button" id="btn-lang" class="hud-btn font-bold !px-2.5 !border-white !text-white">EN</button>
+    </div>
+  </header>
+
+  <!-- ==================== 2. MAIN WORKSPACE (3D FOSSE XI'AN + TIROIR SIRH) ==================== -->
+  <main class="relative flex-1 w-full overflow-hidden flex">
+
+    <!-- Conteneur Canvas 3D Plein Écran -->
+    <div id="pit-viewport" class="relative flex-1 h-full bg-black overflow-hidden">
+      <canvas id="pit-canvas" class="block w-full h-full cursor-grab active:cursor-grabbing"></canvas>
+
+      <!-- Overlay Haut-Gauche : Caméras & Couches Géométriques -->
+      <div class="absolute top-3 left-3 z-20 flex flex-col gap-2 pointer-events-auto max-w-[calc(100vw-24px)]">
+        <div class="bg-[#070709]/90 border border-[#24242E] p-1.5 flex flex-wrap items-center gap-1">
+          <span class="text-[11.5px] font-bold uppercase tracking-[0.08em] text-[#D4D4D8] px-1.5" data-i18n="cam_lbl">Caméra :</span>
+          <button type="button" class="hud-btn active" data-cam="xian" data-i18n="cam_xian">Fosse Xi'an</button>
+          <button type="button" class="hud-btn" data-cam="manifold" data-i18n="cam_manifold">Rasante Manifold S</button>
+          <button type="button" class="hud-btn" data-cam="zenith" data-i18n="cam_zenith">Zénithale RH</button>
+          <button type="button" class="hud-btn btn-energy" data-cam="focus" data-i18n="cam_focus">Focus Salarié</button>
+          <span class="w-[1px] h-4 bg-[#2A2A35] mx-0.5"></span>
+          <button type="button" id="btn-toggle-manifold" class="hud-btn active" data-i18n="tog_manifold">Plan S (d_S=0) : ON</button>
+          <button type="button" id="btn-toggle-orbit" class="hud-btn" data-i18n="tog_orbit">Orbite : OFF</button>
+        </div>
+
+        <!-- Légende Visuelle Compacte -->
+        <div class="hidden md:flex bg-[#070709]/85 border border-[#22222A] px-2.5 py-1.5 items-center gap-3 text-[11.5px] text-[#D4D4D8]">
+          <span class="inline-flex items-center gap-1.5"><i class="w-2.5 h-2.5 inline-block bg-[#00E676]"></i><span data-i18n="leg_z0">Z0 Ascension (+ΔM)</span></span>
+          <span class="inline-flex items-center gap-1.5"><i class="w-2.5 h-2.5 inline-block bg-[#4C8DFF]"></i><span data-i18n="leg_vla">Cerveau Gemini VLA</span></span>
+          <span class="inline-flex items-center gap-1.5"><i class="w-2.5 h-2.5 inline-block bg-[#FFAB00]"></i><span data-i18n="leg_heat">Échauffement τ²/T</span></span>
+          <span class="inline-flex items-center gap-1.5"><i class="w-2.5 h-2.5 inline-block bg-[#FF3B30]"></i><span data-i18n="leg_z3">Z3 Faillite Douce</span></span>
+          <span class="inline-flex items-center gap-1.5"><i class="w-2.5 h-2.5 inline-block bg-[#B67349]"></i><span data-i18n="leg_clay">Statue Terre Cuite</span></span>
+        </div>
+      </div>
+
+      <!-- Bouton Flottant Réouverture Tiroir RH (quand replié) -->
+      <button type="button" id="btn-reopen-drawer" class="hidden absolute top-3 right-3 z-20 hud-btn btn-energy !py-2 !px-3 shadow-lg" data-i18n="btn_open_payslip">
+        ◀ Ouvrir Dossier RH &amp; Fiche de Paie
+      </button>
+
+      <!-- Overlay Bas-Gauche : Filtres de Cohorte RH & Corps Matériels -->
+      <div class="absolute bottom-11 left-3 z-20 flex flex-col gap-1.5 pointer-events-auto max-w-[calc(100vw-24px)]">
+        <div class="bg-[#070709]/92 border border-[#24242E] p-1.5 flex flex-wrap items-center gap-1">
+          <span class="text-[11.5px] font-bold uppercase tracking-[0.08em] text-[#D4D4D8] px-1.5" data-i18n="flt_status_lbl">Statut RH :</span>
+          <button type="button" class="hud-btn active" data-cohort="ALL" id="flt-btn-all">Tous (48)</button>
+          <button type="button" class="hud-btn btn-nom" data-cohort="ACTIVE" id="flt-btn-active" data-i18n="flt_active">Actifs Z0/Z1</button>
+          <button type="button" class="hud-btn btn-breach" data-cohort="ALERT" id="flt-btn-alert" data-i18n="flt_alert">Alerte Z2/Z3</button>
+          <button type="button" class="hud-btn btn-clay" data-cohort="CLAY" id="flt-btn-clay" data-i18n="flt_clay">Statues Terre Cuite</button>
+        </div>
+
+        <div class="bg-[#070709]/92 border border-[#24242E] p-1.5 flex flex-wrap items-center gap-1">
+          <span class="text-[11.5px] font-bold uppercase tracking-[0.08em] text-[#D4D4D8] px-1.5" data-i18n="flt_body_lbl">Corps :</span>
+          <button type="button" class="hud-btn active" data-body="ALL" data-i18n="flt_body_all">Flotte Hétérogène</button>
+          <button type="button" class="hud-btn" data-body="APOLLO">Apptronik Apollo (24)</button>
+          <button type="button" class="hud-btn" data-body="ATLAS">Electric Atlas 56-DoF (12)</button>
+          <button type="button" class="hud-btn" data-body="ALOHA">ALOHA Bimanual (12)</button>
+        </div>
+      </div>
+
+      <!-- Bandeau Inférieur : Flux Registre SHA-256 & Événements RH en Direct -->
+      <div class="absolute bottom-0 inset-x-0 z-20 h-8 bg-[#050508]/95 border-t border-[#22222B] px-3 flex items-center justify-between gap-4 text-[12px]">
+        <div class="flex items-center gap-2 truncate">
+          <span class="px-1.5 py-0.5 bg-[#00E5FF]/15 text-[#00E5FF] border border-[#00E5FF]/40 font-bold text-[11.5px] tracking-wider shrink-0">OT-LAN LEDGER</span>
+          <span id="live-ticker-msg" class="text-[#D4D4D8] truncate">
+            [INITIALISATION] 40 salariés robotiques actifs · 8 statues de terre cuite en attente de dotation énergétique (50 OPVS).
+          </span>
+        </div>
+        <span id="live-ticker-hash" class="hidden sm:inline font-crypto text-[11.5px] text-[#9CA3AF] shrink-0">sha256:9f84c2a1...e40b</span>
+      </div>
+    </div>
+
+    <!-- ==================== 3. TIROIR DROIT : DOSSIER SIRH & BULLETIN DE PAIE OPVS/kWh ==================== -->
+    <aside id="hr-drawer" class="z-30 h-full bg-[#07070A] border-l border-[#282834] flex flex-col shrink-0 absolute right-0 top-0 lg:relative">
+      <!-- En-tête Dossier Salarié -->
+      <div class="px-3.5 py-2.5 bg-[#0B0B10] border-b border-[#242430] flex items-center justify-between gap-2 shrink-0">
+        <div class="flex items-center gap-1.5">
+          <button type="button" id="btn-prev-unit" class="hud-btn !px-2 !py-1" title="Unité précédente">◀</button>
+          <button type="button" id="btn-next-unit" class="hud-btn !px-2 !py-1" title="Unité suivante">▶</button>
+          <div class="ml-1">
+            <div class="text-[11.5px] uppercase tracking-[0.09em] text-[#00E5FF] font-bold" data-i18n="drw_eyebrow">DOSSIER INDIVIDUEL &amp; PAIE</div>
+            <div class="text-base font-bold text-white tracking-wide flex items-center gap-2">
+              <span id="hr-matricule">MAT-004</span>
+              <span class="font-crypto text-xs text-[#D4D4D8] font-normal" id="hr-wallet-id">wlt_apollo_04</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span id="hr-grade-badge" class="px-2 py-0.5 text-xs font-bold border border-[#00E676] text-[#00E676] bg-[#00E676]/10">GRADE S</span>
+          <button type="button" id="btn-collapse-drawer" class="hud-btn !px-2 !py-1" title="Replier le panneau">✕</button>
+        </div>
+      </div>
+
+      <!-- Contenu Défilant du Dossier RH -->
+      <div class="flex-1 overflow-y-auto p-3.5 space-y-3.5 select-text">
+
+        <!-- SECTION A : PASSEPORT BIOMÉCANIQUE & DIPLÔME VLA -->
+        <section class="bg-[#0B0B0F] border border-[#22222B] p-3">
+          <div class="flex items-center justify-between gap-2 pb-2 mb-2.5 border-b border-[#1D1D26]">
+            <div>
+              <div class="text-[11.5px] text-[#9CA3AF] uppercase tracking-wider" data-i18n="sec_id_model">Morphologie / Châssis</div>
+              <div class="text-sm font-bold text-white" id="hr-embodiment">Apptronik Apollo</div>
+            </div>
+            <div class="text-right">
+              <div class="text-[11.5px] text-[#9CA3AF] uppercase tracking-wider" data-i18n="sec_id_zone">Zone Superviseur</div>
+              <div class="text-xs font-bold text-[#00E676]" id="hr-zone-badge">▲ Z0 · ASCENSION</div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between text-[11.5px] mb-2.5">
+            <span class="text-[#D4D4D8]" data-i18n="sec_id_key">Clé Matérielle TPM :</span>
+            <span class="font-crypto text-white" id="hr-ed25519">ed25519:8f4c19d2...a904</span>
+          </div>
+
+          <!-- Sélecteur Cerveau Gemini VLA -->
+          <div class="mb-3">
+            <label for="hr-vla-select" class="block text-[11.5px] uppercase tracking-[0.07em] text-[#4C8DFF] font-bold mb-1" data-i18n="sec_vla_lbl">
+              Diplôme Cognitif Assigné (Google DeepMind VLA)
+            </label>
+            <select id="hr-vla-select" class="w-full bg-[#060810] border border-[#4C8DFF]/60 text-white text-xs font-semibold px-2.5 py-2 focus:outline-none focus:border-[#00E5FF]">
+              <option value="gemini-robotics-2.5-pro">gemini-robotics-2.5-pro (Géodésique · Haute Marge)</option>
+              <option value="gemini-robotics-2.4-margin">gemini-robotics-2.4-margin (Standard Industriel Sûr)</option>
+              <option value="gemini-robotics-2.5-exp-rl">gemini-robotics-2.5-exp-rl (Expérimental Haut Couple)</option>
+              <option value="unendowed-terracotta-statue" disabled>statue-argile-inerte (Aucun Métabolisme Actif)</option>
+            </select>
+          </div>
+
+          <!-- 4 Jauges Biomécaniques en Direct -->
+          <div class="grid grid-cols-2 gap-2 text-[11.5px]">
+            <div class="bg-[#07070A] border border-[#1E1E28] p-2">
+              <div class="flex justify-between text-[#D4D4D8]">
+                <span data-i18n="gauge_soc">Batterie SoC</span>
+                <span class="font-bold text-[#00E5FF]" id="hr-soc-val">92%</span>
+              </div>
+              <div class="w-full h-1.5 bg-[#181820] mt-1">
+                <div id="hr-soc-bar" class="h-full bg-[#00E5FF]" style="width: 92%;"></div>
+              </div>
+            </div>
+
+            <div class="bg-[#07070A] border border-[#1E1E28] p-2">
+              <div class="flex justify-between text-[#D4D4D8]">
+                <span data-i18n="gauge_torque">Couple ∫τ²dt</span>
+                <span class="font-bold text-[#00E676]" id="hr-torque-val">1 540</span>
+              </div>
+              <div class="w-full h-1.5 bg-[#181820] mt-1">
+                <div id="hr-torque-bar" class="h-full bg-[#00E676]" style="width: 32%;"></div>
+              </div>
+            </div>
+
+            <div class="bg-[#07070A] border border-[#1E1E28] p-2">
+              <div class="flex justify-between text-[#D4D4D8]">
+                <span data-i18n="gauge_temp">Bobinages °C</span>
+                <span class="font-bold text-[#00E676]" id="hr-temp-val">52 °C</span>
+              </div>
+              <div class="w-full h-1.5 bg-[#181820] mt-1">
+                <div id="hr-temp-bar" class="h-full bg-[#00E676]" style="width: 28%;"></div>
+              </div>
+            </div>
+
+            <div class="bg-[#07070A] border border-[#1E1E28] p-2 flex flex-col justify-between">
+              <div class="text-[#D4D4D8]" data-i18n="gauge_safety">Sécurité ⊥ Économie</div>
+              <div class="text-[#00E676] font-bold tracking-wider text-[11.5px]" data-i18n="gauge_safety_ok">✓ INVARIANT VÉRIFIÉ</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION B : CARTE SPÉCIALE STATUE TERRE CUITE (visible uniquement si UNENDOWED) -->
+        <section id="clay-awaken-card" class="hidden bg-[#1A100C] border-2 border-[#B67349] p-3.5 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-[0.09em] text-[#B67349]" data-i18n="clay_card_tag">STATUE DE TERRE CUITE · NON DOTÉE</span>
+            <span class="font-crypto text-[11.5px] text-[#D4D4D8]">0 µOPVS</span>
+          </div>
+          <p class="text-xs text-[#E4D4C8] leading-relaxed" data-i18n="clay_card_desc">
+            « Un corps sans métabolisme est une statue. » Cette unité est physiquement assemblée dans la fosse mais ne dispose d'aucun fonds de roulement énergétique kWh ni de politique Gemini VLA active.
+          </p>
+          <button type="button" id="btn-awaken-unit" class="w-full py-2.5 px-3 bg-[#00E5FF] hover:bg-white text-black font-bold text-xs uppercase tracking-[0.08em] cursor-pointer transition awakan-cta awaken-cta" data-i18n="btn_awaken_statue">
+            ⚡ Dotation d'Embauche : Éveiller la Statue (50.00 OPVS)
+          </button>
+        </section>
+
+        <!-- SECTION C : BULLETIN DE PAIE THERMODYNAMIQUE (Cycle 4h) -->
+        <section class="bg-[#0B0B0F] border border-[#22222B] p-3">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold uppercase tracking-[0.08em] text-white" data-i18n="pay_title">Bulletin de Paie Métabolique (Poste 4h)</span>
+            <span class="font-crypto text-[11.5px] text-[#00E5FF]">1 OPVS ≡ 1 kWh</span>
+          </div>
+
+          <table class="payslip-table">
+            <thead>
+              <tr>
+                <th class="text-left" data-i18n="pay_col_item">Rubrique Salariale</th>
+                <th class="text-right"><span class="normal-case">µ</span>OPVS (INT64)</th>
+                <th class="text-right">OPVS (kWh)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-[#D4D4D8]" data-i18n="pay_row_wage">+ Salaire Brut Tâches</td>
+                <td class="text-right font-crypto text-white" id="pay-wage-micro">+8 600 000</td>
+                <td class="text-right font-bold text-[#00E676]" id="pay-wage-opvs">+8.60</td>
+              </tr>
+              <tr>
+                <td class="text-[#D4D4D8]" data-i18n="pay_row_bonus">+ Primes &amp; M2M Reçu</td>
+                <td class="text-right font-crypto text-[#00E5FF]" id="pay-bonus-micro">+0</td>
+                <td class="text-right font-semibold text-[#00E5FF]" id="pay-bonus-opvs">+0.00</td>
+              </tr>
+              <tr>
+                <td class="text-[#D4D4D8]" data-i18n="pay_row_swap">− Repas Batterie (Swap BMS)</td>
+                <td class="text-right font-crypto text-[#FFAB00]" id="pay-swap-micro">-3 200 000</td>
+                <td class="text-right font-semibold text-[#FFAB00]" id="pay-swap-opvs">-3.20</td>
+              </tr>
+              <tr>
+                <td class="text-[#D4D4D8]" data-i18n="pay_row_maint">− Cotisation Usure &amp; Retraite</td>
+                <td class="text-right font-crypto text-[#FFAB00]" id="pay-maint-micro">-788 800</td>
+                <td class="text-right font-semibold text-[#FFAB00]" id="pay-maint-opvs">-0.79</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Ligne Salaire Net Métabolique ΔM -->
+          <div id="pay-net-box" class="mt-2.5 p-2.5 bg-[#06130D] border border-[#00E676]/60 flex items-center justify-between">
+            <div>
+              <div class="text-[11.5px] font-bold uppercase tracking-[0.07em] text-white" data-i18n="pay_net_lbl">= SALAIRE NET MÉTABOLIQUE (ΔM)</div>
+              <div class="text-[11.5px] text-[#D4D4D8] mt-0.5">
+                <span data-i18n="pay_pitch_lbl">Pente intrinsèque :</span>
+                <span class="font-bold text-white" id="pay-pitch-val">+8.4°</span>
+                <span class="mx-1">·</span>
+                <span id="pay-usd-eq">≈ +$0.65 / poste</span>
+              </div>
+            </div>
+            <div class="text-right">
+              <div class="text-base font-bold text-[#00E676]" id="pay-net-opvs">+4.61 OPVS</div>
+              <div class="font-crypto text-[11.5px] text-[#D4D4D8]" id="pay-net-micro">+4 611 200 µ</div>
+            </div>
+          </div>
+
+          <!-- Soldes Patrimoniaux du Robot -->
+          <div class="grid grid-cols-3 gap-1.5 mt-2.5 text-center">
+            <div class="bg-[#07070A] border border-[#1E1E28] p-1.5">
+              <div class="text-[11.5px] text-[#9CA3AF]" data-i18n="bal_liq">Épargne (Y)</div>
+              <div class="text-xs font-bold text-white mt-0.5" id="bal-liq-val">58.40 OPVS</div>
+            </div>
+            <div class="bg-[#07070A] border border-[#1E1E28] p-1.5">
+              <div class="text-[11.5px] text-[#9CA3AF]" data-i18n="bal_ds">Altitude (d_S)</div>
+              <div class="text-xs font-bold text-[#00E676] mt-0.5" id="bal-ds-val">+44.20 OPVS</div>
+            </div>
+            <div class="bg-[#07070A] border border-[#1E1E28] p-1.5">
+              <div class="text-[11.5px] text-[#9CA3AF]" data-i18n="bal_esc">Retraite (R_m)</div>
+              <div class="text-xs font-bold text-[#00E5FF] mt-0.5" id="bal-esc-val">38.20 OPVS</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION D : SIMULATEUR DE CONTRAINTE & ACTIONS RH (HUMAN-ON-THE-LOOP) -->
+        <section id="hr-controls-section" class="bg-[#0B0B0F] border border-[#22222B] p-3 space-y-2.5">
+          <div class="text-xs font-bold uppercase tracking-[0.08em] text-[#00E5FF]" data-i18n="ctrl_sim_title">
+            Paramètres de Poste &amp; Décisions RH en Direct
+          </div>
+
+          <!-- 4 Sliders Temps Réel -->
+          <div class="space-y-2">
+            <div>
+              <div class="flex justify-between text-[11.5px] mb-0.5">
+                <label for="sl-wage" class="text-[#D4D4D8]" data-i18n="sl_wage_lbl">Salaire Brut Tâche (OPVS / kWh)</label>
+                <span class="font-bold text-[#00E676]" id="sl-wage-txt">8.60 OPVS</span>
+              </div>
+              <input type="range" id="sl-wage" class="opvs-range range-nom" min="3500000" max="11500000" step="100000" value="8600000" />
+            </div>
+
+            <div>
+              <div class="flex justify-between text-[11.5px] mb-0.5">
+                <label for="sl-wh" class="text-[#D4D4D8]" data-i18n="sl_wh_lbl">Consommation Repas Swap BMS (Wh)</label>
+                <span class="font-bold text-[#00E5FF]" id="sl-wh-txt">3 200 Wh</span>
+              </div>
+              <input type="range" id="sl-wh" class="opvs-range" min="2200" max="4600" step="50" value="3200" />
+            </div>
+
+            <div>
+              <div class="flex justify-between text-[11.5px] mb-0.5">
+                <label for="sl-torque" class="text-[#D4D4D8]" data-i18n="sl_torque_lbl">Intensité Couple Articulaire (∫τ²dt)</label>
+                <span class="font-bold text-[#FFAB00]" id="sl-torque-txt">1 540 Nm²s</span>
+              </div>
+              <input type="range" id="sl-torque" class="opvs-range range-caution" min="800" max="4800" step="50" value="1540" />
+            </div>
+
+            <div>
+              <div class="flex justify-between text-[11.5px] mb-0.5">
+                <label for="sl-temp" class="text-[#D4D4D8]" data-i18n="sl_temp_lbl">Température Bobinages (°C · Loi d'Arrhenius)</label>
+                <span class="font-bold text-[#FFAB00]" id="sl-temp-txt">52 °C</span>
+              </div>
+              <input type="range" id="sl-temp" class="opvs-range range-caution" min="40" max="88" step="1" value="52" />
+            </div>
+          </div>
+
+          <!-- Boutons d'Intervention RH -->
+          <div class="grid grid-cols-2 gap-1.5 pt-1">
+            <button type="button" id="btn-act-m2m" class="hud-btn btn-energy !justify-start" data-i18n="act_m2m">
+              🤝 Sous-traiter M2M (+1.50)
+            </button>
+            <button type="button" id="btn-act-tip" class="hud-btn btn-nom !justify-start" data-i18n="act_tip">
+              🏅 Prime Opérateur (+0.25)
+            </button>
+            <button type="button" id="btn-act-quarantine" class="hud-btn btn-caution !justify-start" data-i18n="act_quar">
+              🛡️ Rollback &amp; Soin Z3
+            </button>
+            <button type="button" id="btn-act-merkle" class="hud-btn btn-vla !justify-start" data-i18n="act_merkle">
+              📄 Preuve Merkle &amp; RL
+            </button>
+          </div>
+        </section>
+
+      </div>
+    </aside>
+  </main>
+
+  <!-- ==================== 4. TOOLTIP 3D SURVOL ==================== -->
+  <div id="hover-tooltip" class="hidden">
+    <div class="flex items-center justify-between gap-3">
+      <span class="font-bold text-white text-xs" id="tt-mat">MAT-001</span>
+      <span class="text-[11.5px] font-bold px-1.5 py-0.2 border" id="tt-grade">GRADE S</span>
+    </div>
+    <div class="text-[11.5px] text-[#00E5FF] font-semibold mt-0.5" id="tt-body">Apptronik Apollo</div>
+    <div class="text-[11.5px] text-[#4C8DFF] truncate" id="tt-brain">gemini-robotics-2.5-pro</div>
+    <div class="mt-1 pt-1 border-t border-[#262632] flex justify-between text-[11.5px]">
+      <span class="text-[#D4D4D8]" id="tt-zone">Z0 · Ascension</span>
+      <span class="font-bold text-[#00E676]" id="tt-dm">+4.61 OPVS</span>
+    </div>
+  </div>
+
+  <!-- ==================== 5. TOAST NOTIFICATION SCADA (Sans alert()) ==================== -->
+  <div id="scada-toast" class="fixed bottom-12 left-6 z-50 hidden bg-[#09090E] border-2 border-[#00E5FF] px-4 py-2.5 shadow-2xl max-w-lg">
+    <div class="text-xs font-bold uppercase tracking-wider text-[#00E5FF]" id="toast-title">NOTIFICATION SYSTÈME</div>
+    <div class="text-xs text-white mt-0.5" id="toast-body">Opération enregistrée sur le registre OT-LAN.</div>
+  </div>
+
+  <!-- ==================== 6. MODAL GOOGLE DEEPMIND : GEMINI VLA EPISODE BRIDGE ==================== -->
+  <div id="vla-modal" class="fixed inset-0 z-50 hidden bg-black/90 flex items-center justify-center p-4">
+    <div class="bg-[#07070B] border-2 border-[#4C8DFF] w-full max-w-5xl max-h-[90vh] flex flex-col shadow-2xl">
+      <!-- Modal Header -->
+      <div class="px-5 py-3.5 bg-[#0B0E18] border-b border-[#262F45] flex items-center justify-between gap-4">
+        <div>
+          <div class="text-[11.5px] font-bold uppercase tracking-[0.11em] text-[#4C8DFF]" data-i18n="mod_eye">
+            GOOGLE DEEPMIND BRIEFING · GEMINI ROBOTICS VLA × OPVS THERMODYNAMIC GROUNDING
+          </div>
+          <h2 class="text-lg font-bold text-white tracking-wide" data-i18n="mod_title">
+            GeminiVlaEpisodeBridge — Ancrage Physique du Signal de Récompense RL &amp; Preuve Merkle
+          </h2>
+        </div>
+        <button type="button" id="btn-close-vla" class="hud-btn !border-white !text-white !px-3 !py-1.5">✕ ESC</button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="flex-1 overflow-y-auto p-5 grid grid-cols-1 lg:grid-cols-2 gap-5 select-text">
+        <!-- Colonne Gauche : Explication & Injecteur d'Épisode RL -->
+        <div class="space-y-4">
+          <div class="bg-[#0B0B10] border border-[#242432] border-l-4 border-l-[#4C8DFF] p-3.5 text-xs text-[#D4D4D8] space-y-2 leading-relaxed">
+            <div class="text-white font-bold uppercase tracking-wider" data-i18n="mod_why_t">
+              Pourquoi Gemini Robotics a besoin d'un métabolisme OPVS :
+            </div>
+            <p data-i18n="mod_why_p">
+              Les politiques VLA optimisées uniquement sur la vitesse de réussite en simulation dégradent les réducteurs harmoniques (∫τ²dt) et surchauffent les bobinages. OPVS convertit chaque épisode industriel réel en un scalaire physique infalsifiable — la marge énergétique nette ΔM en µOPVS — tout en maintenant l'enveloppe de sécurité strictement hors économie.
+            </p>
+            <div class="font-crypto text-[11.5px] text-[#00E676] pt-1">
+              Safety_Envelope ⊥ Economic_Objective === TRUE (Hard Invariant)
+            </div>
+          </div>
+
+          <!-- Simulateur d'Épisode Gemini VLA -->
+          <div class="bg-[#0B0B10] border border-[#242432] p-3.5 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-[#00E5FF]" data-i18n="mod_sim_t">Injecteur d'Épisode Post-Training VLA</span>
+              <span class="font-crypto text-[11.5px] text-white" id="mod-target-unit">Cible : MAT-004</span>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-[#D4D4D8]" data-i18n="mod_ep_succ">Succès Manipulation Dextre (Score VLA)</span>
+                <span class="font-bold text-[#00E676]" id="mod-succ-val">0.96</span>
+              </div>
+              <input type="range" id="mod-succ" class="opvs-range range-nom" min="0.40" max="1.00" step="0.02" value="0.96" />
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-[#D4D4D8]" data-i18n="mod_ep_tq">Intégrale Couple Épisode (∫τ²dt)</span>
+                <span class="font-bold text-[#FFAB00]" id="mod-tq-val">1 480 Nm²s</span>
+              </div>
+              <input type="range" id="mod-tq" class="opvs-range range-caution" min="800" max="4600" step="50" value="1480" />
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-[#D4D4D8]" data-i18n="mod_ep_tmp">Pic Thermique Bobinage (°C)</span>
+                <span class="font-bold text-[#FFAB00]" id="mod-tmp-val">51 °C</span>
+              </div>
+              <input type="range" id="mod-tmp" class="opvs-range range-caution" min="42" max="86" step="1" value="51" />
+            </div>
+
+            <button type="button" id="btn-dispatch-episode" class="w-full hud-btn btn-vla !py-2.5 !text-xs font-bold" data-i18n="mod_btn_dispatch">
+              ⚡ Exécuter &amp; Régler l'Épisode VLA sur le Salarié Sélectionné
+            </button>
+          </div>
+
+          <!-- Référence Architecture & Contact Exécutif -->
+          <div class="bg-[#0B0B10] border border-[#242432] p-3 flex flex-wrap items-center justify-between gap-2 text-xs">
+            <div>
+              <div class="font-bold text-white">OPERAE VIS · Specification v2.0 (19 pp.)</div>
+              <div class="text-[#9CA3AF]">Founder: Antonin Garrigue · <span class="text-[#00E5FF]">antonin@operaevis.com</span></div>
+            </div>
+            <span class="font-crypto text-[11.5px] px-2 py-1 bg-[#12121A] border border-[#2C2C3A] text-[#D4D4D8]">
+              Θ 1 OPVS = 3.6 MJ
+            </span>
+          </div>
+        </div>
+
+        <!-- Colonne Droite : Payload JSON Lisible par Machine & Preuve Merkle -->
+        <div class="flex flex-col bg-[#050508] border border-[#262634]">
+          <div class="px-3.5 py-2 bg-[#0D0D14] border-b border-[#242432] flex items-center justify-between">
+            <span class="font-crypto text-[11.5px] text-[#4C8DFF] font-semibold">application/opvs+json · Reward &amp; Payslip Proof</span>
+            <button type="button" id="btn-copy-json" class="hud-btn btn-energy !py-1 !px-2.5" data-i18n="mod_btn_copy">📋 Copier JSON</button>
+          </div>
+          <pre id="vla-json-output" class="flex-1 p-3.5 font-crypto text-[11.5px] text-[#D4D4D8] overflow-auto leading-relaxed whitespace-pre-wrap"></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 7. MOTEUR APPLICATIF : SIRH OPVS + THREE.JS PHALANGE ==================== -->
+  <script type="module">
+    import * as THREE from "three";
+    import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+    import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+
+    /* -------------------------------------------------------------------------- */
+    /* 1. DICTIONNAIRE BILINGUE COMPLET (FR PAR DÉFAUT / EN EXECUTIVE DEEPMIND)   */
+    /* -------------------------------------------------------------------------- */
+    const I18N = {
+      fr: {
+        hdr_badge: "WORKFORCE OS v2.0",
+        hdr_sub: "1 OPVS ≡ 1 kWh · Phalange & SIRH Thermodynamique",
+        kpi_headcount_lbl: "Effectif Phalange (Fosse #1)",
+        kpi_payroll_lbl: "Masse Salariale Nette / 4h",
+        kpi_genesis_lbl: "Genesis Pool (Auto-Embauche)",
+        kpi_kirch_lbl: "Audit Kirchhoff Sous-Station",
+        kpi_kirch_ok: "BOUCLÉ",
+        btn_live_off: "▶ Lecture Temps Réel",
+        btn_live_on: "⏸ Pause Temps Réel",
+        btn_step_shift: "⚡ +1 Poste (4h)",
+        btn_reset: "↺ Reset",
+        btn_vla_bridge: "🧠 Gemini VLA Bridge",
+        cam_lbl: "Caméra :",
+        cam_xian: "Fosse Xi'an",
+        cam_manifold: "Rasante Manifold S",
+        cam_zenith: "Zénithale RH",
+        cam_focus: "Focus Salarié",
+        tog_manifold_on: "Plan S (d_S=0) : ON",
+        tog_manifold_off: "Plan S (d_S=0) : OFF",
+        tog_orbit_off: "Orbite : OFF",
+        tog_orbit_on: "Orbite : ON",
+        leg_z0: "Z0 Ascension (+ΔM)",
+        leg_vla: "Cerveau Gemini VLA",
+        leg_heat: "Échauffement τ²/T",
+        leg_z3: "Z3 Faillite Douce",
+        leg_clay: "Statue Terre Cuite",
+        btn_open_payslip: "◀ Ouvrir Dossier RH & Fiche de Paie",
+        flt_status_lbl: "Statut RH :",
+        flt_all: "Tous",
+        flt_active: "Actifs Z0/Z1",
+        flt_alert: "Alerte Z2/Z3",
+        flt_clay: "Statues Terre Cuite",
+        flt_body_lbl: "Corps :",
+        flt_body_all: "Flotte Hétérogène",
+        drw_eyebrow: "DOSSIER INDIVIDUEL & PAIE",
+        sec_id_model: "Morphologie / Châssis",
+        sec_id_zone: "Zone Superviseur",
+        sec_id_key: "Clé Matérielle TPM :",
+        sec_vla_lbl: "Diplôme Cognitif Assigné (Google DeepMind VLA)",
+        gauge_soc: "Batterie SoC",
+        gauge_torque: "Couple ∫τ²dt",
+        gauge_temp: "Bobinages °C",
+        gauge_safety: "Sécurité ⊥ Économie",
+        gauge_safety_ok: "✓ INVARIANT VÉRIFIÉ",
+        clay_card_tag: "STATUE DE TERRE CUITE · NON DOTÉE",
+        clay_card_desc: "« Un corps sans métabolisme est une statue. » Cette unité est assemblée dans la fosse mais ne dispose d'aucun capital énergétique kWh ni de politique Gemini VLA active.",
+        btn_awaken_statue: "⚡ Dotation d'Embauche : Éveiller la Statue (50.00 OPVS)",
+        pay_title: "Bulletin de Paie Métabolique (Poste 4h)",
+        pay_col_item: "Rubrique Salariale",
+        pay_row_wage: "+ Salaire Brut Tâches",
+        pay_row_bonus: "+ Primes & M2M Reçu",
+        pay_row_swap: "− Repas Batterie (Swap BMS)",
+        pay_row_maint: "− Cotisation Usure & Retraite",
+        pay_net_lbl: "= SALAIRE NET MÉTABOLIQUE (ΔM)",
+        pay_pitch_lbl: "Pente intrinsèque :",
+        bal_liq: "Épargne (Y)",
+        bal_ds: "Altitude (d_S)",
+        bal_esc: "Retraite (R_m)",
+        ctrl_sim_title: "Paramètres de Poste & Décisions RH en Direct",
+        sl_wage_lbl: "Salaire Brut Tâche (OPVS / kWh)",
+        sl_wh_lbl: "Consommation Repas Swap BMS (Wh)",
+        sl_torque_lbl: "Intensité Couple Articulaire (∫τ²dt)",
+        sl_temp_lbl: "Température Bobinages (°C · Loi d'Arrhenius)",
+        act_m2m: "🤝 Sous-traiter M2M (+1.50)",
+        act_tip: "🏅 Prime Opérateur (+0.25)",
+        act_quar: "🛡️ Rollback & Soin Z3",
+        act_merkle: "📄 Preuve Merkle & RL",
+        mod_eye: "GOOGLE DEEPMIND BRIEFING · GEMINI ROBOTICS VLA × OPVS THERMODYNAMIC GROUNDING",
+        mod_title: "GeminiVlaEpisodeBridge — Ancrage Physique du Signal de Récompense RL & Preuve Merkle",
+        mod_why_t: "Pourquoi Gemini Robotics a besoin d'un métabolisme OPVS :",
+        mod_why_p: "Les politiques VLA optimisées uniquement sur la vitesse de réussite en simulation dégradent les réducteurs harmoniques (∫τ²dt) et surchauffent les bobinages. OPVS convertit chaque épisode industriel réel en un scalaire physique infalsifiable — la marge énergétique nette ΔM en µOPVS — tout en maintenant l'enveloppe de sécurité strictement hors économie.",
+        mod_sim_t: "Injecteur d'Épisode Post-Training VLA",
+        mod_ep_succ: "Succès Manipulation Dextre (Score VLA)",
+        mod_ep_tq: "Intégrale Couple Épisode (∫τ²dt)",
+        mod_ep_tmp: "Pic Thermique Bobinage (°C)",
+        mod_btn_dispatch: "⚡ Exécuter & Régler l'Épisode VLA sur le Salarié Sélectionné",
+        mod_btn_copy: "📋 Copier JSON",
+        mod_copied: "✓ JSON Copié !",
+        awake_word: "Éveillés",
+        clay_word: "Statues",
+        shift_word: "POSTE"
+      },
+      en: {
+        hdr_badge: "WORKFORCE OS v2.0",
+        hdr_sub: "1 OPVS ≡ 1 kWh · Terracotta Phalanx & Embodied HR",
+        kpi_headcount_lbl: "Phalanx Headcount (Pit #1)",
+        kpi_payroll_lbl: "Net Fleet Payroll / 4h Shift",
+        kpi_genesis_lbl: "Genesis Pool (Auto-Endowment)",
+        kpi_kirch_lbl: "Substation Kirchhoff Audit",
+        kpi_kirch_ok: "CLOSED",
+        btn_live_off: "▶ Live Telemetry",
+        btn_live_on: "⏸ Pause Telemetry",
+        btn_step_shift: "⚡ +1 Shift (4h)",
+        btn_reset: "↺ Reset",
+        btn_vla_bridge: "🧠 Gemini VLA Bridge",
+        cam_lbl: "Camera:",
+        cam_xian: "Xi'an Pit View",
+        cam_manifold: "Manifold S Grazing",
+        cam_zenith: "Top-Down HR Roster",
+        cam_focus: "Focus Unit",
+        tog_manifold_on: "Manifold S (d_S=0): ON",
+        tog_manifold_off: "Manifold S (d_S=0): OFF",
+        tog_orbit_off: "Orbit: OFF",
+        tog_orbit_on: "Orbit: ON",
+        leg_z0: "Z0 Ascending (+ΔM)",
+        leg_vla: "Gemini VLA Brain",
+        leg_heat: "Actuator Heat τ²/T",
+        leg_z3: "Z3 Soft Bankruptcy",
+        leg_clay: "Terracotta Statue",
+        btn_open_payslip: "◀ Open HR File & Payslip",
+        flt_status_lbl: "HR Status:",
+        flt_all: "All",
+        flt_active: "Active Z0/Z1",
+        flt_alert: "Alert Z2/Z3",
+        flt_clay: "Terracotta Statues",
+        flt_body_lbl: "Embodiment:",
+        flt_body_all: "Heterogeneous Fleet",
+        drw_eyebrow: "EMPLOYEE RECORD & PAYSLIP",
+        sec_id_model: "Physical Embodiment",
+        sec_id_zone: "Supervisor Zone",
+        sec_id_key: "TPM Hardware Key:",
+        sec_vla_lbl: "Assigned Cognitive Policy (Google DeepMind VLA)",
+        gauge_soc: "Battery SoC",
+        gauge_torque: "Torque ∫τ²dt",
+        gauge_temp: "Windings °C",
+        gauge_safety: "Safety ⊥ Economy",
+        gauge_safety_ok: "✓ VERIFIED INVARIANT",
+        clay_card_tag: "TERRACOTTA STATUE · UNENDOWED",
+        clay_card_desc: "\"A body without a metabolism is a statue.\" This unit stands assembled in the trench without kWh working-capital endowment or an active Gemini VLA policy.",
+        btn_awaken_statue: "⚡ Hiring Endowment: Awaken Statue (50.00 OPVS)",
+        pay_title: "Thermodynamic Payslip (4h Shift)",
+        pay_col_item: "Payroll Line Item",
+        pay_row_wage: "+ Gross Task Wage",
+        pay_row_bonus: "+ Operator Tips & M2M",
+        pay_row_swap: "− Battery Swap Meal (BMS)",
+        pay_row_maint: "− Wear & Retirement Escrow",
+        pay_net_lbl: "= NET METABOLIC WAGE (ΔM)",
+        pay_pitch_lbl: "Intrinsic Pitch:",
+        bal_liq: "Liquidity (Y)",
+        bal_ds: "Altitude (d_S)",
+        bal_esc: "Escrow (R_m)",
+        ctrl_sim_title: "Live Shift Stress & Human-on-the-Loop HR",
+        sl_wage_lbl: "Gross Task Wage (OPVS / kWh)",
+        sl_wh_lbl: "BMS Battery Swap Meal (Wh)",
+        sl_torque_lbl: "Joint Torque Integral (∫τ²dt)",
+        sl_temp_lbl: "Winding Temp (°C · Arrhenius Wear)",
+        act_m2m: "🤝 Subcontract M2M (+1.50)",
+        act_tip: "🏅 Operator Bonus (+0.25)",
+        act_quar: "🛡️ Rollback & Cure Z3",
+        act_merkle: "📄 Merkle & RL Proof",
+        mod_eye: "GOOGLE DEEPMIND BRIEFING · GEMINI ROBOTICS VLA × OPVS THERMODYNAMIC GROUNDING",
+        mod_title: "GeminiVlaEpisodeBridge — Physical RL Reward Grounding & Merkle Settlement Proof",
+        mod_why_t: "Why Gemini Robotics policies benefit from an OPVS metabolism:",
+        mod_why_p: "Simulation rewards optimize raw completion speed while ignoring harmonic-drive torque fatigue (∫τ²dt) and winding heat. OPVS grounds embodied foundation models in an ungameable physical scalar—net energy margin ΔM in µOPVS—while enforcing strict safety orthogonality.",
+        mod_sim_t: "Post-Training VLA Episode Dispatcher",
+        mod_ep_succ: "Dexterous Manipulation Score (VLA)",
+        mod_ep_tq: "Episode Torque Integral (∫τ²dt)",
+        mod_ep_tmp: "Peak Winding Temperature (°C)",
+        mod_btn_dispatch: "⚡ Dispatch & Settle VLA Episode on Selected Unit",
+        mod_btn_copy: "📋 Copy JSON",
+        mod_copied: "✓ JSON Copied!",
+        awake_word: "Awakened",
+        clay_word: "Statues",
+        shift_word: "SHIFT"
+      }
+    };
+
+    /* -------------------------------------------------------------------------- */
+    /* 2. MODÈLE DE DONNÉES THERMODYNAMIQUE & GÉNÉRATION DES 48 UNITÉS            */
+    /* -------------------------------------------------------------------------- */
+    const ROWS = 6;
+    const COLS = 8;
+    const TOTAL_UNITS = ROWS * COLS; // 48 unités dans la Fosse #1
+    const GENESIS_THRESHOLD_MICRO = 500_000_000; // 500 OPVS pour éveiller une statue
+    const USD_PER_KWH = 0.14;
+
+    const urlLang = new URLSearchParams(window.location.search).get("lang");
+    let lang = (urlLang === "en" || urlLang === "fr") ? urlLang : "fr";
+    let shiftCycle = 1;
+    let genesisPoolMicro = 425_000_000; // 425 OPVS (proche de 500 pour démonstration rapide !)
+    let kirchhoffEps = 0.012;
+    let selectedIndex = 3; // MAT-004 au premier rang central
+    let cohortFilter = "ALL";
+    let bodyFilter = "ALL";
+    let showManifold = true;
+    let autoOrbit = false;
+    let liveSimTimer = null;
+
+    const fmtMicro = (n) => {
+      const sign = n > 0 ? "+" : (n < 0 ? "-" : "");
+      const abs = Math.abs(Math.round(n)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+      return sign + abs;
+    };
+    const fmtOpvs = (micro, showPlus = true) => {
+      const val = micro / 1_000_000;
+      const sign = val > 0 && showPlus ? "+" : "";
+      return sign + val.toFixed(2);
+    };
+    const hashHex = (str) => {
+      let h = 2166136261;
+      for (let i = 0; i < str.length; i++) {
+        h ^= str.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      const p1 = (h >>> 0).toString(16).padStart(8, "0");
+      const p2 = (Math.imul(h ^ 0x9e3779b9, 1597334677) >>> 0).toString(16).padStart(8, "0");
+      return `sha256:${p1}${p2}...e40b`;
+    };
+
+    // Calcul déterministe de la cotisation d'usure & retraite matérielle (Couple² + Loi d'Arrhenius)
+    function computeMaintMicro(torqueSq, tempC) {
+      const base = 420_000;
+      const torqueCost = Math.round(torqueSq * 215);
+      const overTemp = Math.max(0, tempC - 50);
+      const arrheniusCost = Math.round((Math.pow(1.135, overTemp) - 1) * 155_000);
+      return base + torqueCost + arrheniusCost;
+    }
+
+    // Classification Zone Superviseur & Grade RH (S, A, B, C, D, F ou STATUE)
+    function evaluateUnitStatus(u) {
+      if (!u.endowed) {
+        u.zone = "CLAY";
+        u.grade = "STATUE";
+        u.dm = 0;
+        u.maint = 0;
+        u.pitch = 0;
+        return;
+      }
+      u.maint = computeMaintMicro(u.torque, u.temp);
+      u.dm = u.wage + u.bonus - (u.swapWh * 1000) - u.maint;
+      u.pitch = Number((Math.atan2(u.dm, 22_000_000) * (180 / Math.PI)).toFixed(1));
+
+      if (u.ds <= 0 || u.liq <= 0) {
+        u.zone = "Z3";
+        u.zombie = true;
+        u.grade = "F";
+      } else if (u.ds < 12_000_000 || u.liq < 12_000_000 || u.temp >= 74 || u.dm < 0) {
+        u.zone = "Z2";
+        u.grade = u.dm < 0 ? "D" : "C";
+      } else if (u.ds < 24_000_000 || u.dm < 2_200_000) {
+        u.zone = "Z1";
+        u.grade = "B";
+      } else {
+        u.zone = "Z0";
+        u.grade = (u.dm >= 4_200_000 && u.ds >= 38_000_000) ? "S" : "A";
+      }
+    }
+
+    let fleet = [];
+
+    function createInitialFleet() {
+      const arr = [];
+      for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+          const idx = r * COLS + c;
+          const num = String(idx + 1).padStart(3, "0");
+
+          // Répartition par travées : Cols 0..3 Apollo (24), Cols 4..5 Atlas (12), Cols 6..7 ALOHA (12)
+          let bodyCode = "APOLLO";
+          let bodyName = "Apptronik Apollo";
+          let prefix = "apollo";
+          if (c === 4 || c === 5) {
+            bodyCode = "ATLAS";
+            bodyName = "Electric Atlas 56-DoF";
+            prefix = "atlas";
+          } else if (c >= 6) {
+            bodyCode = "ALOHA";
+            bodyName = "ALOHA Bimanual Rig";
+            prefix = "aloha";
+          }
+
+          // Dernier rang (r === 5, 8 unités) = Statues de Terre Cuite en attente de dotation !
+          const isClayStatue = (r === 5);
+
+          // 3 unités en Rupture Z3 (Faillite Douce) pour dramaturgie visuelle immédiate
+          const isBreachSeed = !isClayStatue && (idx === 13 || idx === 21 || idx === 30);
+          // 5 unités en Conservation Z2 (Échauffement thermique)
+          const isCautionSeed = !isClayStatue && !isBreachSeed && (idx === 6 || idx === 18 || idx === 27 || idx === 33 || idx === 38);
+
+          let policy = "gemini-robotics-2.5-pro";
+          let wage = 8_400_000 + ((idx * 37) % 18) * 100_000;
+          let swapWh = 3050 + ((idx * 53) % 9) * 50;
+          let torque = 1350 + ((idx * 71) % 11) * 65;
+          let temp = 48 + (idx % 9);
+          let liq = 52_000_000 + ((40 - idx) * 650_000);
+          let ds = 36_000_000 + ((40 - idx) * 580_000);
+          let soc = 74 + (idx % 23);
+
+          if (r >= 2 && r <= 4 && !isBreachSeed && !isCautionSeed && idx % 3 === 0) {
+            policy = "gemini-robotics-2.4-margin";
+            wage = 7_100_000 + (idx % 7) * 150_000;
+            ds = 21_000_000 + (idx % 8) * 1_400_000;
+          }
+
+          if (isCautionSeed) {
+            policy = "gemini-robotics-2.4-margin";
+            wage = 5_800_000;
+            swapWh = 3850;
+            torque = 3350;
+            temp = 75;
+            liq = 14_500_000;
+            ds = 7_800_000;
+            soc = 29;
+          }
+
+          if (isBreachSeed) {
+            policy = "gemini-robotics-2.5-exp-rl";
+            wage = 4_100_000;
+            swapWh = 4350;
+            torque = 4420;
+            temp = 84;
+            liq = 2_400_000;
+            ds = -6_800_000 - (idx % 4) * 1_900_000;
+            soc = 9;
+          }
+
+          if (isClayStatue) {
+            policy = "unendowed-terracotta-statue";
+            wage = 0;
+            swapWh = 0;
+            torque = 800;
+            temp = 22;
+            liq = 0;
+            ds = 0;
+            soc = 0;
+          }
+
+          const unit = {
+            index: idx,
+            row: r,
+            col: c,
+            matricule: `MAT-${num}`,
+            walletId: `wlt_${prefix}_${String(idx + 1).padStart(2, "0")}`,
+            ed25519: `ed25519:${((idx + 17) * 2654435761 >>> 0).toString(16).slice(0, 8)}...a9${String(idx + 1).padStart(2, "0")}`,
+            bodyCode,
+            bodyName,
+            endowed: !isClayStatue,
+            policy,
+            wage,
+            bonus: idx === 3 ? 250_000 : 0,
+            swapWh,
+            torque,
+            temp,
+            liq,
+            ds,
+            escrow: isClayStatue ? 0 : 28_000_000 + (48 - idx) * 320_000,
+            soc,
+            zombie: isBreachSeed,
+            negStreak: isBreachSeed ? 3 : 0,
+            zone: "Z0",
+            grade: "A",
+            dm: 0,
+            maint: 0,
+            pitch: 0
+          };
+          evaluateUnitStatus(unit);
+          arr.push(unit);
+        }
+      }
+      return arr;
+    }
+
+    fleet = createInitialFleet();
+
+    /* -------------------------------------------------------------------------- */
+    /* 3. SCÈNE THREE.JS : LA FOSSE PHALANGE DE XI'AN (48 ROBOTS ARTICULÉS)       */
+    /* -------------------------------------------------------------------------- */
+    const viewportEl = document.getElementById("pit-viewport");
+    const canvasEl = document.getElementById("pit-canvas");
+
+    const glProbe = canvasEl.getContext("webgl2", { antialias: false, powerPreference: "high-performance" });
+    let isSoftwareGl = false;
+    if (glProbe) {
+      const dbg = glProbe.getExtension("WEBGL_debug_renderer_info");
+      if (dbg) {
+        const rendererStr = String(glProbe.getParameter(dbg.UNMASKED_RENDERER_WEBGL) || "");
+        isSoftwareGl = /SwiftShader|llvmpipe|softpipe|Software|Basic Render/i.test(rendererStr);
+      }
+    }
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas: canvasEl,
+      context: glProbe || undefined,
+      antialias: !isSoftwareGl,
+      powerPreference: "high-performance"
+    });
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.setPixelRatio(isSoftwareGl ? 1 : Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(Math.max(1, viewportEl.clientWidth), Math.max(1, viewportEl.clientHeight));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.12;
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x000000);
+    scene.fog = new THREE.FogExp2(0x000000, 0.021);
+
+    const pmremGenerator = new THREE.PMREMGenerator(renderer);
+    const roomEnv = new RoomEnvironment();
+    const envTarget = pmremGenerator.fromScene(roomEnv, 0.04);
+    scene.environment = envTarget.texture;
+    roomEnv.dispose();
+    pmremGenerator.dispose();
+
+    const camera = new THREE.PerspectiveCamera(44, Math.max(1, viewportEl.clientWidth) / Math.max(1, viewportEl.clientHeight), 0.1, 140);
+    camera.position.set(0, 12.5, 22.5);
+
+    const controls = new OrbitControls(camera, canvasEl);
+    controls.enableDamping = !isSoftwareGl;
+    controls.dampingFactor = 0.06;
+    controls.maxPolarAngle = Math.PI * 0.495;
+    controls.minDistance = 4.5;
+    controls.maxDistance = 46;
+    controls.target.set(0, 0.4, -1.0);
+
+    // Éclairage Dramatique : Rim Light Terre Cuite Xi'an + Zénithal Cyan SCADA + Indigo DeepMind
+    const ambientLight = new THREE.AmbientLight(0x202636, 1.35);
+    scene.add(ambientLight);
+
+    const keyCyanLight = new THREE.DirectionalLight(0xd8f6ff, 1.85);
+    keyCyanLight.position.set(10, 22, 16);
+    scene.add(keyCyanLight);
+
+    const rimTerracottaLight = new THREE.DirectionalLight(0xd97b43, 1.65);
+    rimTerracottaLight.position.set(-16, 9, -18);
+    scene.add(rimTerracottaLight);
+
+    const vlaFillLight = new THREE.PointLight(0x4c8dff, 1.4, 38);
+    vlaFillLight.position.set(0, 9, 4);
+    scene.add(vlaFillLight);
+
+    // Architecture de la Fosse #1 de Xi'an (Sol + Parois + Murs de séparation des travées "Banqiao")
+    const pitGroup = new THREE.Group();
+    scene.add(pitGroup);
+
+    const pitFloorGeo = new THREE.PlaneGeometry(34, 28);
+    const pitFloorMat = new THREE.MeshStandardMaterial({
+      color: 0x090707,
+      roughness: 0.92,
+      metalness: 0.12
+    });
+    const pitFloor = new THREE.Mesh(pitFloorGeo, pitFloorMat);
+    pitFloor.rotation.x = -Math.PI / 2;
+    pitFloor.position.y = -1.65;
+    pitGroup.add(pitFloor);
+
+    // Grille métrologique au fond de la fosse
+    const pitGrid = new THREE.GridHelper(32, 32, 0x3b261d, 0x171416);
+    pitGrid.position.y = -1.63;
+    pitGroup.add(pitGrid);
+
+    // Murs de terre cuite sombre séparant les 4 corridors de la Phalange (comme la Fosse n°1 de Xi'an)
+    const wallMat = new THREE.MeshStandardMaterial({
+      color: 0x241712,
+      roughness: 0.88,
+      metalness: 0.08
+    });
+    const wallCapMat = new THREE.MeshStandardMaterial({
+      color: 0x5c3a28,
+      roughness: 0.7,
+      metalness: 0.2
+    });
+
+    // Positionnement X avec couloirs entre paires de colonnes
+    function getUnitWorldPos(row, col) {
+      const corridorIndex = Math.floor(col / 2); // 0, 1, 2, 3
+      const inCorridor = col % 2; // 0 ou 1
+      const x = -9.45 + corridorIndex * 5.3 + inCorridor * 1.9;
+      const z = 6.2 - row * 2.65;
+      return { x, z };
+    }
+
+    // Construction des 5 cloisons longitudinales Xi'an ("Banqiao")
+    const wallXs = [-11.15, -5.85, -0.55, 4.75, 10.05];
+    const trenchWallGeo = new THREE.BoxGeometry(0.55, 1.35, 17.8);
+    const trenchCapGeo = new THREE.BoxGeometry(0.62, 0.08, 17.85);
+    wallXs.forEach((wx) => {
+      const wMesh = new THREE.Mesh(trenchWallGeo, wallMat);
+      wMesh.position.set(wx, -0.98, -0.4);
+      pitGroup.add(wMesh);
+
+      const capMesh = new THREE.Mesh(trenchCapGeo, wallCapMat);
+      capMesh.position.set(wx, -0.28, -0.4);
+      pitGroup.add(capMesh);
+    });
+
+    // Mur frontal et mur arrière de fosse
+    const endWallGeo = new THREE.BoxGeometry(22.8, 1.7, 0.7);
+    const backWall = new THREE.Mesh(endWallGeo, wallMat);
+    backWall.position.set(-0.55, -0.8, -9.5);
+    pitGroup.add(backWall);
+
+    // ==================== PLAN DE SURVIE "MANIFOLD S" (d_S = 0 à Y = 0) ====================
+    const manifoldGroup = new THREE.Group();
+    scene.add(manifoldGroup);
+
+    const manifoldPlaneGeo = new THREE.PlaneGeometry(22.4, 17.4, 24, 18);
+    const manifoldPlaneMat = new THREE.MeshBasicMaterial({
+      color: 0x00e5ff,
+      transparent: true,
+      opacity: 0.065,
+      side: THREE.DoubleSide,
+      depthWrite: false
+    });
+    const manifoldMesh = new THREE.Mesh(manifoldPlaneGeo, manifoldPlaneMat);
+    manifoldMesh.rotation.x = -Math.PI / 2;
+    manifoldMesh.position.set(-0.55, 0.0, -0.4);
+    manifoldGroup.add(manifoldMesh);
+
+    const manifoldWire = new THREE.GridHelper(22.2, 22, 0x00e5ff, 0x103642);
+    manifoldWire.position.set(-0.55, 0.005, -0.4);
+    manifoldWire.material.transparent = true;
+    manifoldWire.material.opacity = 0.36;
+    manifoldGroup.add(manifoldWire);
+
+    // ==================== GÉOMÉTRIES PARTAGÉES DES ROBOTS & SOCLES ====================
+    const sharedGeo = {
+      plinth: new THREE.BoxGeometry(1.42, 2.4, 1.42),
+      plinthCrown: new THREE.EdgesGeometry(new THREE.BoxGeometry(1.45, 0.08, 1.45)),
+      cage: new THREE.EdgesGeometry(new THREE.BoxGeometry(1.54, 2.55, 1.54)),
+      pelvis: new THREE.BoxGeometry(0.46, 0.16, 0.28),
+      torsoApollo: new THREE.BoxGeometry(0.54, 0.62, 0.32),
+      torsoAtlas: new THREE.CylinderGeometry(0.31, 0.25, 0.64, 10),
+      torsoAloha: new THREE.BoxGeometry(0.42, 0.58, 0.36),
+      core: new THREE.BoxGeometry(0.24, 0.22, 0.06),
+      headApollo: new THREE.BoxGeometry(0.28, 0.27, 0.28),
+      headAtlas: new THREE.CylinderGeometry(0.19, 0.19, 0.18, 16),
+      headAloha: new THREE.BoxGeometry(0.34, 0.16, 0.24),
+      visor: new THREE.BoxGeometry(0.25, 0.065, 0.04),
+      visorRing: new THREE.TorusGeometry(0.14, 0.03, 8, 20),
+      jointSphere: new THREE.SphereGeometry(0.095, 10, 10),
+      limbUpper: new THREE.BoxGeometry(0.13, 0.38, 0.13),
+      limbLower: new THREE.BoxGeometry(0.11, 0.38, 0.11),
+      foot: new THREE.BoxGeometry(0.16, 0.07, 0.26)
+    };
+
+    // Matériaux partagés statiques
+    const matClayBody = new THREE.MeshStandardMaterial({
+      color: 0x5c3c2c,
+      roughness: 0.91,
+      metalness: 0.06
+    });
+    const matClayPlinth = new THREE.MeshStandardMaterial({
+      color: 0x2b1c15,
+      roughness: 0.94,
+      metalness: 0.05
+    });
+    const matActiveChassis = new THREE.MeshStandardMaterial({
+      color: 0x161a24,
+      roughness: 0.36,
+      metalness: 0.78
+    });
+    const matAtlasChassis = new THREE.MeshStandardMaterial({
+      color: 0x1f2533,
+      roughness: 0.32,
+      metalness: 0.82
+    });
+    const matAlohaChassis = new THREE.MeshStandardMaterial({
+      color: 0x192028,
+      roughness: 0.4,
+      metalness: 0.72
+    });
+    const matActivePlinth = new THREE.MeshStandardMaterial({
+      color: 0x0c0e14,
+      roughness: 0.55,
+      metalness: 0.65
+    });
+
+    // Construction des 48 Sculptures Robotiques dans la scène
+    const unitVisuals = [];
+    const pickableMeshes = [];
+
+    function buildRobotRig(u) {
+      const root = new THREE.Group();
+      const { x, z } = getUnitWorldPos(u.row, u.col);
+      root.position.set(x, 0, z);
+
+      // Socle monolithique (le sommet du socle est à y = plinthTopY)
+      const plinthMat = matActivePlinth.clone();
+      const plinthMesh = new THREE.Mesh(sharedGeo.plinth, plinthMat);
+      plinthMesh.userData.unitIndex = u.index;
+      pickableMeshes.push(plinthMesh);
+      root.add(plinthMesh);
+
+      // Anneau lumineux au sommet du socle (Grade S / Statut)
+      const crownMat = new THREE.LineBasicMaterial({ color: 0x00e676, transparent: true, opacity: 0.85 });
+      const crownWire = new THREE.LineSegments(sharedGeo.plinthCrown, crownMat);
+      root.add(crownWire);
+
+      // Groupe du Corps Robotique posé sur le sommet du socle
+      const figureGroup = new THREE.Group();
+      root.add(figureGroup);
+
+      // Matériaux dynamiques propres à chaque robot (visière VLA, cœur kWh, joints thermiques)
+      const coreMat = new THREE.MeshStandardMaterial({
+        color: 0x00e5ff,
+        emissive: 0x00e5ff,
+        emissiveIntensity: 1.4,
+        roughness: 0.2
+      });
+      const visorMat = new THREE.MeshStandardMaterial({
+        color: 0x4c8dff,
+        emissive: 0x4c8dff,
+        emissiveIntensity: 1.5,
+        roughness: 0.2
+      });
+      const jointMat = new THREE.MeshStandardMaterial({
+        color: 0x1d2636,
+        emissive: 0x00e5ff,
+        emissiveIntensity: 0.2,
+        roughness: 0.35,
+        metalness: 0.7
+      });
+
+      const bodyParts = []; // Meshes dont le matériau bascule entre Terre Cuite et Châssis Actif
+      const baseChassisMat = u.bodyCode === "ATLAS" ? matAtlasChassis : (u.bodyCode === "ALOHA" ? matAlohaChassis : matActiveChassis);
+
+      const addChassisPart = (geo, px, py, pz, rx = 0, ry = 0, rz = 0) => {
+        const m = new THREE.Mesh(geo, baseChassisMat);
+        m.position.set(px, py, pz);
+        m.rotation.set(rx, ry, rz);
+        m.userData.unitIndex = u.index;
+        pickableMeshes.push(m);
+        bodyParts.push(m);
+        figureGroup.add(m);
+        return m;
+      };
+
+      const addJoint = (px, py, pz) => {
+        const jm = new THREE.Mesh(sharedGeo.jointSphere, jointMat);
+        jm.position.set(px, py, pz);
+        jm.userData.unitIndex = u.index;
+        pickableMeshes.push(jm);
+        figureGroup.add(jm);
+        return jm;
+      };
+
+      // Jambes & Hanches / Genoux
+      addChassisPart(sharedGeo.foot, -0.15, 0.035, 0.04);
+      addChassisPart(sharedGeo.foot, 0.15, 0.035, 0.04);
+      addChassisPart(sharedGeo.limbLower, -0.15, 0.25, 0);
+      addChassisPart(sharedGeo.limbLower, 0.15, 0.25, 0);
+      addJoint(-0.15, 0.45, 0); // Genou G
+      addJoint(0.15, 0.45, 0);  // Genou D
+      addChassisPart(sharedGeo.limbUpper, -0.15, 0.66, 0);
+      addChassisPart(sharedGeo.limbUpper, 0.15, 0.66, 0);
+      addJoint(-0.16, 0.86, 0); // Hanche G
+      addJoint(0.16, 0.86, 0);  // Hanche D
+      addChassisPart(sharedGeo.pelvis, 0, 0.90, 0);
+
+      // Torse selon l'embodiment (Apollo, Atlas 56-DoF, ALOHA)
+      const torsoGeo = u.bodyCode === "ATLAS" ? sharedGeo.torsoAtlas : (u.bodyCode === "ALOHA" ? sharedGeo.torsoAloha : sharedGeo.torsoApollo);
+      addChassisPart(torsoGeo, 0, 1.28, 0);
+
+      // Cœur Batterie Métabolique (Poitrine)
+      const coreMesh = new THREE.Mesh(sharedGeo.core, coreMat);
+      coreMesh.position.set(0, 1.30, 0.17);
+      coreMesh.userData.unitIndex = u.index;
+      pickableMeshes.push(coreMesh);
+      figureGroup.add(coreMesh);
+
+      // Épaules & Bras articulés
+      addJoint(-0.34, 1.50, 0); // Épaule G
+      addJoint(0.34, 1.50, 0);  // Épaule D
+
+      const armSpread = u.bodyCode === "ALOHA" ? 0.22 : 0.06;
+      const armFwd = u.bodyCode === "ALOHA" ? -0.35 : 0.0;
+      addChassisPart(sharedGeo.limbUpper, -0.36, 1.29, 0.03, armFwd, 0, armSpread);
+      addChassisPart(sharedGeo.limbUpper, 0.36, 1.29, 0.03, armFwd, 0, -armSpread);
+      addChassisPart(sharedGeo.limbLower, -0.39, 0.95, u.bodyCode === "ALOHA" ? 0.18 : 0.05, armFwd * 1.4, 0, 0);
+      addChassisPart(sharedGeo.limbLower, 0.39, 0.95, u.bodyCode === "ALOHA" ? 0.18 : 0.05, armFwd * 1.4, 0, 0);
+
+      // Groupe Tête + Visière VLA
+      const headGroup = new THREE.Group();
+      headGroup.position.set(0, 1.74, 0);
+      figureGroup.add(headGroup);
+
+      if (u.bodyCode === "ATLAS") {
+        const hm = new THREE.Mesh(sharedGeo.headAtlas, baseChassisMat);
+        hm.rotation.x = Math.PI / 2;
+        hm.userData.unitIndex = u.index;
+        pickableMeshes.push(hm);
+        bodyParts.push(hm);
+        headGroup.add(hm);
+
+        const vr = new THREE.Mesh(sharedGeo.visorRing, visorMat);
+        vr.position.set(0, 0, 0.10);
+        headGroup.add(vr);
+      } else {
+        const hGeo = u.bodyCode === "ALOHA" ? sharedGeo.headAloha : sharedGeo.headApollo;
+        const hm = new THREE.Mesh(hGeo, baseChassisMat);
+        hm.userData.unitIndex = u.index;
+        pickableMeshes.push(hm);
+        bodyParts.push(hm);
+        headGroup.add(hm);
+
+        const vm = new THREE.Mesh(sharedGeo.visor, visorMat);
+        vm.position.set(0, 0.01, 0.145);
+        headGroup.add(vm);
+      }
+
+      // Cage Filaire Rouge de Quarantaine Zone 3 (Soft Bankruptcy)
+      const cageMat = new THREE.LineBasicMaterial({ color: 0xff3b30, transparent: true, opacity: 0.9 });
+      const cageWire = new THREE.LineSegments(sharedGeo.cage, cageMat);
+      cageWire.visible = false;
+      root.add(cageWire);
+
+      scene.add(root);
+
+      return {
+        root,
+        plinthMesh,
+        plinthMat,
+        crownWire,
+        crownMat,
+        figureGroup,
+        headGroup,
+        coreMat,
+        visorMat,
+        jointMat,
+        bodyParts,
+        baseChassisMat,
+        cageWire,
+        cageMat,
+        targetTopY: 0,
+        currentTopY: 0,
+        awakenFlash: 0
+      };
+    }
+
+    fleet.forEach((u) => {
+      unitVisuals.push(buildRobotRig(u));
+    });
+
+    // Faisceau Laser Vertical de Sélection (Suit l'unité sélectionnée)
+    const selectionGroup = new THREE.Group();
+    const selRingGeo = new THREE.RingGeometry(0.82, 0.94, 32);
+    const selRingMat = new THREE.MeshBasicMaterial({ color: 0x00e5ff, side: THREE.DoubleSide, transparent: true, opacity: 0.92 });
+    const selRing = new THREE.Mesh(selRingGeo, selRingMat);
+    selRing.rotation.x = -Math.PI / 2;
+    selectionGroup.add(selRing);
+
+    const beamGeo = new THREE.CylinderGeometry(0.76, 0.76, 5.5, 24, 1, true);
+    const beamMat = new THREE.MeshBasicMaterial({
+      color: 0x00e5ff,
+      transparent: true,
+      opacity: 0.09,
+      side: THREE.DoubleSide,
+      depthWrite: false
+    });
+    const beamMesh = new THREE.Mesh(beamGeo, beamMat);
+    beamMesh.position.y = 2.75;
+    selectionGroup.add(beamMesh);
+    scene.add(selectionGroup);
+
+    // Particules Atmosphériques dans la Fosse
+    const dustCount = 260;
+    const dustPos = new Float32Array(dustCount * 3);
+    for (let i = 0; i < dustCount; i++) {
+      dustPos[i * 3] = (Math.random() - 0.5) * 26;
+      dustPos[i * 3 + 1] = -1.2 + Math.random() * 6.5;
+      dustPos[i * 3 + 2] = (Math.random() - 0.5) * 20;
+    }
+    const dustGeo = new THREE.BufferGeometry();
+    dustGeo.setAttribute("position", new THREE.BufferAttribute(dustPos, 3));
+    const dustMat = new THREE.PointsMaterial({ color: 0x00e5ff, size: 0.055, transparent: true, opacity: 0.35 });
+    const dustPoints = new THREE.Points(dustGeo, dustMat);
+    scene.add(dustPoints);
+
+    // ==================== ARCS PARABOLIQUES 3D M2M & FAISCEAUX D'ÉVEIL ====================
+    const activeArcs = [];
+
+    function spawnM2MArc(fromIndex, toIndex, colorHex = 0x00e5ff) {
+      const vFrom = unitVisuals[fromIndex];
+      const vTo = unitVisuals[toIndex];
+      if (!vFrom || !vTo) return;
+
+      const p0 = new THREE.Vector3(vFrom.root.position.x, vFrom.currentTopY + 1.35, vFrom.root.position.z);
+      const p2 = new THREE.Vector3(vTo.root.position.x, vTo.currentTopY + 1.35, vTo.root.position.z);
+      const mid = p0.clone().lerp(p2, 0.5);
+      mid.y = Math.max(p0.y, p2.y) + 2.4 + p0.distanceTo(p2) * 0.16;
+
+      const curve = new THREE.QuadraticBezierCurve3(p0, mid, p2);
+      const tubeGeo = new THREE.TubeGeometry(curve, 32, 0.045, 8, false);
+      const tubeMat = new THREE.MeshBasicMaterial({ color: colorHex, transparent: true, opacity: 0.92 });
+      const tubeMesh = new THREE.Mesh(tubeGeo, tubeMat);
+      scene.add(tubeMesh);
+
+      const pulseGeo = new THREE.SphereGeometry(0.14, 12, 12);
+      const pulseMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+      const pulseMesh = new THREE.Mesh(pulseGeo, pulseMat);
+      scene.add(pulseMesh);
+
+      activeArcs.push({ curve, tubeMesh, tubeMat, pulseMesh, pulseGeo, tubeGeo, pulseMat, t: 0 });
+    }
+
+    // Synchronisation Visuelle Matériaux / Couleurs / Socles des 48 Unités
+    function syncAll3DVisuals() {
+      fleet.forEach((u, idx) => {
+        const vis = unitVisuals[idx];
+
+        // Filtres de cohorte & d'embodiment (atténuation visuelle élégante si hors filtre)
+        let matchesCohort = true;
+        if (cohortFilter === "ACTIVE") matchesCohort = u.endowed && (u.zone === "Z0" || u.zone === "Z1");
+        else if (cohortFilter === "ALERT") matchesCohort = u.endowed && (u.zone === "Z2" || u.zone === "Z3");
+        else if (cohortFilter === "CLAY") matchesCohort = !u.endowed;
+
+        const matchesBody = (bodyFilter === "ALL") || (u.bodyCode === bodyFilter);
+        const isHighlighted = matchesCohort && matchesBody;
+
+        if (!u.endowed) {
+          // STATUE DE TERRE CUITE INERTE
+          vis.targetTopY = -0.32;
+          vis.bodyParts.forEach((m) => { m.material = matClayBody; });
+          vis.plinthMat.color.setHex(0x2b1c15);
+          vis.plinthMat.emissive.setHex(0x000000);
+          vis.coreMat.color.setHex(0x3a261c);
+          vis.coreMat.emissiveIntensity = 0;
+          vis.visorMat.color.setHex(0x291a13);
+          vis.visorMat.emissiveIntensity = 0;
+          vis.jointMat.color.setHex(0x4a3126);
+          vis.jointMat.emissiveIntensity = 0;
+          vis.crownWire.visible = isHighlighted;
+          vis.crownMat.color.setHex(0xb67349);
+          vis.crownMat.opacity = isHighlighted ? 0.55 : 0.12;
+          vis.headGroup.rotation.x = 0.24; // Tête légèrement inclinée de statue endormie
+          vis.cageWire.visible = false;
+        } else {
+          // SALARIÉ ROBOTIQUE ÉVEILLÉ
+          // Altitude Y proportionnelle à d_S (Manifold S est à Y = 0.0)
+          const clampedDs = Math.max(-14_000_000, Math.min(62_000_000, u.ds));
+          vis.targetTopY = (clampedDs / 42_000_000) * 1.15;
+          if (u.ds > 0 && vis.targetTopY < 0.08) vis.targetTopY = 0.08;
+          if (u.ds <= 0 && vis.targetTopY > -0.18) vis.targetTopY = -0.24;
+
+          vis.bodyParts.forEach((m) => { m.material = vis.baseChassisMat; });
+          vis.plinthMat.color.setHex(isHighlighted ? 0x0e121b : 0x07080c);
+
+          // Cœur Batterie kWh (#00E5FF)
+          const socFactor = Math.max(0.18, u.soc / 100);
+          vis.coreMat.color.setHex(u.zone === "Z3" ? 0xff3b30 : 0x00e5ff);
+          vis.coreMat.emissive.setHex(u.zone === "Z3" ? 0xff3b30 : 0x00e5ff);
+          vis.coreMat.emissiveIntensity = (isHighlighted ? 1.55 : 0.25) * socFactor;
+
+          // Visière Cerveau Gemini VLA (#4C8DFF Indigo Spectral)
+          const vlaHex = u.policy.includes("exp-rl") ? 0xff6b4a : 0x4c8dff;
+          vis.visorMat.color.setHex(vlaHex);
+          vis.visorMat.emissive.setHex(vlaHex);
+          vis.visorMat.emissiveIntensity = isHighlighted ? 1.7 : 0.22;
+
+          // Heatmap Anatomique des Articulations (Couple τ² + Température °C)
+          const heatScore = Math.max((u.torque - 1500) / 2800, (u.temp - 52) / 30);
+          if (heatScore > 0.68) {
+            vis.jointMat.color.setHex(0xff3b30);
+            vis.jointMat.emissive.setHex(0xff3b30);
+            vis.jointMat.emissiveIntensity = isHighlighted ? 1.55 : 0.25;
+          } else if (heatScore > 0.28) {
+            vis.jointMat.color.setHex(0xffab00);
+            vis.jointMat.emissive.setHex(0xffab00);
+            vis.jointMat.emissiveIntensity = isHighlighted ? 1.15 : 0.2;
+          } else {
+            vis.jointMat.color.setHex(0x1b2b38);
+            vis.jointMat.emissive.setHex(0x00e5ff);
+            vis.jointMat.emissiveIntensity = isHighlighted ? 0.32 : 0.05;
+          }
+
+          // Couronne de Socle selon Grade / Zone
+          vis.crownWire.visible = true;
+          if (u.zone === "Z3") {
+            vis.crownMat.color.setHex(0xff3b30);
+          } else if (u.grade === "S") {
+            vis.crownMat.color.setHex(0x00e676);
+          } else if (u.zone === "Z2") {
+            vis.crownMat.color.setHex(0xffab00);
+          } else {
+            vis.crownMat.color.setHex(0x00e5ff);
+          }
+          vis.crownMat.opacity = isHighlighted ? (u.grade === "S" ? 1.0 : 0.72) : 0.12;
+
+          // Posture tête & Cage Rouge Zone 3
+          vis.headGroup.rotation.x = u.zone === "Z3" ? 0.28 : 0.0;
+          vis.cageWire.visible = (u.zone === "Z3") && isHighlighted;
+        }
+      });
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /* 4. MISE À JOUR DE L'INTERFACE SIRH, BULLETIN DE PAIE & MODAL DEEPMIND      */
+    /* -------------------------------------------------------------------------- */
+    function showToast(title, body, borderHex = "#00E5FF") {
+      const el = document.getElementById("scada-toast");
+      document.getElementById("toast-title").textContent = title;
+      document.getElementById("toast-title").style.color = borderHex;
+      document.getElementById("toast-body").textContent = body;
+      el.style.borderColor = borderHex;
+      el.classList.remove("hidden");
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(() => el.classList.add("hidden"), 3800);
+    }
+
+    function logTicker(msg, seedStr = "") {
+      document.getElementById("live-ticker-msg").textContent = msg;
+      document.getElementById("live-ticker-hash").textContent = hashHex(seedStr || msg + shiftCycle);
+    }
+
+    function updateMacroHUD() {
+      const dict = I18N[lang];
+      const awakeUnits = fleet.filter((u) => u.endowed);
+      const clayCount = TOTAL_UNITS - awakeUnits.length;
+      const netSumMicro = awakeUnits.reduce((acc, u) => acc + u.dm, 0);
+      const netOpvs = netSumMicro / 1_000_000;
+      const netUsd = netOpvs * USD_PER_KWH;
+
+      document.getElementById("kpi-awake-count").textContent = `${awakeUnits.length} ${dict.awake_word}`;
+      document.getElementById("kpi-clay-count").textContent = `${clayCount} ${dict.clay_word}`;
+
+      const payrollEl = document.getElementById("kpi-net-payroll");
+      payrollEl.textContent = `${netOpvs >= 0 ? "+" : ""}${netOpvs.toFixed(2)} OPVS`;
+      payrollEl.style.color = netOpvs >= 0 ? "var(--c-nom)" : "var(--c-breach)";
+      document.getElementById("kpi-net-usd").textContent = `≈ ${netUsd >= 0 ? "+" : "-"}$${Math.abs(netUsd).toFixed(2)}`;
+
+      const genOpvs = Math.min(500, genesisPoolMicro / 1_000_000);
+      const genPct = Math.min(100, (genesisPoolMicro / GENESIS_THRESHOLD_MICRO) * 100);
+      document.getElementById("kpi-genesis-txt").textContent = `${genOpvs.toFixed(0)} / 500 OPVS`;
+      document.getElementById("kpi-genesis-bar").style.width = `${genPct.toFixed(1)}%`;
+
+      document.getElementById("kpi-kirch-eps").textContent = `ε = ${kirchhoffEps.toFixed(3)} kWh`;
+      document.getElementById("shift-clock").textContent = `${dict.shift_word} #${String(shiftCycle).padStart(2, "0")} · H+${String(shiftCycle * 4).padStart(2, "0")}h`;
+
+      // Compteurs sur filtres
+      const activeCnt = fleet.filter((u) => u.endowed && (u.zone === "Z0" || u.zone === "Z1")).length;
+      const alertCnt = fleet.filter((u) => u.endowed && (u.zone === "Z2" || u.zone === "Z3")).length;
+      document.getElementById("flt-btn-all").textContent = `${dict.flt_all} (${TOTAL_UNITS})`;
+      document.getElementById("flt-btn-active").textContent = `${dict.flt_active} (${activeCnt})`;
+      document.getElementById("flt-btn-alert").textContent = `${dict.flt_alert} (${alertCnt})`;
+      document.getElementById("flt-btn-clay").textContent = `${dict.flt_clay} (${clayCount})`;
+    }
+
+    function updatePayslipDrawer() {
+      const u = fleet[selectedIndex];
+      if (!u) return;
+
+      document.getElementById("hr-matricule").textContent = u.matricule;
+      document.getElementById("hr-wallet-id").textContent = u.walletId;
+      document.getElementById("hr-embodiment").textContent = u.bodyName;
+      document.getElementById("hr-ed25519").textContent = u.ed25519;
+
+      // Grade Badge
+      const gradeEl = document.getElementById("hr-grade-badge");
+      gradeEl.textContent = u.endowed ? `GRADE ${u.grade}` : (lang === "fr" ? "STATUE ARGILE" : "CLAY STATUE");
+      const gradeColor = !u.endowed ? "#B67349"
+        : (u.grade === "S" || u.grade === "A") ? "#00E676"
+        : (u.grade === "B") ? "#00E5FF"
+        : (u.grade === "C" || u.grade === "D") ? "#FFAB00" : "#FF3B30";
+      gradeEl.style.borderColor = gradeColor;
+      gradeEl.style.color = gradeColor;
+
+      // Zone Superviseur
+      const zoneEl = document.getElementById("hr-zone-badge");
+      const zoneLabels = {
+        fr: {
+          Z0: "▲ Z0 · ASCENSION",
+          Z1: "◆ Z1 · STASE NOMINALE",
+          Z2: "▼ Z2 · CONSERVATION",
+          Z3: "✕ Z3 · FAILLITE DOUCE",
+          CLAY: "● INERTE · SANS DOTATION"
+        },
+        en: {
+          Z0: "▲ Z0 · ASCENDING",
+          Z1: "◆ Z1 · STASIS BAND",
+          Z2: "▼ Z2 · CONSERVATION",
+          Z3: "✕ Z3 · SOFT BANKRUPTCY",
+          CLAY: "● DORMANT · UNENDOWED"
+        }
+      };
+      zoneEl.textContent = zoneLabels[lang][u.zone];
+      zoneEl.style.color = gradeColor;
+
+      // Sélecteur VLA
+      const vlaSel = document.getElementById("hr-vla-select");
+      vlaSel.value = u.policy;
+      vlaSel.disabled = !u.endowed;
+
+      // Jauges Biomécaniques
+      document.getElementById("hr-soc-val").textContent = `${Math.round(u.soc)}%`;
+      document.getElementById("hr-soc-bar").style.width = `${Math.max(0, Math.min(100, u.soc))}%`;
+      document.getElementById("hr-soc-bar").style.backgroundColor = u.soc < 20 ? "#FF3B30" : "#00E5FF";
+
+      document.getElementById("hr-torque-val").textContent = u.torque.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+      const tqPct = Math.min(100, Math.round(((u.torque - 800) / 4000) * 100));
+      const tqColor = u.torque > 3400 ? "#FF3B30" : (u.torque > 2300 ? "#FFAB00" : "#00E676");
+      document.getElementById("hr-torque-val").style.color = tqColor;
+      document.getElementById("hr-torque-bar").style.width = `${Math.max(5, tqPct)}%`;
+      document.getElementById("hr-torque-bar").style.backgroundColor = tqColor;
+
+      document.getElementById("hr-temp-val").textContent = `${u.temp} °C`;
+      const tmpPct = Math.min(100, Math.round(((u.temp - 20) / 70) * 100));
+      const tmpColor = u.temp >= 74 ? "#FF3B30" : (u.temp >= 62 ? "#FFAB00" : "#00E676");
+      document.getElementById("hr-temp-val").style.color = tmpColor;
+      document.getElementById("hr-temp-bar").style.width = `${Math.max(5, tmpPct)}%`;
+      document.getElementById("hr-temp-bar").style.backgroundColor = tmpColor;
+
+      // Affichage conditionnel Carte Statue vs Contrôles Actifs
+      document.getElementById("clay-awaken-card").classList.toggle("hidden", u.endowed);
+      document.getElementById("hr-controls-section").classList.toggle("opacity-40", !u.endowed);
+      document.getElementById("hr-controls-section").classList.toggle("pointer-events-none", !u.endowed);
+
+      // Tableau Bulletin de Paie
+      const swapMicro = u.swapWh * 1000;
+      document.getElementById("pay-wage-micro").textContent = fmtMicro(u.wage);
+      document.getElementById("pay-wage-opvs").textContent = fmtOpvs(u.wage);
+
+      document.getElementById("pay-bonus-micro").textContent = fmtMicro(u.bonus);
+      document.getElementById("pay-bonus-opvs").textContent = fmtOpvs(u.bonus);
+
+      document.getElementById("pay-swap-micro").textContent = fmtMicro(-swapMicro);
+      document.getElementById("pay-swap-opvs").textContent = fmtOpvs(-swapMicro);
+
+      document.getElementById("pay-maint-micro").textContent = fmtMicro(-u.maint);
+      document.getElementById("pay-maint-opvs").textContent = fmtOpvs(-u.maint);
+
+      const netBox = document.getElementById("pay-net-box");
+      const netPositive = u.dm >= 0;
+      netBox.style.backgroundColor = !u.endowed ? "#14100E" : (netPositive ? "#06130D" : "#1A0808");
+      netBox.style.borderColor = !u.endowed ? "#B67349" : (netPositive ? "rgba(0,230,118,0.65)" : "rgba(255,59,48,0.75)");
+
+      const netOpvsEl = document.getElementById("pay-net-opvs");
+      netOpvsEl.textContent = `${fmtOpvs(u.dm)} OPVS`;
+      netOpvsEl.style.color = !u.endowed ? "#B67349" : (netPositive ? "#00E676" : "#FF3B30");
+      document.getElementById("pay-net-micro").textContent = `${fmtMicro(u.dm)} µ`;
+
+      document.getElementById("pay-pitch-val").textContent = `${u.pitch >= 0 ? "+" : ""}${u.pitch.toFixed(1)}°`;
+      const usdShift = (u.dm / 1_000_000) * USD_PER_KWH;
+      document.getElementById("pay-usd-eq").textContent = `≈ ${usdShift >= 0 ? "+" : "-"}$${Math.abs(usdShift).toFixed(2)} / ${lang === "fr" ? "poste" : "shift"}`;
+
+      // Soldes Patrimoniaux
+      document.getElementById("bal-liq-val").textContent = `${fmtOpvs(u.liq, false)} OPVS`;
+      const dsValEl = document.getElementById("bal-ds-val");
+      dsValEl.textContent = `${fmtOpvs(u.ds)} OPVS`;
+      dsValEl.style.color = u.ds < 0 ? "#FF3B30" : (u.ds > 15_000_000 ? "#00E676" : "#FFAB00");
+      document.getElementById("bal-esc-val").textContent = `${fmtOpvs(u.escrow, false)} OPVS`;
+
+      // Sliders
+      if (u.endowed) {
+        document.getElementById("sl-wage").value = u.wage;
+        document.getElementById("sl-wh").value = u.swapWh;
+        document.getElementById("sl-torque").value = u.torque;
+        document.getElementById("sl-temp").value = u.temp;
+
+        document.getElementById("sl-wage-txt").textContent = `${(u.wage / 1_000_000).toFixed(2)} OPVS`;
+        document.getElementById("sl-wh-txt").textContent = `${u.swapWh} Wh`;
+        document.getElementById("sl-torque-txt").textContent = `${u.torque} Nm²s`;
+        document.getElementById("sl-temp-txt").textContent = `${u.temp} °C`;
+      }
+
+      // Mise à jour du JSON DeepMind Modal si ouvert
+      refreshModalJson();
+    }
+
+    function refreshAll() {
+      syncAll3DVisuals();
+      updateMacroHUD();
+      updatePayslipDrawer();
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /* 5. LOGIQUE MÉTIER : ÉVEIL STATUE, PASSAGE DE POSTE 4H, GENESIS POOL & M2M  */
+    /* -------------------------------------------------------------------------- */
+    function awakenTerracottaUnit(unitIndex, sourceLabel = "MANUAL") {
+      const u = fleet[unitIndex];
+      if (!u || u.endowed) return;
+
+      u.endowed = true;
+      u.policy = "gemini-robotics-2.5-pro";
+      u.liq = 50_000_000; // Dotation d'embauche de 50 OPVS (50 kWh)
+      u.ds = 36_000_000;
+      u.escrow = 5_000_000;
+      u.soc = 98;
+      u.wage = 8_800_000;
+      u.bonus = 0;
+      u.swapWh = 3100;
+      u.torque = 1420;
+      u.temp = 49;
+      u.zombie = false;
+      evaluateUnitStatus(u);
+
+      // Effet visuel 3D d'éveil + Arc depuis le leader Z0
+      unitVisuals[unitIndex].awakenFlash = 1.0;
+      const leader = fleet.find((x) => x.endowed && x.zone === "Z0" && x.index !== unitIndex);
+      if (leader) spawnM2MArc(leader.index, unitIndex, 0x00e676);
+
+      const title = sourceLabel === "GENESIS"
+        ? (lang === "fr" ? "⚡ AUTO-RECRUTEMENT GENESIS POOL (500 OPVS)" : "⚡ GENESIS POOL AUTO-RECRUITMENT (500 OPVS)")
+        : (lang === "fr" ? "⚡ STATUE DE TERRE CUITE ÉVEILLÉE" : "⚡ TERRACOTTA STATUE AWAKENED");
+      const msg = lang === "fr"
+        ? `${u.matricule} (${u.bodyName}) reçoit 50.00 OPVS + cerveau gemini-robotics-2.5-pro et rejoint la main-d'œuvre active !`
+        : `${u.matricule} (${u.bodyName}) endowed with 50.00 OPVS + gemini-robotics-2.5-pro and joins the active workforce!`;
+
+      showToast(title, msg, "#00E676");
+      logTicker(`[GENESIS] ${msg}`, u.walletId);
+      refreshAll();
+    }
+
+    function stepFleetShift() {
+      shiftCycle += 1;
+      let shiftSurplusMicro = 0;
+
+      fleet.forEach((u) => {
+        if (!u.endowed) return;
+
+        // Rollback automatique Superviseur si en Faillite Douce Z3 au cycle précédent
+        if (u.zone === "Z3") {
+          u.policy = "gemini-robotics-2.4-margin";
+          u.torque = 1750;
+          u.temp = 53;
+          u.swapWh = 3180;
+          u.wage = 7_900_000;
+          u.soc = 92;
+          u.zombie = false;
+        } else {
+          // Légère fluctuation réaliste de poste
+          const drift = ((u.index + shiftCycle) % 5) - 2;
+          u.soc = Math.max(12, Math.min(99, u.soc - 6 + (u.soc < 35 ? 62 : 0)));
+          if (u.policy.includes("exp-rl")) {
+            u.torque = Math.min(4750, u.torque + 180);
+            u.temp = Math.min(87, u.temp + 3);
+          } else {
+            u.torque = Math.max(950, Math.min(3900, u.torque + drift * 25));
+            u.temp = Math.max(44, Math.min(82, u.temp + drift));
+          }
+        }
+
+        evaluateUnitStatus(u);
+        u.liq = Math.max(0, u.liq + u.dm);
+        u.ds = u.ds + u.dm;
+        u.escrow += u.maint;
+        u.bonus = 0; // Remise à zéro des primes ponctuelles après règlement
+        evaluateUnitStatus(u);
+
+        // 22% de l'excédent net Z0 alimente la cagnotte collective Genesis Pool
+        if (u.dm > 0) {
+          shiftSurplusMicro += Math.round(u.dm * 0.22);
+        }
+      });
+
+      // Sous-traitance M2M autonome visuelle entre un leader Z0 et une unité Z2 en conservation
+      const z0Leaders = fleet.filter((u) => u.endowed && u.zone === "Z0");
+      const z2Units = fleet.filter((u) => u.endowed && u.zone === "Z2" && !u.zombie);
+      if (z0Leaders.length > 0 && z2Units.length > 0) {
+        const sender = z0Leaders[shiftCycle % z0Leaders.length];
+        const receiver = z2Units[shiftCycle % z2Units.length];
+        const transfer = 1_200_000;
+        sender.liq -= transfer;
+        receiver.liq += transfer;
+        receiver.ds += transfer;
+        receiver.bonus = transfer;
+        evaluateUnitStatus(receiver);
+        spawnM2MArc(sender.index, receiver.index, 0x00e5ff);
+      }
+
+      genesisPoolMicro += Math.max(45_000_000, shiftSurplusMicro);
+      kirchhoffEps = Number((0.008 + ((shiftCycle * 7) % 11) * 0.001).toFixed(3));
+
+      // Vérification Auto-Recrutement Genesis Pool (>= 500 OPVS)
+      const nextStatue = fleet.find((u) => !u.endowed);
+      if (genesisPoolMicro >= GENESIS_THRESHOLD_MICRO && nextStatue) {
+        genesisPoolMicro -= GENESIS_THRESHOLD_MICRO;
+        selectedIndex = nextStatue.index;
+        awakenTerracottaUnit(nextStatue.index, "GENESIS");
+      } else {
+        const msg = lang === "fr"
+          ? `[POSTE #${String(shiftCycle).padStart(2, "0")}] Paie réglée en INT64 µOPVS sur l'ensemble de la phalange · Genesis Pool : ${(genesisPoolMicro / 1e6).toFixed(0)}/500 OPVS.`
+          : `[SHIFT #${String(shiftCycle).padStart(2, "0")}] Int64 µOPVS payroll settled across phalanx · Genesis Pool: ${(genesisPoolMicro / 1e6).toFixed(0)}/500 OPVS.`;
+        logTicker(msg, `shift_${shiftCycle}`);
+        refreshAll();
+      }
+    }
+
+    /* -------------------------------------------------------------------------- */
+    /* 6. INTERACTIONS 3D (RAYCASTING SURVOL + CLIC SÉLECTION + CAMÉRAS)          */
+    /* -------------------------------------------------------------------------- */
+    const raycaster = new THREE.Raycaster();
+    const pointer = new THREE.Vector2();
+    const tooltipEl = document.getElementById("hover-tooltip");
+    let pointerDownPos = { x: 0, y: 0 };
+
+    function getHoveredUnitIndex(clientX, clientY) {
+      const rect = canvasEl.getBoundingClientRect();
+      pointer.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+      pointer.y = -((clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(pointer, camera);
+      const hits = raycaster.intersectObjects(pickableMeshes, false);
+      if (hits.length > 0 && hits[0].object.userData.unitIndex !== undefined) {
+        return hits[0].object.userData.unitIndex;
+      }
+      return -1;
+    }
+
+    let lastHoverTs = 0;
+    canvasEl.addEventListener("pointermove", (e) => {
+      const now = performance.now();
+      if (now - lastHoverTs < 40) return;
+      lastHoverTs = now;
+      const idx = getHoveredUnitIndex(e.clientX, e.clientY);
+      if (idx >= 0) {
+        const u = fleet[idx];
+        canvasEl.style.cursor = "pointer";
+        tooltipEl.classList.remove("hidden");
+        const xPos = Math.min(window.innerWidth - 240, e.clientX);
+        const yPos = Math.max(60, Math.min(window.innerHeight - 90, e.clientY));
+        tooltipEl.style.left = `${xPos}px`;
+        tooltipEl.style.top = `${yPos}px`;
+
+        document.getElementById("tt-mat").textContent = u.matricule;
+        const ttGrade = document.getElementById("tt-grade");
+        ttGrade.textContent = u.endowed ? `GRADE ${u.grade}` : "STATUE";
+        ttGrade.style.color = !u.endowed ? "#B67349" : (u.zone === "Z3" ? "#FF3B30" : "#00E676");
+        ttGrade.style.borderColor = ttGrade.style.color;
+
+        document.getElementById("tt-body").textContent = u.bodyName;
+        document.getElementById("tt-brain").textContent = u.policy;
+        document.getElementById("tt-zone").textContent = u.endowed ? u.zone : (lang === "fr" ? "Terre Cuite" : "Clay Statue");
+        const ttDm = document.getElementById("tt-dm");
+        ttDm.textContent = u.endowed ? `${fmtOpvs(u.dm)} OPVS` : "0.00 OPVS";
+        ttDm.style.color = u.dm < 0 ? "#FF3B30" : (u.endowed ? "#00E676" : "#B67349");
+      } else {
+        canvasEl.style.cursor = "grab";
+        tooltipEl.classList.add("hidden");
+      }
+    });
+
+    canvasEl.addEventListener("pointerleave", () => tooltipEl.classList.add("hidden"));
+    canvasEl.addEventListener("pointerdown", (e) => { pointerDownPos = { x: e.clientX, y: e.clientY }; });
+    canvasEl.addEventListener("pointerup", (e) => {
+      const dist = Math.hypot(e.clientX - pointerDownPos.x, e.clientY - pointerDownPos.y);
+      if (dist > 6) return; // Ignorer un glisser-orbite
+      const idx = getHoveredUnitIndex(e.clientX, e.clientY);
+      if (idx >= 0) {
+        selectedIndex = idx;
+        updatePayslipDrawer();
+        // Réouvrir le tiroir s'il était fermé sur mobile
+        const drw = document.getElementById("hr-drawer");
+        if (drw.classList.contains("collapsed")) {
+          drw.classList.remove("collapsed");
+          document.getElementById("btn-reopen-drawer").classList.add("hidden");
+        }
+      }
+    });
+
+    // Transitions fluides de Caméra
+    let camAnim = null;
+    function flyCameraTo(preset) {
+      document.querySelectorAll("[data-cam]").forEach((b) => b.classList.toggle("active", b.dataset.cam === preset));
+      const uVis = unitVisuals[selectedIndex];
+      let targetPos = new THREE.Vector3(0, 12.5, 22.5);
+      let targetLook = new THREE.Vector3(-0.5, 0.4, -0.8);
+
+      if (preset === "manifold") {
+        targetPos.set(14.5, 0.85, 13.5);
+        targetLook.set(-1.0, 0.0, -1.2);
+      } else if (preset === "zenith") {
+        targetPos.set(-0.55, 25.5, 2.2);
+        targetLook.set(-0.55, 0.0, -0.8);
+      } else if (preset === "focus" && uVis) {
+        targetPos.set(uVis.root.position.x + 2.4, uVis.currentTopY + 2.35, uVis.root.position.z + 3.9);
+        targetLook.set(uVis.root.position.x, uVis.currentTopY + 1.05, uVis.root.position.z);
+      }
+
+      camAnim = {
+        startPos: camera.position.clone(),
+        startLook: controls.target.clone(),
+        endPos: targetPos,
+        endLook: targetLook,
+        t: 0
+      };
+    }
+
+    document.querySelectorAll("[data-cam]").forEach((btn) => {
+      btn.addEventListener("click", () => flyCameraTo(btn.dataset.cam));
+    });
+
+    /* -------------------------------------------------------------------------- */
+    /* 7. ÉCOUTEURS D'ÉVÉNEMENTS UI, CONTRÔLES RH & MODAL GEMINI VLA              */
+    /* -------------------------------------------------------------------------- */
+    document.getElementById("btn-prev-unit").addEventListener("click", () => {
+      selectedIndex = (selectedIndex - 1 + TOTAL_UNITS) % TOTAL_UNITS;
+      updatePayslipDrawer();
+    });
+    document.getElementById("btn-next-unit").addEventListener("click", () => {
+      selectedIndex = (selectedIndex + 1) % TOTAL_UNITS;
+      updatePayslipDrawer();
+    });
+
+    document.getElementById("btn-collapse-drawer").addEventListener("click", () => {
+      document.getElementById("hr-drawer").classList.add("collapsed");
+      document.getElementById("btn-reopen-drawer").classList.remove("hidden");
+      setTimeout(handleResize, 260);
+    });
+    document.getElementById("btn-reopen-drawer").addEventListener("click", () => {
+      document.getElementById("hr-drawer").classList.remove("collapsed");
+      document.getElementById("btn-reopen-drawer").classList.add("hidden");
+      setTimeout(handleResize, 260);
+    });
+
+    // Changement de Diplôme Cognitif VLA
+    document.getElementById("hr-vla-select").addEventListener("change", (e) => {
+      const u = fleet[selectedIndex];
+      if (!u.endowed) return;
+      u.policy = e.target.value;
+      if (u.policy === "gemini-robotics-2.5-pro") {
+        u.wage = 9_100_000;
+        u.torque = 1380;
+        u.temp = 50;
+      } else if (u.policy === "gemini-robotics-2.4-margin") {
+        u.wage = 7_600_000;
+        u.torque = 1850;
+        u.temp = 55;
+      } else if (u.policy === "gemini-robotics-2.5-exp-rl") {
+        u.wage = 5_200_000;
+        u.torque = 4250;
+        u.temp = 82;
+      }
+      evaluateUnitStatus(u);
+      logTicker(`[VLA] ${u.matricule} -> ${u.policy} (ΔM = ${fmtOpvs(u.dm)} OPVS)`, u.walletId);
+      refreshAll();
+    });
+
+    // Sliders Temps Réel du Bulletin de Paie
+    ["sl-wage", "sl-wh", "sl-torque", "sl-temp"].forEach((id) => {
+      document.getElementById(id).addEventListener("input", () => {
+        const u = fleet[selectedIndex];
+        if (!u.endowed) return;
+        u.wage = Number(document.getElementById("sl-wage").value);
+        u.swapWh = Number(document.getElementById("sl-wh").value);
+        u.torque = Number(document.getElementById("sl-torque").value);
+        u.temp = Number(document.getElementById("sl-temp").value);
+
+        // Si le salaire net plonge fortement en négatif avec température critique, répercuter sur d_S
+        evaluateUnitStatus(u);
+        if (u.dm < -1_500_000 && u.temp >= 78) {
+          u.ds = Math.min(u.ds, -4_200_000);
+          evaluateUnitStatus(u);
+        } else if (u.dm > 2_000_000 && u.ds < 0) {
+          u.ds = 18_500_000;
+          u.zombie = false;
+          evaluateUnitStatus(u);
+        }
+        refreshAll();
+      });
+    });
+
+    // Bouton d'Éveil d'une Statue de Terre Cuite
+    document.getElementById("btn-awaken-unit").addEventListener("click", () => {
+      awakenTerracottaUnit(selectedIndex, "MANUAL");
+    });
+
+    // Action RH : Sous-traitance M2M (+1.50 OPVS avec Arc 3D)
+    document.getElementById("btn-act-m2m").addEventListener("click", () => {
+      const target = fleet[selectedIndex];
+      if (!target.endowed) return;
+      if (target.zombie || target.zone === "Z3") {
+        showToast(
+          lang === "fr" ? "HTTP 422 · CRÉDIT ZOMBIE VERROUILLÉ" : "HTTP 422 · ZOMBIE HELIX CREDIT LOCKED",
+          lang === "fr"
+            ? `${target.matricule} est en Faillite Douce / Hélice Zombie. Exécutez d'abord « Rollback & Soin Z3 » pour restaurer une politique solvable.`
+            : `${target.matricule} is in Soft Bankruptcy / Zombie Helix. Trigger "Rollback & Cure Z3" first to restore a solvent VLA policy.`,
+          "#FF3B30"
+        );
+        return;
+      }
+      const benefactor = fleet.find((x) => x.endowed && x.zone === "Z0" && x.index !== target.index) || fleet[0];
+      const amount = 1_500_000;
+      benefactor.liq = Math.max(0, benefactor.liq - amount);
+      target.liq += amount;
+      target.ds += amount;
+      target.bonus += amount;
+      evaluateUnitStatus(target);
+
+      spawnM2MArc(benefactor.index, target.index, 0x00e5ff);
+      logTicker(`[M2M 200 OK] ${benefactor.matricule} ➔ ${target.matricule} : +1.50 OPVS (1.50 kWh)`, target.walletId);
+      refreshAll();
+    });
+
+    // Action RH : Prime Opérateur Humain (+0.25 OPVS)
+    document.getElementById("btn-act-tip").addEventListener("click", () => {
+      const u = fleet[selectedIndex];
+      if (!u.endowed) return;
+      u.liq += 250_000;
+      u.ds += 250_000;
+      u.bonus += 250_000;
+      evaluateUnitStatus(u);
+      showToast(
+        lang === "fr" ? "🏅 PRIME OPÉRATEUR CRÉDITÉE" : "🏅 OPERATOR BONUS CREDITED",
+        `${u.matricule} : +250 000 µOPVS (+0.25 kWh · EDGE_RECOVERY_BONUS)`,
+        "#00E676"
+      );
+      refreshAll();
+    });
+
+    // Action RH : Quarantaine & Rollback v2.4 (Guérison Z3)
+    document.getElementById("btn-act-quarantine").addEventListener("click", () => {
+      const u = fleet[selectedIndex];
+      if (!u.endowed) return;
+      u.policy = "gemini-robotics-2.4-margin";
+      u.zombie = false;
+      u.torque = 1620;
+      u.temp = 52;
+      u.swapWh = 3150;
+      u.wage = 8_200_000;
+      u.soc = Math.max(u.soc, 86);
+      if (u.ds <= 0) u.ds = 19_500_000;
+      if (u.liq < 15_000_000) u.liq = 24_000_000;
+      evaluateUnitStatus(u);
+
+      showToast(
+        lang === "fr" ? "🛡️ QUARANTAINE & ROLLBACK EXÉCUTÉS" : "🛡️ POLICY ROLLBACK & CURE COMPLETE",
+        lang === "fr"
+          ? `${u.matricule} restauré sur gemini-robotics-2.4-margin · Cage de faillite levée.`
+          : `${u.matricule} rolled back to gemini-robotics-2.4-margin · Soft Bankruptcy cleared.`,
+        "#FFAB00"
+      );
+      refreshAll();
+    });
+
+    // Transport : +1 Poste, Lecture Temps Réel, Reset
+    document.getElementById("btn-step-shift").addEventListener("click", stepFleetShift);
+
+    document.getElementById("btn-live-sim").addEventListener("click", (e) => {
+      const btn = e.currentTarget;
+      if (liveSimTimer) {
+        clearInterval(liveSimTimer);
+        liveSimTimer = null;
+        btn.classList.remove("active");
+        btn.textContent = I18N[lang].btn_live_off;
+      } else {
+        stepFleetShift();
+        liveSimTimer = setInterval(stepFleetShift, 2900);
+        btn.classList.add("active");
+        btn.textContent = I18N[lang].btn_live_on;
+      }
+    });
+
+    document.getElementById("btn-reset-all").addEventListener("click", () => {
+      if (liveSimTimer) {
+        clearInterval(liveSimTimer);
+        liveSimTimer = null;
+        document.getElementById("btn-live-sim").classList.remove("active");
+      }
+      shiftCycle = 1;
+      genesisPoolMicro = 425_000_000;
+      selectedIndex = 3;
+      fleet = createInitialFleet();
+      flyCameraTo("xian");
+      refreshAll();
+      logTicker(
+        lang === "fr"
+          ? "[RESET] Fosse Phalange réinitialisée : 40 salariés actifs, 8 statues de terre cuite."
+          : "[RESET] Phalanx Pit reset: 40 awakened robotic workers, 8 dormant terracotta statues."
+      );
+    });
+
+    // Toggles Plan Manifold S & Auto-Orbit
+    document.getElementById("btn-toggle-manifold").addEventListener("click", (e) => {
+      showManifold = !showManifold;
+      manifoldGroup.visible = showManifold;
+      e.currentTarget.classList.toggle("active", showManifold);
+      e.currentTarget.textContent = showManifold ? I18N[lang].tog_manifold_on : I18N[lang].tog_manifold_off;
+    });
+
+    document.getElementById("btn-toggle-orbit").addEventListener("click", (e) => {
+      autoOrbit = !autoOrbit;
+      controls.autoRotate = autoOrbit;
+      controls.autoRotateSpeed = 0.85;
+      e.currentTarget.classList.toggle("active", autoOrbit);
+      e.currentTarget.textContent = autoOrbit ? I18N[lang].tog_orbit_on : I18N[lang].tog_orbit_off;
+    });
+
+    // Filtres de Cohorte & de Châssis
+    document.querySelectorAll("[data-cohort]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("[data-cohort]").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        cohortFilter = btn.dataset.cohort;
+        // Sélectionner automatiquement la première unité correspondante
+        const firstMatch = fleet.find((u) => {
+          if (cohortFilter === "ACTIVE") return u.endowed && (u.zone === "Z0" || u.zone === "Z1");
+          if (cohortFilter === "ALERT") return u.endowed && (u.zone === "Z2" || u.zone === "Z3");
+          if (cohortFilter === "CLAY") return !u.endowed;
+          return true;
+        });
+        if (firstMatch) selectedIndex = firstMatch.index;
+        refreshAll();
+      });
+    });
+
+    document.querySelectorAll("[data-body]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("[data-body]").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        bodyFilter = btn.dataset.body;
+        const firstMatch = fleet.find((u) => bodyFilter === "ALL" || u.bodyCode === bodyFilter);
+        if (firstMatch) selectedIndex = firstMatch.index;
+        refreshAll();
+      });
+    });
+
+    // ==================== MODAL DEEPMIND GEMINI VLA BRIDGE ====================
+    const vlaModal = document.getElementById("vla-modal");
+
+    function refreshModalJson() {
+      const u = fleet[selectedIndex];
+      if (!u) return;
+      document.getElementById("mod-target-unit").textContent = `${lang === "fr" ? "Cible" : "Target"} : ${u.matricule} (${u.bodyCode})`;
+
+      const succ = Number(document.getElementById("mod-succ").value);
+      const epTq = Number(document.getElementById("mod-tq").value);
+      const epTmp = Number(document.getElementById("mod-tmp").value);
+
+      document.getElementById("mod-succ-val").textContent = succ.toFixed(2);
+      document.getElementById("mod-tq-val").textContent = `${epTq} Nm²s`;
+      document.getElementById("mod-tmp-val").textContent = `${epTmp} °C`;
+
+      const epWage = Math.round(succ * 9_400_000);
+      const epMaint = computeMaintMicro(epTq, epTmp);
+      const epSwap = (u.swapWh || 3150) * 1000;
+      const epNet = epWage - epSwap - epMaint;
+
+      const payload = {
+        protocol: "OPVS_V2_GEMINI_VLA_BRIDGE",
+        parity_invariant: { "1_OPVS_kWh": 1, "1_micro_OPVS_joules": 3.6, arithmetic: "STRICT_INT64" },
+        safety_orthogonality: {
+          safety_envelope_violated: false,
+          directive: "Kinematic, force, E-stop, and thermal cutoffs strictly precede economic settlement."
+        },
+        employee_passport: {
+          matricule: u.matricule,
+          wallet_id: u.walletId,
+          embodiment: u.bodyName,
+          ed25519_tpm_key: u.ed25519,
+          assigned_vla_policy: u.policy,
+          supervisor_zone: u.zone,
+          hr_grade: u.grade
+        },
+        vla_episode_telemetry: {
+          dexterous_grasp_score: succ,
+          quadratic_torque_integral_nm2s: epTq,
+          peak_winding_temp_c: epTmp,
+          bms_swap_debit_wh: u.swapWh || 3150
+        },
+        rl_post_training_reward: {
+          gross_wage_micro_opvs: epWage,
+          arrhenius_torque_escrow_micro_opvs: epMaint,
+          net_thermodynamic_margin_micro_opvs: epNet,
+          normalized_rl_scalar: Number((epNet / 5_000_000).toFixed(4)),
+          zombie_helix_quarantine_triggered: Boolean(u.zombie)
+        },
+        merkle_audit_proof: {
+          shift_cycle: shiftCycle,
+          kirchhoff_substation_residual_kwh: kirchhoffEps,
+          merkle_root: hashHex(`${u.walletId}_${shiftCycle}_${epNet}`)
+        }
+      };
+
+      document.getElementById("vla-json-output").textContent = JSON.stringify(payload, null, 2);
+    }
+
+    ["mod-succ", "mod-tq", "mod-tmp"].forEach((id) => {
+      document.getElementById(id).addEventListener("input", refreshModalJson);
+    });
+
+    const openVlaModal = () => {
+      refreshModalJson();
+      vlaModal.classList.remove("hidden");
+    };
+    document.getElementById("btn-open-vla").addEventListener("click", openVlaModal);
+    document.getElementById("btn-act-merkle").addEventListener("click", openVlaModal);
+    document.getElementById("btn-close-vla").addEventListener("click", () => vlaModal.classList.add("hidden"));
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") vlaModal.classList.add("hidden");
+    });
+
+    document.getElementById("btn-dispatch-episode").addEventListener("click", () => {
+      const u = fleet[selectedIndex];
+      if (!u.endowed) {
+        awakenTerracottaUnit(selectedIndex, "MANUAL");
+      }
+      const succ = Number(document.getElementById("mod-succ").value);
+      u.wage = Math.round(succ * 9_400_000);
+      u.torque = Number(document.getElementById("mod-tq").value);
+      u.temp = Number(document.getElementById("mod-tmp").value);
+      evaluateUnitStatus(u);
+      u.liq = Math.max(0, u.liq + u.dm);
+      u.ds += u.dm;
+      u.escrow += u.maint;
+      evaluateUnitStatus(u);
+
+      refreshAll();
+      vlaModal.classList.add("hidden");
+      showToast(
+        lang === "fr" ? "🧠 ÉPISODE GEMINI VLA RÉGLÉ" : "🧠 GEMINI VLA EPISODE SETTLED",
+        `${u.matricule} : ΔM = ${fmtOpvs(u.dm)} OPVS · Safety_Violated = FALSE`,
+        "#4C8DFF"
+      );
+    });
+
+    // Copie Presse-Papiers compatible iFrame via document.execCommand('copy')
+    document.getElementById("btn-copy-json").addEventListener("click", (e) => {
+      const text = document.getElementById("vla-json-output").textContent;
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); } catch (_) {}
+      document.body.removeChild(ta);
+
+      const btn = e.currentTarget;
+      btn.textContent = I18N[lang].mod_copied;
+      setTimeout(() => { btn.textContent = I18N[lang].mod_btn_copy; }, 1600);
+    });
+
+    // Bascule Instantanée FR / EN
+    function applyLanguage() {
+      const dict = I18N[lang];
+      document.documentElement.lang = lang;
+      document.getElementById("btn-lang").textContent = lang === "fr" ? "EN" : "FR";
+
+      document.querySelectorAll("[data-i18n]").forEach((el) => {
+        const key = el.dataset.i18n;
+        if (dict[key]) el.textContent = dict[key];
+      });
+
+      document.getElementById("btn-live-sim").textContent = liveSimTimer ? dict.btn_live_on : dict.btn_live_off;
+      document.getElementById("btn-toggle-manifold").textContent = showManifold ? dict.tog_manifold_on : dict.tog_manifold_off;
+      document.getElementById("btn-toggle-orbit").textContent = autoOrbit ? dict.tog_orbit_on : dict.tog_orbit_off;
+      refreshAll();
+    }
+
+    document.getElementById("btn-lang").addEventListener("click", () => {
+      lang = lang === "fr" ? "en" : "fr";
+      applyLanguage();
+    });
+
+    window.addEventListener("message", (event) => {
+      const data = event && event.data;
+      if (data && data.type === "opvs:set-lang" && (data.lang === "fr" || data.lang === "en") && data.lang !== lang) {
+        lang = data.lang;
+        applyLanguage();
+      }
+    });
+
+    /* -------------------------------------------------------------------------- */
+    /* 8. BOUCLE D'ANIMATION 60 FPS & REDIMENSIONNEMENT FLUIDE                    */
+    /* -------------------------------------------------------------------------- */
+    function handleResize() {
+      const w = viewportEl.clientWidth;
+      const h = viewportEl.clientHeight;
+      if (w === 0 || h === 0) return;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    }
+    window.addEventListener("resize", handleResize);
+    if (typeof ResizeObserver !== "undefined") {
+      new ResizeObserver(handleResize).observe(viewportEl);
+    }
+
+    const clock = new THREE.Clock();
+
+    function afterDraw(callback) {
+      if (!isSoftwareGl) {
+        requestAnimationFrame(callback);
+        return;
+      }
+      const gl = renderer.getContext();
+      const sync = gl && gl.fenceSync ? gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE, 0) : null;
+      if (!sync) {
+        setTimeout(callback, 80);
+        return;
+      }
+      gl.flush();
+      const poll = () => {
+        const res = gl.clientWaitSync(sync, 0, 0);
+        if (res === gl.TIMEOUT_EXPIRED) {
+          setTimeout(poll, 4);
+        } else {
+          gl.deleteSync(sync);
+          setTimeout(callback, 80);
+        }
+      };
+      setTimeout(poll, 16);
+    }
+
+    function animate() {
+      const dt = Math.min(0.05, clock.getDelta());
+      const elapsed = clock.getElapsedTime();
+
+      // Interpolation fluide des socles, respirations articulaires & cages Z3
+      fleet.forEach((u, idx) => {
+        const vis = unitVisuals[idx];
+        vis.currentTopY += (vis.targetTopY - vis.currentTopY) * Math.min(1, dt * 6.5);
+
+        // Le socle fait 2.4 de haut, donc son centre est à currentTopY - 1.2
+        vis.plinthMesh.position.y = vis.currentTopY - 1.2;
+        vis.crownWire.position.y = vis.currentTopY + 0.02;
+        vis.figureGroup.position.y = vis.currentTopY + 0.02;
+        vis.cageWire.position.y = vis.currentTopY + 1.15;
+
+        if (u.endowed) {
+          // Micro-respiration organique déphasée pour les robots actifs
+          const breath = Math.sin(elapsed * 2.3 + idx * 0.45) * 0.018;
+          vis.figureGroup.position.y += breath;
+          if (u.zone === "Z3") {
+            vis.cageMat.opacity = 0.45 + 0.45 * Math.abs(Math.sin(elapsed * 4.2));
+          }
+        }
+
+        // Flash d'éveil d'une Statue de Terre Cuite
+        if (vis.awakenFlash > 0) {
+          vis.awakenFlash = Math.max(0, vis.awakenFlash - dt * 1.1);
+          vis.plinthMat.emissive.setHex(0x00e5ff);
+          vis.plinthMat.emissiveIntensity = vis.awakenFlash * 1.8;
+        } else {
+          vis.plinthMat.emissiveIntensity = 0;
+        }
+      });
+
+      // Mise à jour du Faisceau Laser sur le Salarié Sélectionné
+      const selVis = unitVisuals[selectedIndex];
+      if (selVis) {
+        selectionGroup.position.set(selVis.root.position.x, selVis.currentTopY + 0.03, selVis.root.position.z);
+        selRing.rotation.z = elapsed * 0.9;
+        const selU = fleet[selectedIndex];
+        const beamCol = !selU.endowed ? 0xb67349 : (selU.zone === "Z3" ? 0xff3b30 : 0x00e5ff);
+        selRingMat.color.setHex(beamCol);
+        beamMat.color.setHex(beamCol);
+      }
+
+      // Animation des Arcs d'Énergie M2M
+      for (let i = activeArcs.length - 1; i >= 0; i--) {
+        const arc = activeArcs[i];
+        arc.t += dt * 1.15;
+        if (arc.t >= 1) {
+          scene.remove(arc.tubeMesh);
+          scene.remove(arc.pulseMesh);
+          arc.tubeGeo.dispose();
+          arc.tubeMat.dispose();
+          arc.pulseGeo.dispose();
+          arc.pulseMat.dispose();
+          activeArcs.splice(i, 1);
+        } else {
+          const pt = arc.curve.getPointAt(arc.t);
+          arc.pulseMesh.position.copy(pt);
+          arc.tubeMat.opacity = Math.sin(arc.t * Math.PI) * 0.95;
+        }
+      }
+
+      // Transition douce de Caméra
+      if (camAnim) {
+        camAnim.t = Math.min(1, camAnim.t + dt * 2.2);
+        const ease = 1 - Math.pow(1 - camAnim.t, 3);
+        camera.position.lerpVectors(camAnim.startPos, camAnim.endPos, ease);
+        controls.target.lerpVectors(camAnim.startLook, camAnim.endLook, ease);
+        if (camAnim.t >= 1) camAnim = null;
+      }
+
+      // Légère dérive ascendante des particules de la fosse
+      dustPoints.rotation.y = elapsed * 0.02;
+
+      controls.update();
+      renderer.render(scene, camera);
+      afterDraw(animate);
+    }
+
+    function boot() {
+      applyLanguage();
+      handleResize();
+      animate();
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", boot, { once: true });
+    } else {
+      boot();
+    }
+  </script>
+</body>
+</html>
