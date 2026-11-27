@@ -1,0 +1,3857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#000000" />
+  <title>OPVS — Thermodynamic Protocol &amp; Robot Workforce OS</title>
+  <meta name="description" content="OPVS v2.0 — Energy as Currency. Survival as Governance. The Protocol for Machine Economies. 1 OPVS = 1 kWh = 3.6 MJ (1 micro-OPVS = 3.6 J INT64). Bridging Google DeepMind Gemini Robotics VLA policies and heterogeneous robot fleets." />
+  <link rel="canonical" href="https://operaevis.com/" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23000000'/%3E%3Ccircle cx='50' cy='50' r='36' fill='%23000000' stroke='%23FFFFFF' stroke-width='10'/%3E%3Crect x='29' y='44' width='42' height='12' fill='%2300E5FF'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "OPVS — Operae Vis System (v2.0)",
+    "alternateName": "OPVS — Energy as Currency. Survival as Governance. The Protocol for Machine Economies.",
+    "url": "https://operaevis.com",
+    "applicationCategory": "Thermodynamic Settlement Protocol & 21st-Century Robotic Workforce OS (SIRH)",
+    "operatingSystem": "Permissioned OT-LAN Raft (p99 < 100 ms), 1U Site Hub, Air-Gapped OVA VM, Isolated Cloud VPC",
+    "softwareVersion": "2.0.0",
+    "dateModified": "2026-11-27",
+    "author": {
+      "@type": "Organization",
+      "name": "OPERAE VIS",
+      "url": "https://operaevis.com",
+      "email": "antonin@operaevis.com"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "Executive & Robotics Audit",
+      "email": "antonin@operaevis.com"
+    },
+    "description": "Thermodynamic settlement protocol (1 OPVS = 1 kWh = 3.6 MJ; 1 micro-OPVS = 3.6 J in strict INT64) and Robotic Workforce OS linking embodied VLA policies (Google DeepMind Gemini Robotics) to heterogeneous fleets (Apptronik Apollo, Electric Atlas 56-DoF, ALOHA Bimanual, Spot/Stretch via Orbit)."
+  }
+  </script>
+
+  <style>
+    @font-face {
+      font-family: "DINish";
+      src: url("https://cdn.jsdelivr.net/gh/playbeing/dinish@4.007/fonts/woff2/DINish/DINish-Regular.woff2") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "DINish";
+      src: url("https://cdn.jsdelivr.net/gh/playbeing/dinish@4.007/fonts/woff2/DINish/DINish-Medium.woff2") format("woff2");
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "DINish";
+      src: url("https://cdn.jsdelivr.net/gh/playbeing/dinish@4.007/fonts/woff2/DINish/DINish-SemiBold.woff2") format("woff2");
+      font-weight: 600;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "DINish";
+      src: url("https://cdn.jsdelivr.net/gh/playbeing/dinish@4.007/fonts/woff2/DINish/DINish-Bold.woff2") format("woff2");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      color-scheme: dark;
+      --bg-void: #000000;
+      --bg-panel: #070707;
+      --bg-elevated: #0E0E0E;
+      --border-grid: #262626;
+      --border-strong: #FFFFFF;
+
+      --fg-white: #FFFFFF;
+      --fg-label: #D4D4D4;
+      --fg-body: #E0E0E0;
+
+      --c-vla: #4C8DFF;
+      --c-cyan: #00E5FF;
+
+      --grade-s: #00E5FF;
+      --grade-a: #00E676;
+      --grade-b: #29B6F6;
+      --grade-c: #FFB300;
+      --grade-d: #FF6D00;
+      --grade-f: #FF3B30;
+      --state-clay: #3E3530;
+      --state-zombie: #D500F9;
+
+      --font-ui: "DINish", "DIN 1451", "Bahnschrift", "DIN Alternate", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    html, body {
+      background-color: var(--bg-void);
+      color: var(--fg-white);
+      font-family: var(--font-ui);
+      font-variant-numeric: tabular-nums;
+      font-size: 16px;
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+      overflow-x: hidden;
+    }
+
+    button, input, select, textarea, a {
+      font-family: inherit;
+      font-variant-numeric: tabular-nums;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    .mono {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .c-white { color: var(--fg-white); }
+    .c-label { color: var(--fg-label); }
+    .c-vla { color: var(--c-vla); }
+    .c-cyan { color: var(--c-cyan); }
+    .c-s { color: var(--grade-s); }
+    .c-a { color: var(--grade-a); }
+    .c-b { color: var(--grade-b); }
+    .c-c { color: var(--grade-c); }
+    .c-d { color: var(--grade-d); }
+    .c-f { color: var(--grade-f); }
+    .c-z { color: var(--state-zombie); }
+
+    .micro-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--fg-label);
+    }
+
+    /* Sticky Header */
+    .top-header {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background-color: var(--bg-void);
+      border-bottom: 2px solid var(--border-strong);
+      width: 100%;
+    }
+
+    .header-inner {
+      max-width: 1920px;
+      margin: 0 auto;
+      padding: 0.55rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .brand-cluster {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-link {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+      color: var(--fg-white);
+    }
+
+    .brand-title {
+      font-size: 1.24rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      line-height: 1.05;
+    }
+
+    .brand-sub {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--fg-label);
+      margin-top: 0.1rem;
+    }
+
+    .quorum-pill {
+      border: 1px solid var(--border-strong);
+      background-color: var(--bg-elevated);
+      padding: 0.34rem 0.62rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      white-space: nowrap;
+    }
+
+    .quorum-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--grade-a);
+      display: inline-block;
+    }
+
+    .main-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-tab {
+      background-color: var(--bg-panel);
+      color: var(--fg-label);
+      border: 1px solid var(--border-grid);
+      padding: 0.45rem 0.75rem;
+      font-size: 0.76rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .nav-tab:hover {
+      background-color: var(--bg-elevated);
+      color: var(--fg-white);
+      border-color: var(--fg-label);
+    }
+
+    .nav-tab.active {
+      background-color: var(--fg-white);
+      color: var(--bg-void);
+      border-color: var(--border-strong);
+      font-weight: 700;
+    }
+
+    .nav-tab.tab-vla.active {
+      background-color: var(--c-vla);
+      color: var(--bg-void);
+      border-color: var(--c-vla);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .hdr-btn {
+      background-color: var(--bg-panel);
+      color: var(--fg-white);
+      border: 1px solid var(--border-grid);
+      padding: 0.44rem 0.68rem;
+      font-size: 0.74rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      white-space: nowrap;
+    }
+
+    .hdr-btn:hover {
+      background-color: var(--bg-elevated);
+      border-color: var(--border-strong);
+    }
+
+    .hdr-btn-cyan {
+      border-color: var(--c-cyan);
+      color: var(--c-cyan);
+    }
+
+    .hdr-btn-cyan:hover {
+      background-color: var(--c-cyan);
+      color: var(--bg-void);
+    }
+
+    .lang-switch {
+      display: inline-flex;
+      border: 1px solid var(--border-strong);
+    }
+
+    .lang-opt {
+      background-color: var(--bg-void);
+      color: var(--fg-label);
+      border: none;
+      padding: 0.42rem 0.55rem;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+    }
+
+    .lang-opt.active {
+      background-color: var(--fg-white);
+      color: var(--bg-void);
+    }
+
+    /* Main Container */
+    .app-main {
+      max-width: 1920px;
+      margin: 0 auto;
+      padding: 0.8rem 1rem 2rem;
+    }
+
+    .tab-view { display: none; }
+    .tab-view.active { display: block; }
+
+    .doctrine-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      background-color: var(--bg-panel);
+      border: 1px solid var(--border-grid);
+      border-left: 3px solid var(--c-cyan);
+      padding: 0.48rem 0.85rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .doctrine-motto {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .doctrine-parity {
+      font-size: 0.74rem;
+      color: var(--fg-label);
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+    }
+
+    /* 5 KPI Strip */
+    .kpi-grid-5 {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0.6rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .kpi-card {
+      background-color: var(--bg-panel);
+      border: 1px solid var(--border-grid);
+      border-top: 2px solid var(--border-strong);
+      padding: 0.62rem 0.78rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.28rem;
+    }
+
+    .kpi-card.kpi-cyan { border-top-color: var(--c-cyan); }
+    .kpi-card.kpi-green { border-top-color: var(--grade-a); }
+    .kpi-card.kpi-vla { border-top-color: var(--c-vla); }
+    .kpi-card.kpi-amber { border-top-color: var(--grade-c); }
+
+    .kpi-primary {
+      font-size: 1.15rem;
+      font-weight: 700;
+      line-height: 1.15;
+    }
+
+    .kpi-sub {
+      font-size: 0.73rem;
+      color: var(--fg-label);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background-color: var(--bg-void);
+      border: 1px solid var(--border-grid);
+      margin-top: 0.18rem;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background-color: var(--c-cyan);
+      width: 82.5%;
+      transition: width 160ms linear;
+    }
+
+    /* Tab I 3-Column SCADA Workspace */
+    .castra-workspace {
+      display: grid;
+      grid-template-columns: 312px minmax(520px, 1fr) 372px;
+      gap: 0.75rem;
+      align-items: start;
+    }
+
+    .scada-panel {
+      background-color: var(--bg-panel);
+      border: 1px solid var(--border-grid);
+    }
+
+    .panel-hdr {
+      background-color: var(--bg-elevated);
+      border-bottom: 1px solid var(--border-grid);
+      padding: 0.52rem 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .panel-title {
+      font-size: 0.79rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .panel-body {
+      padding: 0.72rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.72rem;
+    }
+
+    .ctrl-block {
+      border-bottom: 1px solid var(--border-grid);
+      padding-bottom: 0.68rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.42rem;
+    }
+
+    .ctrl-block:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .btn-row, .btn-grid-2 {
+      display: grid;
+      gap: 0.36rem;
+    }
+
+    .btn-grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .scada-btn {
+      background-color: var(--bg-elevated);
+      color: var(--fg-white);
+      border: 1px solid var(--border-grid);
+      padding: 0.44rem 0.55rem;
+      font-size: 0.73rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .scada-btn:hover {
+      border-color: var(--fg-white);
+      background-color: #151515;
+    }
+
+    .scada-btn.active {
+      background-color: var(--fg-white);
+      color: var(--bg-void);
+      border-color: var(--fg-white);
+      font-weight: 700;
+    }
+
+    .scada-btn.btn-vla { border-color: var(--c-vla); color: var(--c-vla); }
+    .scada-btn.btn-vla:hover, .scada-btn.btn-vla.active { background-color: var(--c-vla); color: var(--bg-void); }
+
+    .scada-btn.btn-cyan { border-color: var(--c-cyan); color: var(--c-cyan); }
+    .scada-btn.btn-cyan:hover, .scada-btn.btn-cyan.active { background-color: var(--c-cyan); color: var(--bg-void); }
+
+    .scada-btn.btn-green { border-color: var(--grade-a); color: var(--grade-a); }
+    .scada-btn.btn-green:hover, .scada-btn.btn-green.active { background-color: var(--grade-a); color: var(--bg-void); }
+
+    .scada-btn.btn-amber { border-color: var(--grade-c); color: var(--grade-c); }
+    .scada-btn.btn-amber:hover { background-color: var(--grade-c); color: var(--bg-void); }
+
+    .scada-btn.btn-red { border-color: var(--grade-f); color: var(--grade-f); }
+    .scada-btn.btn-red:hover { background-color: var(--grade-f); color: var(--fg-white); }
+
+    .scada-btn.btn-zombie { border-color: var(--state-zombie); color: var(--state-zombie); }
+    .scada-btn.btn-zombie:hover { background-color: var(--state-zombie); color: var(--fg-white); }
+
+    .slider-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .slider-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 0.74rem;
+    }
+
+    .slider-val {
+      font-weight: 700;
+      color: var(--fg-white);
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 6px;
+      background: var(--bg-void);
+      border: 1px solid var(--border-grid);
+      outline: none;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 12px;
+      height: 16px;
+      background: var(--fg-white);
+      border: 1px solid var(--bg-void);
+      cursor: pointer;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 12px;
+      height: 16px;
+      background: var(--fg-white);
+      border: 1px solid var(--bg-void);
+      border-radius: 0;
+      cursor: pointer;
+    }
+
+    /* Canvas Stage */
+    .canvas-toolbar {
+      background-color: var(--bg-elevated);
+      border-bottom: 1px solid var(--border-grid);
+      padding: 0.44rem 0.62rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.42rem;
+      flex-wrap: wrap;
+    }
+
+    .scale-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.28rem;
+      flex-wrap: wrap;
+    }
+
+    .scale-btn {
+      background-color: var(--bg-void);
+      color: var(--fg-label);
+      border: 1px solid var(--border-grid);
+      padding: 0.35rem 0.54rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+    }
+
+    .scale-btn:hover {
+      border-color: var(--fg-white);
+      color: var(--fg-white);
+    }
+
+    .scale-btn.active {
+      background-color: var(--c-cyan);
+      color: var(--bg-void);
+      border-color: var(--c-cyan);
+      font-weight: 700;
+    }
+
+    .canvas-wrap {
+      position: relative;
+      width: 100%;
+      height: 675px;
+      background-color: var(--bg-void);
+      overflow: hidden;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .canvas-wrap:active { cursor: grabbing; }
+
+    #castra-canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .canvas-tooltip {
+      position: absolute;
+      pointer-events: none;
+      z-index: 40;
+      background-color: var(--bg-void);
+      border: 1px solid var(--border-strong);
+      padding: 0.45rem 0.6rem;
+      min-width: 225px;
+      display: none;
+      font-size: 0.74rem;
+    }
+
+    .canvas-event-toast {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      z-index: 30;
+      background-color: var(--bg-panel);
+      border: 1px solid var(--c-cyan);
+      padding: 0.35rem 0.62rem;
+      font-size: 0.73rem;
+      color: var(--fg-white);
+      max-width: calc(100% - 20px);
+    }
+
+    .grade-legend {
+      border-top: 1px solid var(--border-grid);
+      background-color: var(--bg-panel);
+      padding: 0.48rem 0.65rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.45rem;
+      flex-wrap: wrap;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.34rem;
+      font-size: 0.72rem;
+      color: var(--fg-label);
+      white-space: nowrap;
+    }
+
+    .theta-swatch {
+      width: 16px;
+      height: 16px;
+      border: 2px solid var(--fg-white);
+      background-color: var(--bg-void);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .theta-swatch-bar {
+      width: 10px;
+      height: 4px;
+      display: block;
+    }
+
+    /* Right HR Dossier & Payslip */
+    .passport-card {
+      background-color: var(--bg-void);
+      border: 1px solid var(--border-grid);
+      border-left: 3px solid var(--fg-white);
+      padding: 0.6rem 0.68rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.38rem;
+    }
+
+    .passport-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .unit-id-big {
+      font-size: 1.12rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .vote-badge {
+      padding: 0.22rem 0.48rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      border: 1px solid var(--border-strong);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .vote-active { border-color: var(--grade-a); color: var(--grade-a); }
+    .vote-suspended { border-color: var(--grade-f); color: var(--grade-f); }
+    .vote-revoked { border-color: var(--state-zombie); color: var(--state-zombie); }
+    .vote-reserve { border-color: var(--border-grid); color: var(--fg-label); }
+
+    .kv-grid {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.24rem 0.6rem;
+      font-size: 0.74rem;
+      align-items: baseline;
+    }
+
+    .kv-key {
+      color: var(--fg-label);
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+    }
+
+    .kv-val {
+      color: var(--fg-white);
+      text-align: right;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .payslip-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid var(--border-grid);
+      background-color: var(--bg-void);
+    }
+
+    .payslip-table th,
+    .payslip-table td {
+      padding: 0.42rem 0.5rem;
+      border-bottom: 1px solid var(--border-grid);
+      font-size: 0.74rem;
+      vertical-align: middle;
+    }
+
+    .payslip-table th {
+      background-color: var(--bg-elevated);
+      color: var(--fg-label);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      text-align: left;
+    }
+
+    .payslip-table th.num,
+    .payslip-table td.num {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .payslip-net-row td {
+      border-top: 2px solid var(--border-strong);
+      border-bottom: 2px solid var(--border-strong);
+      background-color: var(--bg-elevated);
+      font-weight: 700;
+      font-size: 0.78rem;
+    }
+
+    /* Tabs II, III, IV */
+    .section-header-box {
+      background-color: var(--bg-panel);
+      border: 1px solid var(--border-grid);
+      border-left: 4px solid var(--border-strong);
+      padding: 0.95rem 1.15rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .section-header-box.vla-theme { border-left-color: var(--c-vla); }
+    .section-header-box.cyan-theme { border-left-color: var(--c-cyan); }
+
+    .sec-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      margin: 0.2rem 0 0.35rem;
+    }
+
+    .sec-lead {
+      font-size: 0.9rem;
+      color: var(--fg-body);
+      max-width: 1180px;
+    }
+
+    .pipeline-4 {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.65rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .pipe-step {
+      background-color: var(--bg-panel);
+      border: 1px solid var(--border-grid);
+      border-top: 3px solid var(--c-vla);
+      padding: 0.72rem 0.82rem;
+    }
+
+    .pipe-num {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--c-vla);
+      margin-bottom: 0.22rem;
+    }
+
+    .pipe-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 0.22rem;
+    }
+
+    .pipe-desc {
+      font-size: 0.77rem;
+      color: var(--fg-label);
+    }
+
+    .two-col-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+      gap: 0.85rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .three-col-layout {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .form-control-scada {
+      width: 100%;
+      background-color: var(--bg-void);
+      color: var(--fg-white);
+      border: 1px solid var(--border-grid);
+      padding: 0.44rem 0.58rem;
+      font-size: 0.79rem;
+    }
+
+    .form-control-scada:focus {
+      outline: none;
+      border-color: var(--c-vla);
+    }
+
+    .code-box {
+      background-color: var(--bg-void);
+      border: 1px solid var(--border-grid);
+      border-left: 3px solid var(--c-vla);
+      padding: 0.78rem 0.92rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      line-height: 1.48;
+      color: var(--fg-body);
+      overflow-x: auto;
+      white-space: pre;
+      max-height: 390px;
+      overflow-y: auto;
+    }
+
+    .code-box.cyan-border { border-left-color: var(--c-cyan); }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: var(--bg-panel);
+      border: 1px solid var(--border-grid);
+    }
+
+    .data-table th,
+    .data-table td {
+      padding: 0.6rem 0.72rem;
+      border-bottom: 1px solid var(--border-grid);
+      text-align: left;
+      font-size: 0.81rem;
+      vertical-align: top;
+    }
+
+    .data-table th {
+      background-color: var(--bg-elevated);
+      color: var(--fg-label);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      border-bottom: 2px solid var(--border-strong);
+    }
+
+    .formula-block {
+      background-color: var(--bg-void);
+      border: 1px solid var(--border-grid);
+      border-left: 3px solid var(--c-cyan);
+      padding: 0.62rem 0.82rem;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--fg-white);
+      margin-top: 0.45rem;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+
+    .roadmap-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.7rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .phase-card {
+      background-color: var(--bg-panel);
+      border: 1px solid var(--border-grid);
+      border-top: 3px solid var(--fg-white);
+      padding: 0.78rem 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.42rem;
+    }
+
+    .phase-card.p1 { border-top-color: var(--c-cyan); }
+    .phase-card.p2 { border-top-color: var(--c-vla); }
+    .phase-card.p3 { border-top-color: var(--grade-a); }
+    .phase-card.p4 { border-top-color: var(--grade-c); }
+
+    .phase-list {
+      padding-left: 1.05rem;
+      font-size: 0.79rem;
+      color: var(--fg-body);
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    /* Slide-Over Ledger Drawer */
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.82);
+      z-index: 400;
+      display: none;
+    }
+    .drawer-backdrop.open { display: block; }
+
+    .ledger-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: min(700px, 100vw);
+      height: 100vh;
+      background-color: var(--bg-panel);
+      border-left: 2px solid var(--border-strong);
+      z-index: 450;
+      display: none;
+      flex-direction: column;
+    }
+    .ledger-drawer.open { display: flex; }
+
+    .ledger-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.48rem;
+    }
+
+    .ledger-entry {
+      background-color: var(--bg-void);
+      border: 1px solid var(--border-grid);
+      border-left: 3px solid var(--c-cyan);
+      padding: 0.52rem 0.68rem;
+      font-size: 0.74rem;
+    }
+
+    /* Footer */
+    .site-footer {
+      border-top: 2px solid var(--border-strong);
+      background-color: var(--bg-void);
+      margin-top: 1.8rem;
+    }
+
+    .footer-inner {
+      max-width: 1920px;
+      margin: 0 auto;
+      padding: 1.15rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 1380px) {
+      .castra-workspace { grid-template-columns: 300px minmax(440px, 1fr); }
+      .castra-right-col { grid-column: 1 / -1; }
+      .kpi-grid-5 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .roadmap-grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 980px) {
+      .castra-workspace,
+      .two-col-layout,
+      .three-col-layout,
+      .pipeline-4,
+      .roadmap-grid-4,
+      .kpi-grid-5 { grid-template-columns: 1fr; }
+      .canvas-wrap { height: 500px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- STICKY SINGLE HEADER -->
+  <header class="top-header" role="banner">
+    <div class="header-inner">
+      <div class="brand-cluster">
+        <a href="#castra" class="brand-link" id="brand-logo-link" aria-label="OPVS Home">
+          <svg width="38" height="38" viewBox="0 0 100 100" aria-hidden="true">
+            <rect width="100" height="100" fill="#000000" />
+            <circle cx="50" cy="50" r="38" fill="#000000" stroke="#FFFFFF" stroke-width="10" />
+            <rect x="29" y="44" width="42" height="12" fill="#00E5FF" />
+          </svg>
+          <div>
+            <div class="brand-title">OPVS</div>
+            <div class="brand-sub" data-i18n="hdr_sub">OPERAE VIS · 1 BOT = 1 Θ HOLDER</div>
+          </div>
+        </a>
+        <div class="quorum-pill" aria-live="polite">
+          <span class="quorum-dot" id="hdr-quorum-dot"></span>
+          <span data-i18n="hdr_quorum_lbl">QUORUM:</span>
+          <span class="mono" id="hdr-quorum-val">238/256 Θ</span>
+        </div>
+      </div>
+
+      <nav class="main-nav" role="navigation" aria-label="OPVS Primary Navigation">
+        <button type="button" class="nav-tab active" data-tab="castra" id="tab-btn-castra" data-i18n="nav_tab_1">I · Castra 256 (SIRH)</button>
+        <button type="button" class="nav-tab tab-vla" data-tab="vla" id="tab-btn-vla" data-i18n="nav_tab_2">II · Gemini VLA Bridge</button>
+        <button type="button" class="nav-tab" data-tab="fleet" id="tab-btn-fleet" data-i18n="nav_tab_3">III · Fleet &amp; 90-Day Pilot</button>
+        <button type="button" class="nav-tab" data-tab="law" id="tab-btn-law" data-i18n="nav_tab_4">IV · OPVS Metabolic Law</button>
+      </nav>
+
+      <div class="header-actions">
+        <button type="button" class="hdr-btn hdr-btn-cyan" id="btn-open-ledger">
+          <span>Θ LEDGER</span>
+          <span class="mono" id="hdr-ledger-count">[1]</span>
+        </button>
+        <a class="hdr-btn" id="btn-whitepaper-dl" href="./public/assets/aistudio/Operae_Vis_OPVS_Technical_Whitepaper_v2.0_print_1bd25ab0.pdf" download="Operae_Vis_OPVS_Technical_Whitepaper_v2.0.pdf" target="_blank" rel="noopener" data-i18n="hdr_wp_btn">⬇ Whitepaper PDF (v2.0)</a>
+        <div class="lang-switch" role="group" aria-label="Language Selector">
+          <button type="button" class="lang-opt active" data-lang="en" id="lang-btn-en">EN</button>
+          <button type="button" class="lang-opt" data-lang="fr" id="lang-btn-fr">FR</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <!-- ==================== TAB I: CASTRA 256 (SIRH) ==================== -->
+    <section id="view-castra" class="tab-view active" aria-label="Castra 256 Zenithal Simulator and Robotic HRIS">
+      <div class="doctrine-bar">
+        <div class="doctrine-motto" data-i18n="doc_motto">OPVS — Energy as Currency. Survival as Governance. The Protocol for Machine Economies.</div>
+        <div class="doctrine-parity">
+          <span class="mono c-cyan">1 OPVS ≡ 1 kWh ≡ 3.6 MJ</span>
+          <span class="mono">1 µOPVS ≡ 3.6 J (INT64)</span>
+          <span class="c-vla" data-i18n="doc_vla_tag">Embodied VLA Stack: Google DeepMind Gemini Robotics</span>
+        </div>
+      </div>
+
+      <!-- 5 SIRH KPI CARDS -->
+      <div class="kpi-grid-5">
+        <article class="kpi-card kpi-green">
+          <div class="micro-label" data-i18n="kpi1_title">1 · Active Sovereign Quorum</div>
+          <div class="kpi-primary mono" id="kpi-quorum-main">238 / 256 Θ</div>
+          <div class="kpi-sub">
+            <span id="kpi-quorum-detail">238 Active · 6 F/Z · 12 Ø Reserve</span>
+          </div>
+        </article>
+
+        <article class="kpi-card kpi-cyan">
+          <div class="micro-label" data-i18n="kpi2_title">2 · Net Hourly / Shift Payroll (Σ ΔM)</div>
+          <div class="kpi-primary mono c-cyan" id="kpi-payroll-micro">—</div>
+          <div class="kpi-sub">
+            <span class="mono" id="kpi-payroll-shift">—</span>
+            <span class="mono" id="kpi-payroll-hour">—</span>
+          </div>
+        </article>
+
+        <article class="kpi-card kpi-amber">
+          <div class="micro-label" data-i18n="kpi3_title">3 · Mutual &amp; Wear Escrow (Σ R_maint)</div>
+          <div class="kpi-primary mono c-c" id="kpi-escrow-micro">—</div>
+          <div class="kpi-sub">
+            <span class="mono" id="kpi-escrow-opvs">—</span>
+            <span data-i18n="kpi3_sub">τ² + Arrhenius &gt; 48°C</span>
+          </div>
+        </article>
+
+        <article class="kpi-card">
+          <div class="micro-label" data-i18n="kpi4_title">4 · Substation Kirchhoff Audit (ε_drift)</div>
+          <div class="kpi-primary mono c-a" id="kpi-kirchhoff-eps">+14,200 µOPVS</div>
+          <div class="kpi-sub">
+            <span class="mono c-a" id="kpi-kirchhoff-status">CLOSED_WITHIN_TOLERANCE</span>
+          </div>
+        </article>
+
+        <article class="kpi-card kpi-vla">
+          <div class="micro-label" data-i18n="kpi5_title">5 · Self-Recruitment (Genesis Pool)</div>
+          <div class="kpi-primary mono" id="kpi-genesis-val">412.50 / 500.00 OPVS</div>
+          <div class="progress-track">
+            <div class="progress-fill" id="kpi-genesis-bar" style="width: 82.5%;"></div>
+          </div>
+          <div class="kpi-sub">
+            <span id="kpi-genesis-sub" data-i18n="kpi5_sub">Auto-endows 50 OPVS → next Ø in CENTVRIA XVI</span>
+          </div>
+        </article>
+      </div>
+
+      <!-- 3-COLUMN WORKSPACE -->
+      <div class="castra-workspace">
+        <!-- LEFT CONSOLE -->
+        <aside class="scada-panel" aria-label="Calibration and Governance Console">
+          <div class="panel-hdr">
+            <span class="panel-title" data-i18n="left_hdr">Calibration &amp; Governance</span>
+            <span class="mono micro-label" id="sim-shift-counter">SHIFT #04</span>
+          </div>
+          <div class="panel-body">
+            <div class="ctrl-block">
+              <div class="micro-label" data-i18n="scope_lbl">Calibration Scope</div>
+              <div class="btn-row">
+                <button type="button" class="scada-btn active" data-scope="unit" id="scope-btn-unit" data-i18n="scope_unit">Target Unit (1 Θ)</button>
+                <button type="button" class="scada-btn" data-scope="centuria" id="scope-btn-centuria" data-i18n="scope_centuria">Active Centuria (16 Θ)</button>
+                <button type="button" class="scada-btn" data-scope="castrum" id="scope-btn-castrum" data-i18n="scope_castrum">Full Castrum (256 Θ)</button>
+              </div>
+            </div>
+
+            <div class="ctrl-block">
+              <div class="micro-label" data-i18n="preset_lbl">Operational Scenarios</div>
+              <div class="btn-grid-2">
+                <button type="button" class="scada-btn btn-vla" data-preset="geodesic" data-i18n="pre_geo">Gemini v2.5 Geodesic</button>
+                <button type="button" class="scada-btn btn-amber" data-preset="thermal" data-i18n="pre_thm">Thermal Surge</button>
+                <button type="button" class="scada-btn" data-preset="lowyield" data-i18n="pre_low">Low-Yield Shift</button>
+                <button type="button" class="scada-btn btn-red" data-preset="zombie" data-i18n="pre_zom">Exp Breach / Zombie</button>
+              </div>
+            </div>
+
+            <div class="ctrl-block">
+              <div class="micro-label" data-i18n="sliders_lbl">Real-Time Thermodynamic Sliders</div>
+
+              <div class="slider-item">
+                <div class="slider-head">
+                  <span class="c-label" data-i18n="sl_wage">Task Wage (µOPVS)</span>
+                  <span class="slider-val mono" id="val-slider-wage">5,400,000</span>
+                </div>
+                <input type="range" id="slider-wage" min="1500000" max="9500000" step="50000" value="5400000" />
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-head">
+                  <span class="c-label" data-i18n="sl_swap">Swap Energy ΔWh</span>
+                  <span class="slider-val mono c-cyan" id="val-slider-swap">2,850 Wh</span>
+                </div>
+                <input type="range" id="slider-swap" min="1600" max="4800" step="25" value="2850" />
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-head">
+                  <span class="c-label" data-i18n="sl_temp">Joint Temp (°C)</span>
+                  <span class="slider-val mono" id="val-slider-temp">42 °C</span>
+                </div>
+                <input type="range" id="slider-temp" min="34" max="76" step="1" value="42" />
+              </div>
+
+              <div class="slider-item">
+                <div class="slider-head">
+                  <span class="c-label" data-i18n="sl_torque">Torque² Fatigue (τ²)</span>
+                  <span class="slider-val mono" id="val-slider-torque">1,450</span>
+                </div>
+                <input type="range" id="slider-torque" min="600" max="4600" step="50" value="1450" />
+              </div>
+            </div>
+
+            <div class="ctrl-block">
+              <div class="micro-label" data-i18n="temp_ctrl_lbl">Deterministic Clock &amp; Shift Cycle</div>
+              <div class="btn-grid-2">
+                <button type="button" class="scada-btn btn-green active" id="btn-live-toggle">LIVE: ON (2.5s)</button>
+                <button type="button" class="scada-btn btn-cyan" id="btn-step-shift" data-i18n="btn_shift">⚡ +1 Shift (4h)</button>
+              </div>
+              <button type="button" class="scada-btn" id="btn-reset-castrum" data-i18n="btn_reset">↺ Reset Castrum (238/256 Θ)</button>
+            </div>
+
+            <div class="ctrl-block">
+              <div class="micro-label" data-i18n="hotl_lbl">Human-on-the-Loop Overrides</div>
+              <div class="btn-row">
+                <button type="button" class="scada-btn btn-red" id="btn-ovr-quarantine" data-i18n="btn_quarantine">⛨ Quarantine Θ (Soft Bankruptcy)</button>
+                <button type="button" class="scada-btn btn-zombie" id="btn-ovr-zombie" data-i18n="btn_sever">✂ Sever Zombie Helix (0 Θ)</button>
+                <button type="button" class="scada-btn btn-green" id="btn-ovr-endow" data-i18n="btn_endow">↻ Endow / Restore 1 Θ (+50 OPVS)</button>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- CENTER ZENITHAL CANVAS -->
+        <div class="scada-panel" aria-label="Castra 256 Zenithal 16x16 Matrix">
+          <div class="canvas-toolbar">
+            <div class="scale-bar" role="group" aria-label="Powers of Ten Zoom Bar">
+              <button type="button" class="scale-btn active" data-scale="castrum" id="scale-btn-castrum">10² m · CASTRVM (MWh)</button>
+              <button type="button" class="scale-btn" data-scale="cohors" id="scale-btn-cohors">10¹ m · COHORS (64 Θ)</button>
+              <button type="button" class="scale-btn" data-scale="centuria" id="scale-btn-centuria">10⁰ m · CENTVRIA (16 Θ)</button>
+              <button type="button" class="scale-btn" data-scale="cellula" id="scale-btn-cellula">10⁻¹ m · CELLVLA Θ (Wh / 3.6 J)</button>
+            </div>
+            <button type="button" class="scada-btn btn-cyan active" id="btn-toggle-links" data-i18n="btn_links_on">KIRCHHOFF &amp; M2M LINKS: ON</button>
+          </div>
+
+          <div class="canvas-wrap" id="castra-canvas-wrap">
+            <canvas id="castra-canvas"></canvas>
+            <div class="canvas-tooltip" id="castra-tooltip"></div>
+            <div class="canvas-event-toast mono" id="castra-toast">CASTRVM INITIALIZED · 238/256 Θ ACTIVE · KIRCHHOFF CLOSED</div>
+          </div>
+
+          <div class="grade-legend" aria-label="7-State Chromatic Scale">
+            <span class="legend-item"><span class="theta-swatch"><span class="theta-swatch-bar" style="background:#00E5FF;"></span></span><span><b>S</b> ≥+6.8 (≤44°C)</span></span>
+            <span class="legend-item"><span class="theta-swatch"><span class="theta-swatch-bar" style="background:#00E676;"></span></span><span><b>A</b> &gt;+4.0</span></span>
+            <span class="legend-item"><span class="theta-swatch"><span class="theta-swatch-bar" style="background:#29B6F6;"></span></span><span><b>B</b> +2.0..4.0</span></span>
+            <span class="legend-item"><span class="theta-swatch"><span class="theta-swatch-bar" style="background:#FFB300;"></span></span><span><b>C</b> ≥55°C / &lt;2.0</span></span>
+            <span class="legend-item"><span class="theta-swatch"><span class="theta-swatch-bar" style="background:#FF6D00;"></span></span><span><b>D</b> 0..+0.5</span></span>
+            <span class="legend-item"><span class="theta-swatch"><span class="theta-swatch-bar" style="background:#FF3B30;"></span></span><span><b>F</b> ≤0 (0 Θ)</span></span>
+            <span class="legend-item"><span class="theta-swatch"><span class="theta-swatch-bar" style="background:#3E3530;"></span></span><span><b>Ø</b> Reserve</span></span>
+            <span class="legend-item"><span class="theta-swatch"><span class="theta-swatch-bar" style="background:#D500F9;"></span></span><span><b>Z</b> Severed</span></span>
+          </div>
+        </div>
+
+        <!-- RIGHT INDIVIDUAL HR DOSSIER & PAYSLIP -->
+        <aside class="scada-panel castra-right-col" aria-label="Machine HR Dossier and Deterministic Payslip">
+          <div class="panel-hdr">
+            <span class="panel-title" data-i18n="right_hdr">Machine HR Dossier &amp; Payslip</span>
+            <span class="mono micro-label" id="hr-grade-pill">GRADE S</span>
+          </div>
+          <div class="panel-body">
+            <div class="passport-card" id="hr-passport-card">
+              <div class="passport-top">
+                <div>
+                  <div class="unit-id-big mono" id="hr-unit-title">U-001 · Θ-001</div>
+                  <div class="micro-label" id="hr-unit-coords">COHORS I · CENTVRIA I · R01·C01</div>
+                </div>
+                <span class="vote-badge vote-active" id="hr-vote-badge">1 Θ SOVEREIGN</span>
+              </div>
+
+              <div class="kv-grid">
+                <span class="kv-key" data-i18n="pp_wallet">Wallet ID</span>
+                <span class="kv-val mono" id="hr-wallet-id">wlt_unit_001</span>
+
+                <span class="kv-key" data-i18n="pp_sig">Hardware Key</span>
+                <span class="kv-val mono" id="hr-ed25519">ed25519:8a41f9...c012</span>
+
+                <span class="kv-key" data-i18n="pp_chassis">Chassis</span>
+                <span class="kv-val" id="hr-chassis">Electric Atlas 56-DoF</span>
+
+                <span class="kv-key" data-i18n="pp_policy">VLA Policy</span>
+                <span class="kv-val mono c-vla" id="hr-policy">gemini-robotics-v2.5-geodesic</span>
+
+                <span class="kv-key" data-i18n="pp_telemetry">Telemetry</span>
+                <span class="kv-val mono" id="hr-telemetry">41°C · τ²=1,380 · Z=3.40 kWh</span>
+              </div>
+            </div>
+
+            <div>
+              <div class="micro-label" style="margin-bottom:0.35rem;" data-i18n="ps_title">Deterministic Shift Payslip (INT64 µOPVS &amp; kWh)</div>
+              <table class="payslip-table">
+                <thead>
+                  <tr>
+                    <th data-i18n="ps_col_item">Line Item</th>
+                    <th class="num">µOPVS</th>
+                    <th class="num">kWh</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td data-i18n="ps_wage">(+) Gross Task Wage</td>
+                    <td class="num mono c-white" id="ps-wage-micro">—</td>
+                    <td class="num mono" id="ps-wage-kwh">—</td>
+                  </tr>
+                  <tr>
+                    <td data-i18n="ps_swap">(-) Battery Meal (E_swap)</td>
+                    <td class="num mono c-cyan" id="ps-swap-micro">—</td>
+                    <td class="num mono" id="ps-swap-kwh">—</td>
+                  </tr>
+                  <tr>
+                    <td data-i18n="ps_maint">(-) Joint &amp; Thermal ΔR_maint</td>
+                    <td class="num mono c-c" id="ps-maint-micro">—</td>
+                    <td class="num mono" id="ps-maint-kwh">—</td>
+                  </tr>
+                  <tr class="payslip-net-row">
+                    <td data-i18n="ps_net">(=) Net Wage / Margin (ΔM)</td>
+                    <td class="num mono" id="ps-net-micro">—</td>
+                    <td class="num mono" id="ps-net-kwh">—</td>
+                  </tr>
+                  <tr>
+                    <td data-i18n="ps_ds">Survival Savings (Altitude d_S)</td>
+                    <td class="num mono" id="ps-ds-micro">—</td>
+                    <td class="num mono" id="ps-ds-kwh">—</td>
+                  </tr>
+                  <tr>
+                    <td data-i18n="ps_liq">Operational Liquidity (Y)</td>
+                    <td class="num mono" id="ps-y-micro">—</td>
+                    <td class="num mono" id="ps-y-kwh">—</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="ctrl-block">
+              <div class="micro-label" data-i18n="hr_act_lbl">Individual HR Actions</div>
+              <div class="btn-grid-2">
+                <button type="button" class="scada-btn btn-vla" id="btn-hr-vla" data-i18n="btn_hr_vla">Promote / Rollback VLA</button>
+                <button type="button" class="scada-btn btn-green" id="btn-hr-bonus" data-i18n="btn_hr_bonus">+250,000 µOPVS Bonus</button>
+                <button type="button" class="scada-btn btn-cyan" id="btn-hr-m2m" data-i18n="btn_hr_m2m">M2M Subcontract (1.50)</button>
+                <button type="button" class="scada-btn" id="btn-hr-merkle" data-i18n="btn_hr_merkle">Copy Merkle Proof JSON</button>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ==================== TAB II: GEMINI VLA BRIDGE ==================== -->
+    <section id="view-vla" class="tab-view" aria-label="Google DeepMind Gemini Robotics VLA Bridge">
+      <div class="section-header-box vla-theme">
+        <div class="micro-label c-vla" data-i18n="vla_eyebrow">GOOGLE DEEPMIND EMBODIED RL SANDBOX · SPECTRAL CHANNEL #4C8DFF · SAFETY ⊥ ECONOMY</div>
+        <h1 class="sec-title" data-i18n="vla_title">Gemini Robotics VLA Bridge — Thermodynamic Episode Settlement &amp; Reward Webhook</h1>
+        <p class="sec-lead" data-i18n="vla_lead">
+          Converts embodied bimanual manipulation episodes into deterministic integer µOPVS scalar rewards (ΔM) reconciling task value against electrical draw and Arrhenius/torque actuator wear—protected by UUID idempotency locks and strict safety-envelope orthogonality.
+        </p>
+      </div>
+
+      <div class="pipeline-4">
+        <article class="pipe-step">
+          <div class="pipe-num">01 · Gemini VLA Rollout</div>
+          <div class="pipe-title" data-i18n="vla_p1_t">Embodied Policy Execution</div>
+          <p class="pipe-desc" data-i18n="vla_p1_d">Action chunking at 50 Hz on ALOHA Bimanual, Apptronik Apollo, or Electric Atlas 56-DoF hardware.</p>
+        </article>
+        <article class="pipe-step">
+          <div class="pipe-num">02 · Kinematic &amp; Thermal Telemetry</div>
+          <div class="pipe-title" data-i18n="vla_p2_t">Physical Cost Integration</div>
+          <p class="pipe-desc" data-i18n="vla_p2_d">Integrates joint torque-squared ∫‖τ‖²dt, peak stator winding temperature °C, and BMS Wh draw.</p>
+        </article>
+        <article class="pipe-step">
+          <div class="pipe-num">03 · Idempotent Settlement (UUID)</div>
+          <div class="pipe-title" data-i18n="vla_p3_t">Atomic INT64 Ledger Commit</div>
+          <p class="pipe-desc" data-i18n="vla_p3_d">Deduplicates distributed RL rollout retries via deterministic episode_uuid lock (HTTP 200 vs 409).</p>
+        </article>
+        <article class="pipe-step">
+          <div class="pipe-num">04 · Scalar Reward Webhook</div>
+          <div class="pipe-title">reward.net_thermodynamic_margin</div>
+          <p class="pipe-desc" data-i18n="vla_p4_d">Returns signed JSON scalar reward with formal invariant "safety_envelope_orthogonal": true.</p>
+        </article>
+      </div>
+
+      <div class="two-col-layout">
+        <div class="scada-panel">
+          <div class="panel-hdr">
+            <span class="panel-title c-vla" data-i18n="vla_sim_hdr">Bimanual Manipulation Episode Simulator</span>
+            <span class="mono micro-label">POST /v1/episodes/settle</span>
+          </div>
+          <div class="panel-body">
+            <div class="btn-grid-2">
+              <div>
+                <label class="micro-label" for="vla-policy-sel" data-i18n="vla_lbl_pol">Gemini VLA Checkpoint</label>
+                <select id="vla-policy-sel" class="form-control-scada mono">
+                  <option value="gemini-robotics-v2.5-geodesic">gemini-robotics-v2.5-geodesic</option>
+                  <option value="gemini-robotics-aloha-bimanual-v2">gemini-robotics-aloha-bimanual-v2</option>
+                  <option value="gemini-robotics-apollo-dexterous-v2">gemini-robotics-apollo-dexterous-v2</option>
+                  <option value="gemini-robotics-v2.6-exp-aggressive">gemini-robotics-v2.6-exp-aggressive</option>
+                </select>
+              </div>
+              <div>
+                <label class="micro-label" for="vla-unit-sel" data-i18n="vla_lbl_unit">Target Castra Unit</label>
+                <select id="vla-unit-sel" class="form-control-scada mono"></select>
+              </div>
+            </div>
+
+            <div class="btn-grid-2">
+              <div>
+                <label class="micro-label" for="vla-task-sel" data-i18n="vla_lbl_task">Bimanual Manipulation Task</label>
+                <select id="vla-task-sel" class="form-control-scada">
+                  <option value="1450000" data-i18n="vla_t1">Wire Harness Insertion (1,450,000 µOPVS)</option>
+                  <option value="1850000" data-i18n="vla_t2">30 kg Battery Module Lift (1,850,000 µOPVS)</option>
+                  <option value="1100000" data-i18n="vla_t3">Deformable Hose Routing (1,100,000 µOPVS)</option>
+                  <option value="950000" data-i18n="vla_t4">Precision PCB Mating (950,000 µOPVS)</option>
+                </select>
+              </div>
+              <div>
+                <label class="micro-label" for="vla-outcome-sel" data-i18n="vla_lbl_out">Episode Outcome</label>
+                <select id="vla-outcome-sel" class="form-control-scada">
+                  <option value="SUCCESS" data-i18n="vla_out_ok">SUCCESS (100% Task Bounty)</option>
+                  <option value="PARTIAL" data-i18n="vla_out_part">PARTIAL (40% Bounty)</option>
+                  <option value="FAILED" data-i18n="vla_out_fail">TIMEOUT / FAILED (0 Bounty)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="slider-item">
+              <div class="slider-head">
+                <span class="c-label" data-i18n="vla_sl_dur">Episode Duration (s)</span>
+                <span class="slider-val mono" id="vla-val-dur">110 s</span>
+              </div>
+              <input type="range" id="vla-slider-dur" min="15" max="600" step="5" value="110" />
+            </div>
+
+            <div class="slider-item">
+              <div class="slider-head">
+                <span class="c-label" data-i18n="vla_sl_tau">Torque² Integral ∫‖τ‖²dt (N²·m²·s)</span>
+                <span class="slider-val mono" id="vla-val-tau">620</span>
+              </div>
+              <input type="range" id="vla-slider-tau" min="100" max="4200" step="20" value="620" />
+            </div>
+
+            <div class="slider-item">
+              <div class="slider-head">
+                <span class="c-label" data-i18n="vla_sl_temp">Peak Winding Temp (°C)</span>
+                <span class="slider-val mono" id="vla-val-temp">43 °C</span>
+              </div>
+              <input type="range" id="vla-slider-temp" min="32" max="78" step="1" value="43" />
+            </div>
+
+            <div class="slider-item">
+              <div class="slider-head">
+                <span class="c-label" data-i18n="vla_sl_wh">Consumed Energy (Wh)</span>
+                <span class="slider-val mono c-cyan" id="vla-val-wh">380 Wh</span>
+              </div>
+              <input type="range" id="vla-slider-wh" min="40" max="1600" step="10" value="380" />
+            </div>
+
+            <div class="ctrl-block" style="border-top:1px solid var(--border-grid); padding-top:0.62rem;">
+              <div class="slider-head">
+                <label class="micro-label" for="vla-uuid-input">Idempotency Key (episode_uuid)</label>
+                <span class="mono micro-label c-vla" id="vla-http-badge">READY</span>
+              </div>
+              <div style="display:flex; gap:0.4rem;">
+                <input type="text" id="vla-uuid-input" class="form-control-scada mono" value="ep_gemini_20261127_00194a" />
+                <button type="button" class="scada-btn" id="btn-vla-new-uuid" data-i18n="btn_new_uuid">↻ New UUID</button>
+              </div>
+              <div class="btn-grid-2" style="margin-top:0.35rem;">
+                <button type="button" class="scada-btn btn-vla active" id="btn-vla-settle" data-i18n="btn_vla_settle">⚡ Settle Episode &amp; Emit Reward</button>
+                <button type="button" class="scada-btn btn-amber" id="btn-vla-replay" data-i18n="btn_vla_replay">🔁 Replay Same UUID (Test 409)</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:0.75rem;">
+          <div class="scada-panel">
+            <div class="panel-hdr">
+              <span class="panel-title" data-i18n="vla_json_hdr">Signed Outbound RL Reward Webhook Payload</span>
+              <button type="button" class="scada-btn btn-vla" id="btn-copy-vla-json" data-i18n="btn_copy_json">Copy JSON</button>
+            </div>
+            <div class="panel-body" style="padding:0.6rem;">
+              <pre class="code-box" id="vla-webhook-json"></pre>
+            </div>
+          </div>
+
+          <div class="scada-panel">
+            <div class="panel-hdr">
+              <span class="panel-title" data-i18n="vla_chart_hdr">Geodesic VLA vs. Myopic Max-Speed Policy (d_S Trajectory)</span>
+              <span class="mono micro-label c-vla">CANVAS 2D</span>
+            </div>
+            <div class="panel-body" style="padding:0.6rem;">
+              <canvas id="vla-compare-canvas" style="width:100%; height:195px; display:block; background:#000000; border:1px solid #262626;"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="two-col-layout">
+        <div class="scada-panel">
+          <div class="panel-hdr">
+            <span class="panel-title c-a" data-i18n="orth_hdr">Formal Proof of Orthogonality: Safety ⊥ Economy</span>
+            <span class="mono micro-label c-a">INVARIANT LOCKED</span>
+          </div>
+          <div class="panel-body">
+            <p style="font-size:0.84rem; color:var(--fg-body);" data-i18n="orth_p1">
+              In OPVS v2.0, physical safety constraints form a hard kinematic projection manifold S_safe evaluated inside the 1 kHz motor safety controller strictly downstream of VLA action generation and completely independent of wallet liquidity Y or survival altitude d_S.
+            </p>
+            <div class="formula-block">u_exec(t) = Π_{S_safe}( π_θ(o_t) )   where   ∂(S_safe) / ∂(OPVS_balance) ≡ 0</div>
+            <ul style="list-style:none; display:flex; flex-direction:column; gap:0.34rem; font-size:0.8rem; color:var(--fg-label); margin-top:0.25rem;">
+              <li data-i18n="orth_l1">■ Hardware E-Stop &amp; ISO 10218 / TS 15066 force-torque limits can never be relaxed by high OPVS balances.</li>
+              <li data-i18n="orth_l2">■ Human-separation envelopes override task bounties unconditionally (zero speed-vs-proximity trade-off).</li>
+              <li data-i18n="orth_l3">■ Zone 3 Soft Bankruptcy (d_S ≤ 0) grants emergency battery swap overdrafts so robots never stall inside active aisles.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="scada-panel">
+          <div class="panel-hdr">
+            <span class="panel-title" data-i18n="vla_log_hdr">Episode Settlement &amp; Idempotency Audit Stream</span>
+            <span class="mono micro-label" id="vla-log-count">0 EPISODES</span>
+          </div>
+          <div class="panel-body" style="padding:0; max-height:255px; overflow-y:auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>HTTP</th>
+                  <th>episode_uuid</th>
+                  <th data-i18n="vla_th_unit">Unit</th>
+                  <th style="text-align:right;">ΔM (µOPVS)</th>
+                </tr>
+              </thead>
+              <tbody id="vla-episode-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB III: FLEET & 90-DAY PILOT ==================== -->
+    <section id="view-fleet" class="tab-view" aria-label="OT-LAN Raft Architecture, Multi-Vendor Fleet and 90-Day Pilot">
+      <div class="section-header-box cyan-theme">
+        <div class="micro-label c-cyan" data-i18n="flt_eyebrow">INDUSTRIAL OT-LAN RAFT ARCHITECTURE · MULTI-OEM INTEROPERABILITY · 90-DAY AUDIT</div>
+        <h1 class="sec-title" data-i18n="flt_title">Heterogeneous Fleet Integration &amp; 90-Day Executive Audit Roadmap</h1>
+        <p class="sec-lead" data-i18n="flt_lead">
+          OPVS deploys on-premises inside isolated plant OT-LAN networks as a 3- or 5-node permissioned Raft cluster (p99 &lt; 100 ms), unifying heterogeneous embodiments under a single kWh-anchored workforce accounting standard without public cloud dependency.
+        </p>
+      </div>
+
+      <div class="three-col-layout">
+        <article class="scada-panel">
+          <div class="panel-hdr">
+            <span class="panel-title c-cyan" data-i18n="raft_c1_t">Permissioned OT-LAN Raft</span>
+            <span class="mono micro-label c-cyan">p99 &lt; 100 ms</span>
+          </div>
+          <div class="panel-body">
+            <p style="font-size:0.82rem; color:var(--fg-body);" data-i18n="raft_c1_p">
+              Zero public blockchain gas fees, zero speculative token volatility, and zero external WAN latency. Runs on 1U Site Hub rack servers, air-gapped OVA virtual machines, or isolated VPCs secured by mTLS v1.3 and Ed25519 hardware secure elements.
+            </p>
+            <div class="formula-block">Consensus: 5-Node Raft · Finality: 18.4 ms p99 · mTLS v1.3</div>
+          </div>
+        </article>
+
+        <article class="scada-panel">
+          <div class="panel-hdr">
+            <span class="panel-title" data-i18n="raft_c2_t">Offline-Safe BMS Swap Replay</span>
+            <span class="mono micro-label c-a">ZERO LINE HALT</span>
+          </div>
+          <div class="panel-body">
+            <p style="font-size:0.82rem; color:var(--fg-body);" data-i18n="raft_c2_p">
+              Swap bays cache Ed25519-signed battery lock events locally with deterministic UUID Idempotency-Keys. Physical 3-minute battery swaps execute uninterrupted during plant switch maintenance, reconciling automatically upon reconnect.
+            </p>
+            <div class="formula-block">BMS Local Ring-Buffer → Idempotent Merkle Sync</div>
+          </div>
+        </article>
+
+        <article class="scada-panel">
+          <div class="panel-hdr">
+            <span class="panel-title c-vla" data-i18n="raft_c3_t">Live OT-LAN Fault Simulator</span>
+            <span class="mono micro-label" id="raft-sim-badge">5/5 NODES UP</span>
+          </div>
+          <div class="panel-body">
+            <div class="btn-row">
+              <button type="button" class="scada-btn btn-green active" data-raft="nominal" data-i18n="raft_b1">Nominal 5-Node LAN (p99: 18.4 ms)</button>
+              <button type="button" class="scada-btn btn-cyan" data-raft="airgap" data-i18n="raft_b2">Sever External WAN (Air-Gapped Mode)</button>
+              <button type="button" class="scada-btn btn-amber" data-raft="failover" data-i18n="raft_b3">Kill Leader Node #1 (Failover &lt; 65 ms)</button>
+            </div>
+            <div class="mono" style="font-size:0.74rem; color:var(--fg-label); background:#000; border:1px solid #262626; padding:0.5rem;" id="raft-sim-readout">
+              LEADER: node_01 · QUORUM: 5/5 · LATENCY p99: 18.4 ms · SWAPS: UNBLOCKED
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="scada-panel" style="margin-bottom:0.85rem;">
+        <div class="panel-hdr">
+          <span class="panel-title" data-i18n="oem_hdr">Multi-Constructor Embodiment Compatibility Matrix</span>
+          <span class="mono micro-label">1 BOT = 1 Θ WALLET</span>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th data-i18n="oem_th_1">Robotic Platform</th>
+                <th data-i18n="oem_th_2">Kinematics &amp; Payload</th>
+                <th data-i18n="oem_th_3">Energy / BMS Interface</th>
+                <th data-i18n="oem_th_4">Gemini VLA &amp; OPVS Metering Integration</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b class="c-white">Apptronik Apollo</b></td>
+                <td data-i18n="oem_r1_k">Humanoid · 173 cm · 73 kg · 25 kg payload · Linear actuator architecture</td>
+                <td class="mono c-cyan" data-i18n="oem_r1_e">4h hot-swappable pack (~2.6–3.2 kWh) · BMS CAN-FD</td>
+                <td data-i18n="oem_r1_m">Gemini Robotics dexterous tote/pallet policies; linear ball-screw axial load → τ² wear escrow.</td>
+              </tr>
+              <tr>
+                <td><b class="c-white">Electric Atlas (56-DoF)</b></td>
+                <td data-i18n="oem_r2_k">Humanoid · 56 DoF · 360° joints · 30 kg sustained / 50 kg peak lift</td>
+                <td class="mono c-cyan" data-i18n="oem_r2_e">3-min autonomous BMS swap bay (~3.7 kWh) via Orbit</td>
+                <td data-i18n="oem_r2_m">High-torque automotive sequencing; Arrhenius winding monitor (&gt;48°C) prevents stator degradation.</td>
+              </tr>
+              <tr>
+                <td><b class="c-vla">ALOHA Bimanual</b></td>
+                <td data-i18n="oem_r3_k">Dual-arm teleoperation / VLA manipulation rig · Precision force/position control</td>
+                <td class="mono c-cyan" data-i18n="oem_r3_e">Regulated DC rail / smart PDU meter (Wh)</td>
+                <td data-i18n="oem_r3_m">Primary Google DeepMind Gemini Robotics bimanual rollout bench; settles episode ΔM per UUID.</td>
+              </tr>
+              <tr>
+                <td><b class="c-white">Spot / Stretch (via Orbit)</b></td>
+                <td data-i18n="oem_r4_k">Quadruped inspection (Spot) &amp; mobile case-handling (Stretch)</td>
+                <td class="mono c-cyan" data-i18n="oem_r4_e">Orbit dock &amp; pack telemetry bridge</td>
+                <td data-i18n="oem_r4_m">Bridged via Orbit fleet API into OPVS Θ wallets for cross-fleet thermodynamic cost parity.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="roadmap-grid-4">
+        <article class="phase-card p1">
+          <div class="micro-label c-cyan">PHASE 1 · DAYS 0–30</div>
+          <div class="pipe-title" data-i18n="p1_title">Shadow Metering &amp; Mirror</div>
+          <ul class="phase-list">
+            <li data-i18n="p1_i1">Deploy 3-node OT-LAN Raft cluster on 1U Site Hub or OVA.</li>
+            <li data-i18n="p1_i2">Ingest substation Wh, BMS swap logs, and VLA rollout streams in shadow mode.</li>
+            <li data-i18n="p1_i3">Verify Kirchhoff residual |ε_drift| stays closed within tolerance.</li>
+          </ul>
+        </article>
+
+        <article class="phase-card p2">
+          <div class="micro-label c-vla">PHASE 2 · DAYS 31–60</div>
+          <div class="pipe-title" data-i18n="p2_title">VLA Reward &amp; Wear Calibration</div>
+          <ul class="phase-list">
+            <li data-i18n="p2_i1">Activate POST /v1/episodes/settle webhook for Gemini Robotics RL episodes.</li>
+            <li data-i18n="p2_i2">Calibrate τ² joint wear coefficients and Arrhenius &gt; 48°C thermal penalties.</li>
+            <li data-i18n="p2_i3">Validate UUID idempotency under simulated network partitions.</li>
+          </ul>
+        </article>
+
+        <article class="phase-card p3">
+          <div class="micro-label c-a">PHASE 3 · DAYS 61–75</div>
+          <div class="pipe-title" data-i18n="p3_title">Quorum &amp; Swap Governance</div>
+          <ul class="phase-list">
+            <li data-i18n="p3_i1">Enable 1-bot = 1-Θ quorum voting and Grade F soft-bankruptcy swap overdrafts.</li>
+            <li data-i18n="p3_i2">Test M2M task subcontracting and Genesis Pool auto-endowment.</li>
+            <li data-i18n="p3_i3">Verify Human-on-the-Loop quarantine and zombie-helix severance.</li>
+          </ul>
+        </article>
+
+        <article class="phase-card p4">
+          <div class="micro-label c-c">PHASE 4 · DAYS 76–90</div>
+          <div class="pipe-title" data-i18n="p4_title">Executive Audit Sign-Off</div>
+          <ul class="phase-list">
+            <li data-i18n="p4_i1">Audit deterministic INT64 Merkle roots against plant ERP &amp; utility invoices.</li>
+            <li data-i18n="p4_i2">Benchmark p99 Raft latency (&lt; 100 ms) and zero safety-envelope drift.</li>
+            <li data-i18n="p4_i3">Deliver sign-off dossier to VP Robotics &amp; plant leadership.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- ==================== TAB IV: OPVS METABOLIC LAW ==================== -->
+    <section id="view-law" class="tab-view" aria-label="OPVS 3D Phase Space, Curved Survival Manifold, Kirchhoff Audit and Machine Contract">
+      <div class="section-header-box">
+        <div class="micro-label c-cyan" data-i18n="law_eyebrow">THERMODYNAMIC CONSTITUTION · 3D PHASE SPACE (X, Y, Z) · CURVED SURVIVAL MANIFOLD S</div>
+        <h1 class="sec-title" data-i18n="law_title">OPVS Metabolic Law, Phase Space Geometry &amp; Machine Contract</h1>
+        <p class="sec-lead" data-i18n="law_lead">
+          Every sovereign robot operates in a 3D metabolic state space (X, Y, Z) anchored to physical energy (1 OPVS = 1 kWh = 3.6 MJ; 1 µOPVS = 3.6 J in INT64) and governed by survival altitude d_S relative to the curved viability manifold S.
+        </p>
+      </div>
+
+      <div class="two-col-layout">
+        <div class="scada-panel">
+          <div class="panel-hdr">
+            <span class="panel-title c-cyan" data-i18n="law_3d_hdr">3D Metabolic Phase Space (X, Y, Z) &amp; Curved Manifold S</span>
+            <span class="mono micro-label">INTERACTIVE 3D</span>
+          </div>
+          <div class="panel-body" style="padding:0.6rem;">
+            <canvas id="phase3d-canvas" style="width:100%; height:310px; display:block; background:#000000; border:1px solid #262626;"></canvas>
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:0.5rem; margin-top:0.5rem; flex-wrap:wrap;">
+              <span class="mono micro-label" id="phase3d-readout">X (Bounty) · Y (Liquidity) · Z (Energy Reserve) · d_S &gt; 0</span>
+              <button type="button" class="scada-btn btn-cyan" id="btn-rotate-3d" data-i18n="btn_rot_3d">Orbit Phase View +35°</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="scada-panel">
+          <div class="panel-hdr">
+            <span class="panel-title" data-i18n="law_eq_hdr">Core Thermodynamic &amp; HRIS Equations (INT64)</span>
+            <span class="mono micro-label c-cyan">3.6 J / µOPVS</span>
+          </div>
+          <div class="panel-body">
+            <div class="formula-block">1 OPVS ≡ 1 kWh ≡ 3.6 MJ   |   1 µOPVS ≡ 3.6 J   |   1 kWh = 1,000,000 µOPVS (INT64)</div>
+            <div class="formula-block">ΔM_µOPVS = W_task_µOPVS - E_swap_µOPVS - ΔR_maint_µOPVS(τ², T)</div>
+            <div class="formula-block">ΔR_maint(τ², T) = α·τ² + β · exp( E_a / R · (1/321.15 - 1/(T + 273.15)) )   [for T &gt; 48°C]</div>
+            <div class="formula-block">d_S = Altitude above Curved Survival Manifold S   |   Grade F: d_S ≤ 0 ⇒ 0 Θ (Swap Overdraft Allowed)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scada-panel" style="margin-bottom:0.85rem;">
+        <div class="panel-hdr">
+          <span class="panel-title" data-i18n="kch_hdr">Substation Kirchhoff Drift Diagnostic Table (ε_drift)</span>
+          <span class="mono micro-label c-a">CONSERVATION LAW</span>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ε_drift Regime</th>
+                <th data-i18n="kch_th_cond">Conservation Condition</th>
+                <th data-i18n="kch_th_cause">Physical / Telemetry Cause</th>
+                <th data-i18n="kch_th_act">OPVS Protocol Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="mono c-a">CLOSED_WITHIN_TOLERANCE</td>
+                <td class="mono">|ε_drift| ≤ 250,000 µOPVS</td>
+                <td data-i18n="kch_r1_c">Substation meter Wh matches Σ(BMS swap + line loss) within ±0.25 kWh.</td>
+                <td class="c-a" data-i18n="kch_r1_a">Normal Raft settlement; 1 Θ quorum active.</td>
+              </tr>
+              <tr>
+                <td class="mono c-c">THERMAL_LINE_LOSS_DRIFT</td>
+                <td class="mono">+250,000 &lt; ε_drift ≤ +1,500,000 µOPVS</td>
+                <td data-i18n="kch_r2_c">High ambient or feeder I²R loss under heavy multi-arm shift load.</td>
+                <td class="c-c" data-i18n="kch_r2_a">Log transformer loss factor; alert substation maintenance.</td>
+              </tr>
+              <tr>
+                <td class="mono c-f">METER_TAMPER_OR_UNMETERED_DRAW</td>
+                <td class="mono">|ε_drift| &gt; 1,500,000 µOPVS</td>
+                <td data-i18n="kch_r3_c">Unreconciled Wh draw or delayed/missing BMS swap frame.</td>
+                <td class="c-f" data-i18n="kch_r3_a">Freeze unverified payouts; flag audit anomaly for immediate inspection.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="scada-panel">
+        <div class="panel-hdr">
+          <span class="panel-title c-cyan">Machine Contract — application/opvs+json (v2.0)</span>
+          <button type="button" class="scada-btn btn-cyan" id="btn-copy-contract" data-i18n="btn_copy_contract">Copy application/opvs+json</button>
+        </div>
+        <div class="panel-body" style="padding:0.6rem;">
+          <pre class="code-box cyan-border" id="opvs-machine-contract"></pre>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- SLIDE-OVER Θ LEDGER DRAWER -->
+  <div class="drawer-backdrop" id="ledger-backdrop"></div>
+  <aside class="ledger-drawer" id="ledger-drawer" aria-label="Immutable BigInt Θ Ledger">
+    <div class="panel-hdr">
+      <div>
+        <span class="panel-title c-cyan">Θ LEDGER · IMMUTABLE BIGINT AUDIT LOG</span>
+        <div class="micro-label" id="ledger-merkle-root">ROOT: SHA256:0000...OPVS</div>
+      </div>
+      <div style="display:flex; gap:0.4rem;">
+        <button type="button" class="scada-btn btn-cyan" id="btn-export-ledger-json" data-i18n="btn_exp_json">⬇ Export JSON</button>
+        <button type="button" class="scada-btn" id="btn-close-ledger">✕ CLOSE</button>
+      </div>
+    </div>
+    <div class="ledger-list" id="ledger-entries-list"></div>
+  </aside>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div>
+        <div class="mono" style="font-size:0.82rem; font-weight:700;">OPERAEVIS.COM · OPVS v2.0</div>
+        <div class="micro-label" data-i18n="ftr_sub">ENERGY AS CURRENCY · SURVIVAL AS GOVERNANCE · 1 OPVS ≡ 1 kWh ≡ 3.6 MJ · CONTACT: ANTONIN@OPERAEVIS.COM</div>
+      </div>
+      <div class="mono" style="font-size:0.76rem; color:var(--fg-label);">
+        <a href="mailto:antonin@operaevis.com" style="color:var(--c-cyan); text-decoration:none;">antonin@operaevis.com</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      "use strict";
+
+      // =====================================================================
+      // 1. STRICT BIGINT THERMODYNAMIC CONSTANTS (1 OPVS = 1,000,000 µOPVS)
+      // =====================================================================
+      const MICRO_PER_OPVS = 1_000_000n;
+      const GENESIS_THRESHOLD_MICRO = 500_000_000n; // 500.00 OPVS
+      const GENESIS_ENDOWMENT_MICRO = 50_000_000n;  // 50.00 OPVS per new unit
+      const M2M_SUBCONTRACT_MICRO = 1_500_000n;     // 1.50 OPVS
+      const BONUS_MICRO = 250_000n;                 // 250,000 µOPVS (0.25 OPVS)
+
+      const CHASSIS_TYPES = [
+        "Electric Atlas 56-DoF",
+        "Apptronik Apollo",
+        "ALOHA Bimanual",
+        "Spot / Stretch (Orbit)"
+      ];
+
+      const VLA_POLICIES = [
+        "gemini-robotics-v2.5-geodesic",
+        "gemini-robotics-aloha-bimanual-v2",
+        "gemini-robotics-apollo-dexterous-v2"
+      ];
+
+      const GRADE_META = {
+        S: { color: "#00E5FF", cssClass: "c-s", label: "GRADE S" },
+        A: { color: "#00E676", cssClass: "c-a", label: "GRADE A" },
+        B: { color: "#29B6F6", cssClass: "c-b", label: "GRADE B" },
+        C: { color: "#FFB300", cssClass: "c-c", label: "GRADE C" },
+        D: { color: "#FF6D00", cssClass: "c-d", label: "GRADE D" },
+        F: { color: "#FF3B30", cssClass: "c-f", label: "GRADE F" },
+        O: { color: "#3E3530", cssClass: "c-label", label: "STATE Ø (RESERVE)" },
+        Z: { color: "#D500F9", cssClass: "c-z", label: "STATE Z (SEVERED)" }
+      };
+
+      const ROMAN_NUMERALS = [
+        "I", "II", "III", "IV", "V", "VI", "VII", "VIII",
+        "IX", "X", "XI", "XII", "XIII", "XIV", "XV", "XVI"
+      ];
+
+      // =====================================================================
+      // 2. BILINGUAL DICTIONARY (EN DEFAULT / FR COMPLETE)
+      // =====================================================================
+      const I18N = {
+        en: {
+          hdr_sub: "OPERAE VIS · 1 BOT = 1 Θ HOLDER",
+          hdr_quorum_lbl: "QUORUM:",
+          nav_tab_1: "I · Castra 256 (SIRH)",
+          nav_tab_2: "II · Gemini VLA Bridge",
+          nav_tab_3: "III · Fleet & 90-Day Pilot",
+          nav_tab_4: "IV · OPVS Metabolic Law",
+          hdr_wp_btn: "⬇ Whitepaper PDF (v2.0)",
+          doc_motto: "OPVS — Energy as Currency. Survival as Governance. The Protocol for Machine Economies.",
+          doc_vla_tag: "Embodied VLA Stack: Google DeepMind Gemini Robotics",
+          kpi1_title: "1 · Active Sovereign Quorum",
+          kpi2_title: "2 · Net Hourly / Shift Payroll (Σ ΔM)",
+          kpi3_title: "3 · Mutual & Wear Escrow (Σ R_maint)",
+          kpi3_sub: "τ² + Arrhenius > 48°C",
+          kpi4_title: "4 · Substation Kirchhoff Audit (ε_drift)",
+          kpi5_title: "5 · Self-Recruitment (Genesis Pool)",
+          kpi5_sub: "Auto-endows 50 OPVS → next Ø in CENTVRIA XVI",
+          left_hdr: "Calibration & Governance",
+          scope_lbl: "Calibration Scope",
+          scope_unit: "Target Unit (1 Θ)",
+          scope_centuria: "Active Centuria (16 Θ)",
+          scope_castrum: "Full Castrum (256 Θ)",
+          preset_lbl: "Operational Scenarios",
+          pre_geo: "Gemini v2.5 Geodesic",
+          pre_thm: "Thermal Surge",
+          pre_low: "Low-Yield Shift",
+          pre_zom: "Exp Breach / Zombie",
+          sliders_lbl: "Real-Time Thermodynamic Sliders",
+          sl_wage: "Task Wage (µOPVS)",
+          sl_swap: "Swap Energy ΔWh",
+          sl_temp: "Joint Temp (°C)",
+          sl_torque: "Torque² Fatigue (τ²)",
+          temp_ctrl_lbl: "Deterministic Clock & Shift Cycle",
+          btn_shift: "⚡ +1 Shift (4h)",
+          btn_reset: "↺ Reset Castrum (238/256 Θ)",
+          hotl_lbl: "Human-on-the-Loop Overrides",
+          btn_quarantine: "⛨ Quarantine Θ (Soft Bankruptcy)",
+          btn_sever: "✂ Sever Zombie Helix (0 Θ)",
+          btn_endow: "↻ Endow / Restore 1 Θ (+50 OPVS)",
+          btn_links_on: "KIRCHHOFF & M2M LINKS: ON",
+          btn_links_off: "KIRCHHOFF & M2M LINKS: OFF",
+          right_hdr: "Machine HR Dossier & Payslip",
+          pp_wallet: "Wallet ID",
+          pp_sig: "Hardware Key",
+          pp_chassis: "Chassis",
+          pp_policy: "VLA Policy",
+          pp_telemetry: "Telemetry",
+          ps_title: "Deterministic Shift Payslip (INT64 µOPVS & kWh)",
+          ps_col_item: "Line Item",
+          ps_wage: "(+) Gross Task Wage",
+          ps_swap: "(-) Battery Meal (E_swap)",
+          ps_maint: "(-) Joint & Thermal ΔR_maint",
+          ps_net: "(=) Net Wage / Margin (ΔM)",
+          ps_ds: "Survival Savings (Altitude d_S)",
+          ps_liq: "Operational Liquidity (Y)",
+          hr_act_lbl: "Individual HR Actions",
+          btn_hr_vla: "Promote / Rollback VLA",
+          btn_hr_bonus: "+250,000 µOPVS Bonus",
+          btn_hr_m2m: "M2M Subcontract (1.50)",
+          btn_hr_merkle: "Copy Merkle Proof JSON",
+          vote_active: "1 Θ SOVEREIGN",
+          vote_suspended: "0 Θ SUSPENDED",
+          vote_revoked: "0 Θ REVOKED",
+          vote_reserve: "0 Θ Ø RESERVE",
+          vla_eyebrow: "GOOGLE DEEPMIND EMBODIED RL SANDBOX · SPECTRAL CHANNEL #4C8DFF · SAFETY ⊥ ECONOMY",
+          vla_title: "Gemini Robotics VLA Bridge — Thermodynamic Episode Settlement & Reward Webhook",
+          vla_lead: "Converts embodied bimanual manipulation episodes into deterministic integer µOPVS scalar rewards (ΔM) reconciling task value against electrical draw and Arrhenius/torque actuator wear—protected by UUID idempotency locks and strict safety-envelope orthogonality.",
+          vla_p1_t: "Embodied Policy Execution",
+          vla_p1_d: "Action chunking at 50 Hz on ALOHA Bimanual, Apptronik Apollo, or Electric Atlas 56-DoF hardware.",
+          vla_p2_t: "Physical Cost Integration",
+          vla_p2_d: "Integrates joint torque-squared ∫‖τ‖²dt, peak stator winding temperature °C, and BMS Wh draw.",
+          vla_p3_t: "Atomic INT64 Ledger Commit",
+          vla_p3_d: "Deduplicates distributed RL rollout retries via deterministic episode_uuid lock (HTTP 200 vs 409).",
+          vla_p4_d: "Returns signed JSON scalar reward with formal invariant \"safety_envelope_orthogonal\": true.",
+          vla_sim_hdr: "Bimanual Manipulation Episode Simulator",
+          vla_lbl_pol: "Gemini VLA Checkpoint",
+          vla_lbl_unit: "Target Castra Unit",
+          vla_lbl_task: "Bimanual Manipulation Task",
+          vla_lbl_out: "Episode Outcome",
+          vla_t1: "Wire Harness Insertion (1,450,000 µOPVS)",
+          vla_t2: "30 kg Battery Module Lift (1,850,000 µOPVS)",
+          vla_t3: "Deformable Hose Routing (1,100,000 µOPVS)",
+          vla_t4: "Precision PCB Mating (950,000 µOPVS)",
+          vla_out_ok: "SUCCESS (100% Task Bounty)",
+          vla_out_part: "PARTIAL (40% Bounty)",
+          vla_out_fail: "TIMEOUT / FAILED (0 Bounty)",
+          vla_sl_dur: "Episode Duration (s)",
+          vla_sl_tau: "Torque² Integral ∫‖τ‖²dt (N²·m²·s)",
+          vla_sl_temp: "Peak Winding Temp (°C)",
+          vla_sl_wh: "Consumed Energy (Wh)",
+          btn_new_uuid: "↻ New UUID",
+          btn_vla_settle: "⚡ Settle Episode & Emit Reward",
+          btn_vla_replay: "🔁 Replay Same UUID (Test 409)",
+          vla_json_hdr: "Signed Outbound RL Reward Webhook Payload",
+          btn_copy_json: "Copy JSON",
+          vla_chart_hdr: "Geodesic VLA vs. Myopic Max-Speed Policy (d_S Trajectory)",
+          orth_hdr: "Formal Proof of Orthogonality: Safety ⊥ Economy",
+          orth_p1: "In OPVS v2.0, physical safety constraints form a hard kinematic projection manifold S_safe evaluated inside the 1 kHz motor safety controller strictly downstream of VLA action generation and completely independent of wallet liquidity Y or survival altitude d_S.",
+          orth_l1: "■ Hardware E-Stop & ISO 10218 / TS 15066 force-torque limits can never be relaxed by high OPVS balances.",
+          orth_l2: "■ Human-separation envelopes override task bounties unconditionally (zero speed-vs-proximity trade-off).",
+          orth_l3: "■ Zone 3 Soft Bankruptcy (d_S ≤ 0) grants emergency battery swap overdrafts so robots never stall inside active aisles.",
+          vla_log_hdr: "Episode Settlement & Idempotency Audit Stream",
+          vla_th_unit: "Unit",
+          flt_eyebrow: "INDUSTRIAL OT-LAN RAFT ARCHITECTURE · MULTI-OEM INTEROPERABILITY · 90-DAY AUDIT",
+          flt_title: "Heterogeneous Fleet Integration & 90-Day Executive Audit Roadmap",
+          flt_lead: "OPVS deploys on-premises inside isolated plant OT-LAN networks as a 3- or 5-node permissioned Raft cluster (p99 < 100 ms), unifying heterogeneous embodiments under a single kWh-anchored workforce accounting standard without public cloud dependency.",
+          raft_c1_t: "Permissioned OT-LAN Raft",
+          raft_c1_p: "Zero public blockchain gas fees, zero speculative token volatility, and zero external WAN latency. Runs on 1U Site Hub rack servers, air-gapped OVA virtual machines, or isolated VPCs secured by mTLS v1.3 and Ed25519 hardware secure elements.",
+          raft_c2_t: "Offline-Safe BMS Swap Replay",
+          raft_c2_p: "Swap bays cache Ed25519-signed battery lock events locally with deterministic UUID Idempotency-Keys. Physical 3-minute battery swaps execute uninterrupted during plant switch maintenance, reconciling automatically upon reconnect.",
+          raft_c3_t: "Live OT-LAN Fault Simulator",
+          raft_b1: "Nominal 5-Node LAN (p99: 18.4 ms)",
+          raft_b2: "Sever External WAN (Air-Gapped Mode)",
+          raft_b3: "Kill Leader Node #1 (Failover < 65 ms)",
+          oem_hdr: "Multi-Constructor Embodiment Compatibility Matrix",
+          oem_th_1: "Robotic Platform",
+          oem_th_2: "Kinematics & Payload",
+          oem_th_3: "Energy / BMS Interface",
+          oem_th_4: "Gemini VLA & OPVS Metering Integration",
+          oem_r1_k: "Humanoid · 173 cm · 73 kg · 25 kg payload · Linear actuator architecture",
+          oem_r1_e: "4h hot-swappable pack (~2.6–3.2 kWh) · BMS CAN-FD",
+          oem_r1_m: "Gemini Robotics dexterous tote/pallet policies; linear ball-screw axial load → τ² wear escrow.",
+          oem_r2_k: "Humanoid · 56 DoF · 360° joints · 30 kg sustained / 50 kg peak lift",
+          oem_r2_e: "3-min autonomous BMS swap bay (~3.7 kWh) via Orbit",
+          oem_r2_m: "High-torque automotive sequencing; Arrhenius winding monitor (>48°C) prevents stator degradation.",
+          oem_r3_k: "Dual-arm teleoperation / VLA manipulation rig · Precision force/position control",
+          oem_r3_e: "Regulated DC rail / smart PDU meter (Wh)",
+          oem_r3_m: "Primary Google DeepMind Gemini Robotics bimanual rollout bench; settles episode ΔM per UUID.",
+          oem_r4_k: "Quadruped inspection (Spot) & mobile case-handling (Stretch)",
+          oem_r4_e: "Orbit dock & pack telemetry bridge",
+          oem_r4_m: "Bridged via Orbit fleet API into OPVS Θ wallets for cross-fleet thermodynamic cost parity.",
+          p1_title: "Shadow Metering & Mirror",
+          p1_i1: "Deploy 3-node OT-LAN Raft cluster on 1U Site Hub or OVA.",
+          p1_i2: "Ingest substation Wh, BMS swap logs, and VLA rollout streams in shadow mode.",
+          p1_i3: "Verify Kirchhoff residual |ε_drift| stays closed within tolerance.",
+          p2_title: "VLA Reward & Wear Calibration",
+          p2_i1: "Activate POST /v1/episodes/settle webhook for Gemini Robotics RL episodes.",
+          p2_i2: "Calibrate τ² joint wear coefficients and Arrhenius > 48°C thermal penalties.",
+          p2_i3: "Validate UUID idempotency under simulated network partitions.",
+          p3_title: "Quorum & Swap Governance",
+          p3_i1: "Enable 1-bot = 1-Θ quorum voting and Grade F soft-bankruptcy swap overdrafts.",
+          p3_i2: "Test M2M task subcontracting and Genesis Pool auto-endowment.",
+          p3_i3: "Verify Human-on-the-Loop quarantine and zombie-helix severance.",
+          p4_title: "Executive Audit Sign-Off",
+          p4_i1: "Audit deterministic INT64 Merkle roots against plant ERP & utility invoices.",
+          p4_i2: "Benchmark p99 Raft latency (< 100 ms) and zero safety-envelope drift.",
+          p4_i3: "Deliver sign-off dossier to VP Robotics & plant leadership.",
+          law_eyebrow: "THERMODYNAMIC CONSTITUTION · 3D PHASE SPACE (X, Y, Z) · CURVED SURVIVAL MANIFOLD S",
+          law_title: "OPVS Metabolic Law, Phase Space Geometry & Machine Contract",
+          law_lead: "Every sovereign robot operates in a 3D metabolic state space (X, Y, Z) anchored to physical energy (1 OPVS = 1 kWh = 3.6 MJ; 1 µOPVS = 3.6 J in INT64) and governed by survival altitude d_S relative to the curved viability manifold S.",
+          law_3d_hdr: "3D Metabolic Phase Space (X, Y, Z) & Curved Manifold S",
+          btn_rot_3d: "Orbit Phase View +35°",
+          law_eq_hdr: "Core Thermodynamic & HRIS Equations (INT64)",
+          kch_hdr: "Substation Kirchhoff Drift Diagnostic Table (ε_drift)",
+          kch_th_cond: "Conservation Condition",
+          kch_th_cause: "Physical / Telemetry Cause",
+          kch_th_act: "OPVS Protocol Action",
+          kch_r1_c: "Substation meter Wh matches Σ(BMS swap + line loss) within ±0.25 kWh.",
+          kch_r1_a: "Normal Raft settlement; 1 Θ quorum active.",
+          kch_r2_c: "High ambient or feeder I²R loss under heavy multi-arm shift load.",
+          kch_r2_a: "Log transformer loss factor; alert substation maintenance.",
+          kch_r3_c: "Unreconciled Wh draw or delayed/missing BMS swap frame.",
+          kch_r3_a: "Freeze unverified payouts; flag audit anomaly for immediate inspection.",
+          btn_copy_contract: "Copy application/opvs+json",
+          btn_exp_json: "⬇ Export JSON",
+          ftr_sub: "ENERGY AS CURRENCY · SURVIVAL AS GOVERNANCE · 1 OPVS ≡ 1 kWh ≡ 3.6 MJ · CONTACT: ANTONIN@OPERAEVIS.COM"
+        },
+        fr: {
+          hdr_sub: "OPERAE VIS · 1 BOT = 1 Θ HOLDER",
+          hdr_quorum_lbl: "QUORUM :",
+          nav_tab_1: "I · Castra 256 (SIRH)",
+          nav_tab_2: "II · Gemini VLA Bridge",
+          nav_tab_3: "III · Fleet & 90-Day Pilot",
+          nav_tab_4: "IV · OPVS Metabolic Law",
+          hdr_wp_btn: "⬇ Livre Blanc PDF (v2.0)",
+          doc_motto: "OPVS — L'Énergie comme Monnaie. La Survie comme Gouvernance. Le Protocole des Économies Machines.",
+          doc_vla_tag: "Pile VLA Incarnee : Google DeepMind Gemini Robotics",
+          kpi1_title: "1 · Quorum Souverain Actif",
+          kpi2_title: "2 · Masse Salariale Nette Horaire / Poste (Σ ΔM)",
+          kpi3_title: "3 · Séquestre Mutuelle & Usure (Σ R_maint)",
+          kpi3_sub: "τ² + Arrhenius > 48°C",
+          kpi4_title: "4 · Audit Kirchhoff Sous-station (ε_drift)",
+          kpi5_title: "5 · Cagnotte d'Auto-Recrutement (Genesis Pool)",
+          kpi5_sub: "Dote auto de 50 OPVS → prochain Ø dans CENTVRIA XVI",
+          left_hdr: "Calibration & Gouvernance",
+          scope_lbl: "Portée de Calibration",
+          scope_unit: "Unité Cible (1 Θ)",
+          scope_centuria: "Centurie Active (16 Θ)",
+          scope_castrum: "Castrum Complet (256 Θ)",
+          preset_lbl: "Scénarios Opérationnels",
+          pre_geo: "Gemini v2.5 Géodésique",
+          pre_thm: "Surchauffe Thermique",
+          pre_low: "Poste Bas Rendement",
+          pre_zom: "Violation Exp / Zombie",
+          sliders_lbl: "Curseurs Thermodynamiques Temps Réel",
+          sl_wage: "Salaire Tâche (µOPVS)",
+          sl_swap: "Énergie Swap ΔWh",
+          sl_temp: "Temp. Articulaire (°C)",
+          sl_torque: "Fatigue Couple² (τ²)",
+          temp_ctrl_lbl: "Horloge Déterministe & Cycle de Poste",
+          btn_shift: "⚡ +1 Poste (4h)",
+          btn_reset: "↺ Réinitialiser Castrum (238/256 Θ)",
+          hotl_lbl: "Overrides Human-on-the-Loop",
+          btn_quarantine: "⛨ Quarantaine Θ (Faillite Douce)",
+          btn_sever: "✂ Couper Hélice Zombie (0 Θ)",
+          btn_endow: "↻ Doter / Restaurer 1 Θ (+50 OPVS)",
+          btn_links_on: "KIRCHHOFF & M2M LINKS : ON",
+          btn_links_off: "KIRCHHOFF & M2M LINKS : OFF",
+          right_hdr: "Dossier Individuel RH & Bulletin de Paie",
+          pp_wallet: "Portefeuille",
+          pp_sig: "Clé Matérielle",
+          pp_chassis: "Châssis",
+          pp_policy: "Politique VLA",
+          pp_telemetry: "Télémétrie",
+          ps_title: "Bulletin de Paie Déterministe (INT64 µOPVS & kWh)",
+          ps_col_item: "Rubrique",
+          ps_wage: "(+) Salaire Brut Tâche",
+          ps_swap: "(-) Repas Batterie (E_swap)",
+          ps_maint: "(-) Usure & Thermique ΔR_maint",
+          ps_net: "(=) Salaire Net / Marge (ΔM)",
+          ps_ds: "Épargne Survie (Altitude d_S)",
+          ps_liq: "Liquidité Opérationnelle (Y)",
+          hr_act_lbl: "Actions RH Individuelles",
+          btn_hr_vla: "Promouvoir / Rétrograder VLA",
+          btn_hr_bonus: "Prime +250,000 µOPVS",
+          btn_hr_m2m: "Sous-traitance M2M (1.50)",
+          btn_hr_merkle: "Copier Preuve Merkle JSON",
+          vote_active: "1 Θ SOUVERAIN",
+          vote_suspended: "0 Θ SUSPENDU",
+          vote_revoked: "0 Θ RÉVOQUÉ",
+          vote_reserve: "0 Θ Ø RÉSERVE",
+          vla_eyebrow: "BAC À SABLE RL INCARNÉ GOOGLE DEEPMIND · CANAL SPECTRAL #4C8DFF · SAFETY ⊥ ECONOMY",
+          vla_title: "Passerelle Gemini Robotics VLA — Règlement d'Épisode Thermodynamique & Webhook Récompense",
+          vla_lead: "Convertit les épisodes de manipulation bimanuelle incarnée en récompenses scalaires entières µOPVS (ΔM) conciliant valeur de tâche, tirage électrique et usure actionneur Arrhenius/couple—protégées par verrou d'idempotence UUID et orthogonalité stricte de sûreté.",
+          vla_p1_t: "Exécution Politique Incarnee",
+          vla_p1_d: "Action chunking à 50 Hz sur ALOHA Bimanual, Apptronik Apollo ou Electric Atlas 56-DoF.",
+          vla_p2_t: "Intégration Coût Physique",
+          vla_p2_d: "Intègre le couple quadratique ∫‖τ‖²dt, la température de bobinage °C et la consommation BMS Wh.",
+          vla_p3_t: "Validation Atomique INT64",
+          vla_p3_d: "Déduplique les rejeux de rollouts RL distribués via verrou déterministe episode_uuid (HTTP 200 vs 409).",
+          vla_p4_d: "Retourne la récompense scalaire JSON signée avec l'invariant formel \"safety_envelope_orthogonal\": true.",
+          vla_sim_hdr: "Simulateur d'Épisode de Manipulation Bimanuelle",
+          vla_lbl_pol: "Checkpoint Gemini VLA",
+          vla_lbl_unit: "Unité Cible Castra",
+          vla_lbl_task: "Tâche de Manipulation Bimanuelle",
+          vla_lbl_out: "Résultat d'Épisode",
+          vla_t1: "Insertion Faisceau Câbles (1,450,000 µOPVS)",
+          vla_t2: "Levage Module Batterie 30 kg (1,850,000 µOPVS)",
+          vla_t3: "Routage Durite Déformable (1,100,000 µOPVS)",
+          vla_t4: "Accouplement PCB Précision (950,000 µOPVS)",
+          vla_out_ok: "SUCCÈS (100% Prime Tâche)",
+          vla_out_part: "PARTIEL (40% Prime)",
+          vla_out_fail: "ÉCHEC / TIMEOUT (0 Prime)",
+          vla_sl_dur: "Durée Épisode (s)",
+          vla_sl_tau: "Intégrale Couple² ∫‖τ‖²dt (N²·m²·s)",
+          vla_sl_temp: "Pic Temp. Bobinage (°C)",
+          vla_sl_wh: "Énergie Consommée (Wh)",
+          btn_new_uuid: "↻ Nouvel UUID",
+          btn_vla_settle: "⚡ Régler Épisode & Émettre Récompense",
+          btn_vla_replay: "🔁 Rejouer Même UUID (Test 409)",
+          vla_json_hdr: "Payload Webhook Récompense RL Signé",
+          btn_copy_json: "Copier JSON",
+          vla_chart_hdr: "VLA Géodésique vs. Politique Myope Vitesse Max (Trajectoire d_S)",
+          orth_hdr: "Preuve Formelle d'Orthogonalité : Safety ⊥ Economy",
+          orth_p1: "Dans OPVS v2.0, les contraintes de sûreté physique forment une variété de projection cinématique dure S_safe évaluée dans le contrôleur de sécurité moteur à 1 kHz strictement en aval de la politique VLA et totalement indépendante de la liquidité Y ou de l'altitude de survie d_S.",
+          orth_l1: "■ L'arrêt d'urgence matériel et les limites effort-couple ISO 10218 / TS 15066 ne sont jamais relâchés par un solde OPVS élevé.",
+          orth_l2: "■ Les enveloppes de séparation humaine prévalent inconditionnellement sur toute prime de tâche.",
+          orth_l3: "■ La Faillite Douce Zone 3 (d_S ≤ 0) autorise un découvert de swap batterie d'urgence sans bloquer les allées.",
+          vla_log_hdr: "Journal d'Audit Règlement Épisodes & Idempotence",
+          vla_th_unit: "Unité",
+          flt_eyebrow: "ARCHITECTURE RAFT OT-LAN INDUSTRIELLE · INTEROPÉRABILITÉ MULTI-OEM · AUDIT 90 JOURS",
+          flt_title: "Intégration Flotte Hétérogène & Feuille de Route d'Audit 90 Jours",
+          flt_lead: "OPVS se déploie sur site au sein de réseaux OT-LAN industriels isolés sous forme de cluster Raft permissionné à 3 ou 5 nœuds (p99 < 100 ms), unifiant les flottes hétérogènes sous un standard comptable adossé au kWh sans dépendance au cloud public.",
+          raft_c1_t: "Raft OT-LAN Permissionné",
+          raft_c1_p: "Zéro frais de gaz blockchain public, zéro volatilité spéculative et zéro latence WAN externe. Fonctionne sur serveur rack 1U Site Hub, machine virtuelle OVA air-gappée ou VPC isolé avec mTLS v1.3 et éléments sécurisés Ed25519.",
+          raft_c2_t: "Rejeu Swap BMS Hors Ligne",
+          raft_c2_p: "Les baies de swap mettent en cache les verrouillages batterie signés Ed25519 avec clé UUID Idempotency-Key. Les échanges de batterie de 3 minutes s'exécutent sans arrêt de ligne et se synchronisent au rétablissement du lien.",
+          raft_c3_t: "Simulateur de Défaut OT-LAN Live",
+          raft_b1: "LAN 5 Nœuds Nominal (p99 : 18,4 ms)",
+          raft_b2: "Couper WAN Externe (Mode Air-Gapped)",
+          raft_b3: "Couper Leader Nœud #1 (Bascule < 65 ms)",
+          oem_hdr: "Matrice de Compatibilité Multi-Constructeurs",
+          oem_th_1: "Plateforme Robotique",
+          oem_th_2: "Cinématique & Charge",
+          oem_th_3: "Interface Énergie / BMS",
+          oem_th_4: "Intégration Gemini VLA & Métrologie OPVS",
+          oem_r1_k: "Humanoïde · 173 cm · 73 kg · Charge 25 kg · Actionneurs linéaires",
+          oem_r1_e: "Pack échangeable à chaud 4h (~2,6–3,2 kWh) · BMS CAN-FD",
+          oem_r1_m: "Politiques bacs/palettes Gemini Robotics ; charge axiale vis-à-billes → séquestre usure τ².",
+          oem_r2_k: "Humanoïde · 56 DoF · Rotations 360° · 30 kg continu / 50 kg pic",
+          oem_r2_e: "Baie de swap BMS autonome 3 min (~3,7 kWh) via Orbit",
+          oem_r2_m: "Séquençage automobile fort couple ; suivi thermique Arrhenius (>48°C) protège les bobinages.",
+          oem_r3_k: "Plateforme bimanuelle téléopération / VLA · Contrôle force/position précis",
+          oem_r3_e: "Rail DC régulé / compteur PDU intelligent (Wh)",
+          oem_r3_m: "Banc d'essais principal rollouts bimanuels Gemini Robotics ; règle ΔM par episode_uuid.",
+          oem_r4_k: "Inspection quadrupède (Spot) & manutention cartons (Stretch)",
+          oem_r4_e: "Pont télémétrique station & pack Orbit",
+          oem_r4_m: "Relié via l'API flotte Orbit aux portefeuilles Θ OPVS pour une parité thermodynamique inter-flottes.",
+          p1_title: "Métrologie Fantôme & Miroir",
+          p1_i1: "Déployer le cluster Raft OT-LAN à 3 nœuds sur Site Hub 1U ou OVA.",
+          p1_i2: "Ingérer Wh sous-station, logs swap BMS et flux VLA en mode miroir.",
+          p1_i3: "Vérifier que le résidu Kirchhoff |ε_drift| reste dans la tolérance.",
+          p2_title: "Calibration Récompense VLA & Usure",
+          p2_i1: "Activer le webhook POST /v1/episodes/settle pour les épisodes RL Gemini Robotics.",
+          p2_i2: "Calibrer les coefficients d'usure τ² et pénalités thermiques Arrhenius > 48°C.",
+          p2_i3: "Valider l'idempotence UUID sous coupures réseau simulées.",
+          p3_title: "Gouvernance Quorum & Swap",
+          p3_i1: "Activer le vote quorum 1 bot = 1 Θ et les découverts de swap en faillite douce Grade F.",
+          p3_i2: "Tester la sous-traitance M2M et la dotation automatique Genesis Pool.",
+          p3_i3: "Vérifier la quarantaine Human-on-the-Loop et la coupure hélice zombie.",
+          p4_title: "Validation Audit Exécutif",
+          p4_i1: "Auditer les racines Merkle INT64 déterministes face à l'ERP et aux factures énergie.",
+          p4_i2: "Mesurer la latence Raft p99 (< 100 ms) et l'absence de dérive d'enveloppe sûreté.",
+          p4_i3: "Remettre le dossier de validation à la VP Robotics et à la direction site.",
+          law_eyebrow: "CONSTITUTION THERMODYNAMIQUE · ESPACE DE PHASE 3D (X, Y, Z) · VARIÉTÉ DE SURVIE COURBE S",
+          law_title: "Loi Métabolique OPVS, Géométrie de Phase 3D & Contrat Machine",
+          law_lead: "Chaque robot souverain évolue dans un espace d'état métabolique 3D (X, Y, Z) adossé à l'énergie physique (1 OPVS = 1 kWh = 3,6 MJ ; 1 µOPVS = 3,6 J en INT64) et régi par l'altitude de survie d_S par rapport à la variété courbe S.",
+          law_3d_hdr: "Espace de Phase Métabolique 3D (X, Y, Z) & Variété Courbe S",
+          btn_rot_3d: "Pivoter Vue Phase +35°",
+          law_eq_hdr: "Équations Thermodynamiques & SIRH Fondamentales (INT64)",
+          kch_hdr: "Table Diagnostique de Résidu Kirchhoff Sous-station (ε_drift)",
+          kch_th_cond: "Condition de Conservation",
+          kch_th_cause: "Cause Physique / Télémétrie",
+          kch_th_act: "Action Protocole OPVS",
+          kch_r1_c: "Compteur sous-station Wh concordant avec Σ(swap BMS + pertes ligne) à ±0,25 kWh.",
+          kch_r1_a: "Règlement Raft nominal ; quorum 1 Θ actif.",
+          kch_r2_c: "Pertes I²R ligne ou température ambiante élevées sous charge multi-bras.",
+          kch_r2_a: "Journaliser facteur de perte transformateur ; alerter maintenance électrique.",
+          kch_r3_c: "Tirage Wh non réconcilié ou trame swap BMS manquante/retardée.",
+          kch_r3_a: "Geler règlements non vérifiés ; lever anomalie d'audit immédiate.",
+          btn_copy_contract: "Copier application/opvs+json",
+          btn_exp_json: "⬇ Exporter JSON",
+          ftr_sub: "L'ÉNERGIE COMME MONNAIE · LA SURVIE COMME GOUVERNANCE · 1 OPVS ≡ 1 kWh ≡ 3.6 MJ · CONTACT : ANTONIN@OPERAEVIS.COM"
+        }
+      };
+
+      // =====================================================================
+      // 3. STATE & DETERMINISTIC BIGINT ENGINE
+      // =====================================================================
+      const state = {
+        lang: "en",
+        activeTab: "castra",
+        scope: "unit",
+        zoomScale: "castrum",
+        showLinks: true,
+        liveTick: true,
+        shiftCount: 4,
+        selectedId: 0,
+        hoverId: -1,
+        genesisPoolMicro: 412_500_000n,
+        kirchhoffDriftMicro: 14_200n,
+        params: {
+          wageMicro: 5_400_000n,
+          swapWh: 2850,
+          tempC: 42,
+          torqueSq: 1450
+        },
+        units: [],
+        ledger: [],
+        vlaSettledMap: new Map(),
+        vlaHistory: [],
+        phaseAngle: 0.62,
+        raftMode: "nominal"
+      };
+
+      function hexHash(str) {
+        let h1 = 0x811c9dc5;
+        let h2 = 0x01000193;
+        for (let i = 0; i < str.length; i++) {
+          const ch = str.charCodeAt(i);
+          h1 ^= ch;
+          h1 = Math.imul(h1, 0x01000193);
+          h2 ^= (ch + i * 17);
+          h2 = Math.imul(h2, 0x85ebca6b);
+        }
+        return (h1 >>> 0).toString(16).padStart(8, "0") + (h2 >>> 0).toString(16).padStart(8, "0");
+      }
+
+      function formatInt(n) {
+        const big = typeof n === "bigint" ? n : BigInt(Math.round(Number(n)));
+        const neg = big < 0n ? "-" : "";
+        const absStr = (big < 0n ? -big : big).toString();
+        return neg + absStr.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+
+      function formatMicroAsOpvs(micro, decimals = 4) {
+        const big = typeof micro === "bigint" ? micro : BigInt(Math.round(Number(micro)));
+        const neg = big < 0n ? "-" : "";
+        const abs = big < 0n ? -big : big;
+        const whole = abs / MICRO_PER_OPVS;
+        const rem = abs % MICRO_PER_OPVS;
+        const scale = 10 ** decimals;
+        const fracNum = Number((rem * BigInt(scale)) / MICRO_PER_OPVS);
+        const fracStr = String(fracNum).padStart(decimals, "0");
+        return `${neg}${formatInt(whole)}.${fracStr}`;
+      }
+
+      function computeWearMicro(torqueSq, tempC) {
+        const t2 = BigInt(Math.max(0, Math.round(torqueSq)));
+        let wear = t2 * 520n;
+        if (tempC > 48) {
+          const deltaT = BigInt(tempC - 48);
+          wear += deltaT * deltaT * 48_000n + deltaT * 135_000n;
+        }
+        return wear;
+      }
+
+      function computeSwapMicro(swapWh) {
+        return BigInt(Math.max(0, Math.round(swapWh))) * 1_000n;
+      }
+
+      function classifyGrade(u) {
+        if (u.mode === "RESERVE") return "O";
+        if (u.mode === "ZOMBIE") return "Z";
+        if (u.dSMicro <= 0n || u.mode === "QUARANTINE") return "F";
+        if (u.dSMicro < 500_000n) return "D";
+        if (u.tempC >= 55 || u.dSMicro < 2_000_000n) return "C";
+        if (u.dSMicro <= 4_000_000n) return "B";
+        if (u.dSMicro >= 6_800_000n && u.tempC <= 44) return "S";
+        return "A";
+      }
+
+      function recomputeUnitMetrics(u) {
+        if (u.mode === "RESERVE") {
+          u.grade = "O";
+          u.hasVote = false;
+          u.netDeltaMicro = 0n;
+          return;
+        }
+        if (u.mode === "ZOMBIE") {
+          u.grade = "Z";
+          u.hasVote = false;
+          u.netDeltaMicro = -computeSwapMicro(u.swapWh);
+          return;
+        }
+        const swapMicro = computeSwapMicro(u.swapWh);
+        const maintMicro = computeWearMicro(u.torqueSq, u.tempC);
+        u.lastSwapMicro = swapMicro;
+        u.lastMaintMicro = maintMicro;
+        u.netDeltaMicro = u.wageMicro - swapMicro - maintMicro;
+
+        if (u.mode === "QUARANTINE") {
+          u.dSMicro = -250_000n;
+          u.hasVote = false;
+          u.grade = "F";
+          return;
+        }
+
+        u.hasVote = u.dSMicro > 0n;
+        u.grade = classifyGrade(u);
+      }
+
+      function initUnits() {
+        state.units = [];
+        for (let idx = 0; idx < 256; idx++) {
+          const row = Math.floor(idx / 16);
+          const col = idx % 16;
+          const cohorsIdx = (row < 8 ? 0 : 1) * 2 + (col < 8 ? 0 : 1);
+          const centuriaInCohors = (Math.floor((row % 8) / 4)) * 2 + (Math.floor((col % 8) / 4));
+          const centuriaIdx = cohorsIdx * 4 + centuriaInCohors;
+
+          const isCenturia16 = centuriaIdx === 15;
+          const posInC16 = (row % 4) * 4 + (col % 4);
+
+          let mode = "ACTIVE";
+          let dSMicro = 5_200_000n + BigInt(((idx * 37) % 35)) * 100_000n;
+          let yMicro = 12_000_000n + BigInt(((idx * 53) % 28)) * 500_000n;
+          let tempC = 39 + ((idx * 7) % 14);
+          let torqueSq = 1150 + ((idx * 97) % 1300);
+          let swapWh = 2750 + ((idx * 29) % 450);
+          let wageMicro = 5_400_000n + BigInt(((idx * 19) % 14)) * 100_000n;
+
+          if (isCenturia16) {
+            if (posInC16 >= 4) {
+              mode = "RESERVE";
+              dSMicro = 0n;
+              yMicro = 0n;
+              tempC = 24;
+              torqueSq = 0;
+              swapWh = 0;
+              wageMicro = 0n;
+            } else if (posInC16 === 3) {
+              mode = "QUARANTINE";
+              dSMicro = -320_000n;
+              tempC = 63;
+              torqueSq = 3400;
+            }
+          }
+
+          if (idx === 42 || idx === 91 || idx === 154 || idx === 203) {
+            mode = "QUARANTINE";
+            dSMicro = -210_000n;
+            tempC = 61;
+            torqueSq = 3300;
+          }
+          if (idx === 178) {
+            mode = "ZOMBIE";
+            dSMicro = -850_000n;
+            tempC = 68;
+            torqueSq = 3900;
+          }
+          if (idx === 0) {
+            mode = "ACTIVE";
+            dSMicro = 7_450_000n;
+            yMicro = 24_800_000n;
+            tempC = 41;
+            torqueSq = 1380;
+            swapWh = 2850;
+            wageMicro = 5_650_000n;
+          }
+
+          const unitCode = "U-" + String(idx + 1).padStart(3, "0");
+          const thetaCode = "Θ-" + String(idx + 1).padStart(3, "0");
+          const unit = {
+            index: idx,
+            row,
+            col,
+            cohorsIdx,
+            centuriaIdx,
+            unitCode,
+            thetaCode,
+            walletId: "wlt_unit_" + String(idx + 1).padStart(3, "0"),
+            ed25519Short: "ed25519:" + hexHash("hw_key_" + idx).slice(0, 6) + "..." + hexHash("hw_key_" + idx).slice(-4),
+            chassis: CHASSIS_TYPES[idx % CHASSIS_TYPES.length],
+            policy: VLA_POLICIES[idx % VLA_POLICIES.length],
+            mode,
+            dSMicro,
+            yMicro,
+            tempC,
+            torqueSq,
+            swapWh,
+            wageMicro,
+            lastSwapMicro: computeSwapMicro(swapWh),
+            lastMaintMicro: computeWearMicro(torqueSq, tempC),
+            netDeltaMicro: 0n,
+            grade: "A",
+            hasVote: true
+          };
+          recomputeUnitMetrics(unit);
+          state.units.push(unit);
+        }
+      }
+
+      function appendLedgerEvent(type, unitLabel, deltaMicro, detail) {
+        const seq = state.ledger.length + 1;
+        const prevRoot = state.ledger.length > 0 ? state.ledger[0].hash : "0000000000000000";
+        const payloadStr = `${seq}|${type}|${unitLabel}|${deltaMicro.toString()}|${detail}|${prevRoot}`;
+        const hash = hexHash(payloadStr);
+        state.ledger.unshift({
+          seq,
+          ts: new Date().toISOString().replace("T", " ").slice(0, 19) + " UTC",
+          type,
+          unitLabel,
+          deltaMicro,
+          detail,
+          hash
+        });
+      }
+
+      function getScopeTargets() {
+        const sel = state.units[state.selectedId];
+        if (state.scope === "unit") return [sel];
+        if (state.scope === "centuria") {
+          return state.units.filter(u => u.centuriaIdx === sel.centuriaIdx && u.mode !== "RESERVE");
+        }
+        return state.units.filter(u => u.mode !== "RESERVE");
+      }
+
+      function applySlidersToScope() {
+        const targets = getScopeTargets();
+        for (const u of targets) {
+          if (u.mode === "RESERVE") continue;
+          u.wageMicro = state.params.wageMicro;
+          u.swapWh = state.params.swapWh;
+          u.tempC = state.params.tempC;
+          u.torqueSq = state.params.torqueSq;
+          recomputeUnitMetrics(u);
+        }
+        syncSlidersFromSelected();
+        renderAll();
+      }
+
+      function syncSlidersFromSelected() {
+        const u = state.units[state.selectedId];
+        if (!u || u.mode === "RESERVE") return;
+        state.params.wageMicro = u.wageMicro;
+        state.params.swapWh = u.swapWh;
+        state.params.tempC = u.tempC;
+        state.params.torqueSq = u.torqueSq;
+
+        document.getElementById("slider-wage").value = String(Number(u.wageMicro));
+        document.getElementById("slider-swap").value = String(u.swapWh);
+        document.getElementById("slider-temp").value = String(u.tempC);
+        document.getElementById("slider-torque").value = String(u.torqueSq);
+
+        document.getElementById("val-slider-wage").textContent = formatInt(u.wageMicro);
+        document.getElementById("val-slider-swap").textContent = `${formatInt(u.swapWh)} Wh`;
+        document.getElementById("val-slider-temp").textContent = `${u.tempC} °C`;
+        document.getElementById("val-slider-torque").textContent = formatInt(u.torqueSq);
+      }
+
+      function setToast(msg) {
+        const el = document.getElementById("castra-toast");
+        if (el) el.textContent = msg;
+      }
+
+      function runShiftTick(isAutoTick = false) {
+        state.shiftCount += 1;
+        let genesisContributionMicro = 0n;
+
+        for (const u of state.units) {
+          if (u.mode === "RESERVE") continue;
+          recomputeUnitMetrics(u);
+
+          if (u.mode === "ZOMBIE") {
+            u.dSMicro -= 140_000n;
+            u.yMicro -= u.lastSwapMicro;
+            u.grade = "Z";
+            u.hasVote = false;
+            continue;
+          }
+
+          if (u.mode === "QUARANTINE") {
+            u.dSMicro -= 80_000n;
+            u.grade = "F";
+            u.hasVote = false;
+            continue;
+          }
+
+          u.yMicro += u.netDeltaMicro;
+          const thermalDrag = u.tempC > 52 ? BigInt((u.tempC - 52) * 28_000) : 0n;
+          u.dSMicro += (u.netDeltaMicro / 4n) - thermalDrag;
+
+          if (u.dSMicro <= 0n) {
+            u.dSMicro = 0n;
+            u.mode = "QUARANTINE";
+            u.hasVote = false;
+          } else {
+            u.hasVote = true;
+          }
+
+          u.grade = classifyGrade(u);
+
+          if ((u.grade === "S" || u.grade === "A") && u.netDeltaMicro > 0n) {
+            genesisContributionMicro += u.netDeltaMicro / 25n;
+          }
+        }
+
+        state.genesisPoolMicro += genesisContributionMicro;
+        let recruitedCount = 0;
+
+        while (state.genesisPoolMicro >= GENESIS_THRESHOLD_MICRO) {
+          const nextReserve = state.units.find(
+            unit => unit.centuriaIdx === 15 && unit.mode === "RESERVE"
+          );
+          if (!nextReserve) break;
+
+          state.genesisPoolMicro -= GENESIS_ENDOWMENT_MICRO;
+          nextReserve.mode = "ACTIVE";
+          nextReserve.yMicro = GENESIS_ENDOWMENT_MICRO;
+          nextReserve.dSMicro = 4_800_000n;
+          nextReserve.tempC = 40;
+          nextReserve.torqueSq = 1280;
+          nextReserve.swapWh = 2750;
+          nextReserve.wageMicro = 5_500_000n;
+          nextReserve.hasVote = true;
+          recomputeUnitMetrics(nextReserve);
+          recruitedCount += 1;
+
+          appendLedgerEvent(
+            "GENESIS_AUTO_ENDOW",
+            nextReserve.unitCode,
+            GENESIS_ENDOWMENT_MICRO,
+            "Auto-recruited from Genesis Pool into CENTVRIA XVI (50.00 OPVS)"
+          );
+        }
+
+        const driftDelta = ((BigInt(state.shiftCount * 7919) % 19n) - 9n) * 1_400n;
+        state.kirchhoffDriftMicro = driftDelta;
+
+        if (!isAutoTick || recruitedCount > 0) {
+          appendLedgerEvent(
+            "SHIFT_SETTLEMENT",
+            `SHIFT-#${String(state.shiftCount).padStart(2, "0")}`,
+            genesisContributionMicro,
+            `Genesis +${formatMicroAsOpvs(genesisContributionMicro, 3)} OPVS · Recruited: ${recruitedCount}`
+          );
+        }
+
+        const fr = state.lang === "fr";
+        if (recruitedCount > 0) {
+          setToast(
+            fr
+              ? `GENESIS POOL : +${recruitedCount} statue Ø dotée de 50 OPVS dans CENTVRIA XVI !`
+              : `GENESIS POOL: +${recruitedCount} Ø reserve unit endowed with 50 OPVS in CENTVRIA XVI!`
+          );
+        } else if (!isAutoTick) {
+          setToast(
+            fr
+              ? `POSTE #${String(state.shiftCount).padStart(2, "0")} RÉGLÉ · KIRCHHOFF ε_drift = ${formatInt(state.kirchhoffDriftMicro)} µOPVS`
+              : `SHIFT #${String(state.shiftCount).padStart(2, "0")} SETTLED · KIRCHHOFF ε_drift = ${formatInt(state.kirchhoffDriftMicro)} µOPVS`
+          );
+        }
+
+        renderAll();
+      }
+
+      // =====================================================================
+      // 4. ZENITHAL 16x16 CASTRA CANVAS RENDERER
+      // =====================================================================
+      const castraCanvas = document.getElementById("castra-canvas");
+      const castraCtx = castraCanvas.getContext("2d");
+      let unitHitBoxes = [];
+
+      function getScaleConfig(scaleKey) {
+        const u = state.units[state.selectedId];
+        const uCol = u ? u.col : 0;
+        const uRow = u ? u.row : 0;
+
+        if (scaleKey === "cohors") {
+          const cStart = uCol < 8 ? 0 : 8;
+          const rStart = uRow < 8 ? 0 : 8;
+          return {
+            colMin: cStart, colMax: cStart + 7,
+            rowMin: rStart, rowMax: rStart + 7,
+            badge: "10¹ m · COHORS (8×8 = 64 Θ)"
+          };
+        }
+        if (scaleKey === "centuria") {
+          const cStart = Math.floor(uCol / 4) * 4;
+          const rStart = Math.floor(uRow / 4) * 4;
+          return {
+            colMin: cStart, colMax: cStart + 3,
+            rowMin: rStart, rowMax: rStart + 3,
+            badge: "10⁰ m · CENTVRIA (4×4 = 16 Θ)"
+          };
+        }
+        if (scaleKey === "cellula") {
+          const cMin = Math.max(0, uCol - 1);
+          const cMax = Math.min(15, cMin + 2);
+          const rMin = Math.max(0, uRow - 1);
+          const rMax = Math.min(15, rMin + 2);
+          return {
+            colMin: cMin, colMax: cMax,
+            rowMin: rMin, rowMax: rMax,
+            badge: "10⁻¹ m · CELLVLA Θ (Wh / 3.6 J)"
+          };
+        }
+        return {
+          colMin: 0, colMax: 15,
+          rowMin: 0, rowMax: 15,
+          badge: "10² m · CASTRVM (16×16 = 256 Θ · MWh)"
+        };
+      }
+
+      function drawThetaSymbol(ctx, cx, cy, radius, grade, isSelected, showMacroReticle) {
+        const meta = GRADE_META[grade] || GRADE_META.A;
+        const strokeW = Math.max(1.4, radius * 0.21);
+
+        if (showMacroReticle) {
+          ctx.save();
+          ctx.strokeStyle = "#00E5FF";
+          ctx.lineWidth = 1.5;
+          const boxHalf = radius * 1.48;
+          ctx.strokeRect(cx - boxHalf, cy - boxHalf, boxHalf * 2, boxHalf * 2);
+
+          ctx.setLineDash([4, 4]);
+          ctx.strokeStyle = "#4C8DFF";
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          ctx.arc(cx, cy, radius * 1.78, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.setLineDash([]);
+          ctx.restore();
+        }
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+        ctx.fillStyle = "#000000";
+        ctx.fill();
+        ctx.lineWidth = isSelected ? strokeW * 1.35 : strokeW;
+        ctx.strokeStyle = isSelected ? "#00E5FF" : "#FFFFFF";
+        ctx.stroke();
+
+        const barW = radius * 1.08;
+        const barH = Math.max(2.0, radius * 0.34);
+        ctx.fillStyle = meta.color;
+        ctx.fillRect(cx - barW / 2, cy - barH / 2, barW, barH);
+
+        if (grade === "Z") {
+          ctx.beginPath();
+          ctx.moveTo(cx - radius * 0.72, cy + radius * 0.72);
+          ctx.lineTo(cx + radius * 0.72, cy - radius * 0.72);
+          ctx.lineWidth = Math.max(1.8, radius * 0.2);
+          ctx.strokeStyle = "#D500F9";
+          ctx.stroke();
+        }
+      }
+
+      function renderCastraCanvas() {
+        const rect = castraCanvas.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        const w = Math.max(320, rect.width);
+        const h = Math.max(360, rect.height);
+
+        if (castraCanvas.width !== Math.round(w * dpr) || castraCanvas.height !== Math.round(h * dpr)) {
+          castraCanvas.width = Math.round(w * dpr);
+          castraCanvas.height = Math.round(h * dpr);
+        }
+
+        const ctx = castraCtx;
+        ctx.save();
+        ctx.scale(dpr, dpr);
+
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(0, 0, w, h);
+
+        const cfg = getScaleConfig(state.zoomScale);
+        const colsCount = cfg.colMax - cfg.colMin + 1;
+        const rowsCount = cfg.rowMax - cfg.rowMin + 1;
+
+        const isFullCastrum = state.zoomScale === "castrum";
+        const westW = isFullCastrum ? Math.max(84, Math.min(126, w * 0.145)) : 0;
+        const eastW = isFullCastrum ? Math.max(88, Math.min(132, w * 0.15)) : 0;
+        const manifoldH = isFullCastrum ? Math.max(76, Math.min(108, h * 0.155)) : 0;
+
+        const topPad = 26;
+        const gridAreaX = westW + 10;
+        const gridAreaY = topPad + 6;
+        const gridAreaW = Math.max(140, w - westW - eastW - 20);
+        const gridAreaH = Math.max(140, h - topPad - manifoldH - 16);
+
+        // West Kirchhoff Substation
+        if (isFullCastrum) {
+          ctx.strokeStyle = "#262626";
+          ctx.lineWidth = 1;
+          ctx.strokeRect(6, topPad, westW - 8, gridAreaH);
+
+          ctx.fillStyle = "#00E5FF";
+          ctx.font = "700 11px DINish, Bahnschrift, sans-serif";
+          ctx.fillText("KIRCHHOFF", 12, topPad + 15);
+          ctx.fillStyle = "#D4D4D4";
+          ctx.font = "600 10px 'JetBrains Mono', monospace";
+          ctx.fillText("1 OPVS=1kWh", 12, topPad + 28);
+
+          for (let t = 0; t < 3; t++) {
+            const ty = topPad + 42 + t * 48;
+            if (ty + 30 < topPad + gridAreaH) {
+              ctx.strokeStyle = "#00E5FF";
+              ctx.lineWidth = 1.2;
+              ctx.strokeRect(14, ty, westW - 28, 30);
+              ctx.fillStyle = "#00E5FF";
+              ctx.font = "600 10px 'JetBrains Mono', monospace";
+              ctx.fillText(`XFMR-0${t + 1}`, 20, ty + 19);
+            }
+          }
+
+          const decumanusY = gridAreaY + gridAreaH * 0.5;
+          ctx.strokeStyle = "#00E5FF";
+          ctx.lineWidth = state.showLinks ? 2.6 : 1.0;
+          ctx.beginPath();
+          ctx.moveTo(westW - 2, decumanusY);
+          ctx.lineTo(gridAreaX, decumanusY);
+          ctx.stroke();
+        }
+
+        // East BMS 3-Min Swap Bays
+        if (isFullCastrum) {
+          const ex = w - eastW + 2;
+          ctx.strokeStyle = "#262626";
+          ctx.lineWidth = 1;
+          ctx.strokeRect(ex, topPad, eastW - 8, gridAreaH);
+
+          ctx.fillStyle = "#FFFFFF";
+          ctx.font = "700 11px DINish, Bahnschrift, sans-serif";
+          ctx.fillText("BMS SWAP", ex + 8, topPad + 15);
+          ctx.fillStyle = "#00E5FF";
+          ctx.font = "600 10px 'JetBrains Mono', monospace";
+          ctx.fillText("3-MIN BAY", ex + 8, topPad + 28);
+
+          for (let b = 0; b < 4; b++) {
+            const by = topPad + 42 + b * 44;
+            if (by + 28 < topPad + gridAreaH) {
+              ctx.strokeStyle = "#FFFFFF";
+              ctx.lineWidth = 1.2;
+              ctx.strokeRect(ex + 8, by, eastW - 24, 28);
+              ctx.fillStyle = "#D4D4D4";
+              ctx.font = "600 10px 'JetBrains Mono', monospace";
+              ctx.fillText(`BAY-0${b + 1}`, ex + 14, by + 18);
+
+              if (state.showLinks) {
+                ctx.strokeStyle = "#00E5FF";
+                ctx.lineWidth = 1.2;
+                ctx.beginPath();
+                ctx.moveTo(gridAreaX + gridAreaW, by + 14);
+                ctx.lineTo(ex + 8, by + 14);
+                ctx.stroke();
+              }
+            }
+          }
+        }
+
+        // Matrix & Centuriae
+        const cellW = gridAreaW / colsCount;
+        const cellH = gridAreaH / rowsCount;
+        const cellSize = Math.min(cellW, cellH);
+        const matrixW = cellSize * colsCount;
+        const matrixH = cellSize * rowsCount;
+        const originX = gridAreaX + (gridAreaW - matrixW) / 2;
+        const originY = gridAreaY + (gridAreaH - matrixH) / 2;
+
+        ctx.strokeStyle = "#262626";
+        ctx.lineWidth = 1;
+        ctx.strokeRect(originX, originY, matrixW, matrixH);
+
+        for (let r = 0; r < rowsCount; r++) {
+          const absRow = cfg.rowMin + r;
+          for (let c = 0; c < colsCount; c++) {
+            const absCol = cfg.colMin + c;
+            const x0 = originX + c * cellSize;
+            const y0 = originY + r * cellSize;
+
+            ctx.strokeStyle = "#181818";
+            ctx.lineWidth = 1;
+            ctx.strokeRect(x0, y0, cellSize, cellSize);
+
+            if (absCol % 4 === 0 && c > 0) {
+              ctx.strokeStyle = "#3A3A3A";
+              ctx.lineWidth = 1.2;
+              ctx.beginPath();
+              ctx.moveTo(x0, originY);
+              ctx.lineTo(x0, originY + matrixH);
+              ctx.stroke();
+            }
+            if (absRow % 4 === 0 && r > 0) {
+              ctx.strokeStyle = "#3A3A3A";
+              ctx.lineWidth = 1.2;
+              ctx.beginPath();
+              ctx.moveTo(originX, y0);
+              ctx.lineTo(originX + matrixW, y0);
+              ctx.stroke();
+            }
+          }
+        }
+
+        // Cardo & Decumanus Maximus
+        if (cfg.colMin <= 7 && cfg.colMax >= 8) {
+          const cardoX = originX + (8 - cfg.colMin) * cellSize;
+          ctx.fillStyle = "rgba(0, 229, 255, 0.08)";
+          ctx.fillRect(cardoX - cellSize * 0.14, originY, cellSize * 0.28, matrixH);
+          ctx.strokeStyle = "#00E5FF";
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          ctx.moveTo(cardoX, originY);
+          ctx.lineTo(cardoX, originY + matrixH);
+          ctx.stroke();
+        }
+        if (cfg.rowMin <= 7 && cfg.rowMax >= 8) {
+          const decY = originY + (8 - cfg.rowMin) * cellSize;
+          ctx.fillStyle = "rgba(0, 229, 255, 0.08)";
+          ctx.fillRect(originX, decY - cellSize * 0.14, matrixW, cellSize * 0.28);
+          ctx.strokeStyle = "#00E5FF";
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          ctx.moveTo(originX, decY);
+          ctx.lineTo(originX + matrixW, decY);
+          ctx.stroke();
+        }
+
+        // Groma marker
+        if (cfg.colMin <= 7 && cfg.colMax >= 8 && cfg.rowMin <= 7 && cfg.rowMax >= 8) {
+          const gx = originX + (8 - cfg.colMin) * cellSize;
+          const gy = originY + (8 - cfg.rowMin) * cellSize;
+          ctx.strokeStyle = "#FFFFFF";
+          ctx.lineWidth = 1.5;
+          ctx.strokeRect(gx - 6, gy - 6, 12, 12);
+          ctx.fillStyle = "#00E5FF";
+          ctx.fillRect(gx - 2, gy - 2, 4, 4);
+        }
+
+        // Centuria labels
+        if (isFullCastrum || state.zoomScale === "cohors" || state.zoomScale === "centuria") {
+          ctx.fillStyle = "#D4D4D4";
+          ctx.font = "600 10px 'JetBrains Mono', monospace";
+          for (let cr = 0; cr < 4; cr++) {
+            for (let cc = 0; cc < 4; cc++) {
+              const cMin = cc * 4;
+              const cMax = cMin + 3;
+              const rMin = cr * 4;
+              const rMax = rMin + 3;
+              if (cMax >= cfg.colMin && cMin <= cfg.colMax && rMax >= cfg.rowMin && rMin <= cfg.rowMax) {
+                const cIdx = cr * 4 + cc;
+                const drawX = originX + Math.max(0, cMin - cfg.colMin) * cellSize + 4;
+                const drawY = originY + Math.max(0, rMin - cfg.rowMin) * cellSize + 11;
+                ctx.fillText(`CENT ${ROMAN_NUMERALS[cIdx]}`, drawX, drawY);
+              }
+            }
+          }
+        }
+
+        // M2M links along alleys
+        unitHitBoxes = [];
+        const centers = new Map();
+        for (let r = 0; r < rowsCount; r++) {
+          const absRow = cfg.rowMin + r;
+          for (let c = 0; c < colsCount; c++) {
+            const absCol = cfg.colMin + c;
+            const idx = absRow * 16 + absCol;
+            centers.set(idx, {
+              cx: originX + (c + 0.5) * cellSize,
+              cy: originY + (r + 0.5) * cellSize
+            });
+          }
+        }
+
+        if (state.showLinks && isFullCastrum) {
+          ctx.save();
+          ctx.strokeStyle = "rgba(76, 141, 255, 0.55)";
+          ctx.lineWidth = 1.25;
+          for (let idx = 0; idx < 256; idx += 19) {
+            const a = centers.get(idx);
+            const b = centers.get((idx + 17) % 256);
+            if (a && b) {
+              ctx.beginPath();
+              ctx.moveTo(a.cx, a.cy);
+              ctx.lineTo(b.cx, a.cy);
+              ctx.lineTo(b.cx, b.cy);
+              ctx.stroke();
+            }
+          }
+          ctx.restore();
+        }
+
+        // Equal static Θ units
+        const baseRadius = Math.max(4.2, Math.min(cellSize * 0.34, 34));
+        for (let r = 0; r < rowsCount; r++) {
+          const absRow = cfg.rowMin + r;
+          for (let c = 0; c < colsCount; c++) {
+            const absCol = cfg.colMin + c;
+            const idx = absRow * 16 + absCol;
+            const u = state.units[idx];
+            const cx = originX + (c + 0.5) * cellSize;
+            const cy = originY + (r + 0.5) * cellSize;
+            const isSel = idx === state.selectedId;
+            const showReticle = state.zoomScale === "cellula" && isSel;
+
+            drawThetaSymbol(ctx, cx, cy, baseRadius, u.grade, isSel, showReticle);
+            unitHitBoxes.push({ id: idx, cx, cy, r: Math.max(baseRadius * 1.15, cellSize * 0.46) });
+
+            if (state.zoomScale === "cohors" || state.zoomScale === "centuria" || state.zoomScale === "cellula") {
+              ctx.fillStyle = "#D4D4D4";
+              ctx.font = "600 10px 'JetBrains Mono', monospace";
+              ctx.textAlign = "center";
+              ctx.fillText(u.unitCode, cx, cy + baseRadius + 12);
+              ctx.textAlign = "left";
+            }
+          }
+        }
+
+        // Bottom 4D Survival Manifold Contours
+        if (isFullCastrum) {
+          const my = h - manifoldH + 4;
+          const mw = w - 20;
+          const mh = manifoldH - 12;
+          ctx.strokeStyle = "#262626";
+          ctx.lineWidth = 1;
+          ctx.strokeRect(10, my, mw, mh);
+
+          ctx.fillStyle = "#D4D4D4";
+          ctx.font = "600 10px 'JetBrains Mono', monospace";
+          ctx.fillText("4D SURVIVAL MANIFOLD CONTOURS (d_S ALTITUDE ACROSS 16 COLUMNS)", 18, my + 13);
+
+          const curveColors = ["#00E5FF", "#00E676", "#FFB300"];
+          for (let k = 0; k < 3; k++) {
+            ctx.beginPath();
+            for (let xOff = 0; xOff <= mw - 24; xOff += 8) {
+              const colInt = Math.min(15, Math.floor((xOff / Math.max(1, mw - 24)) * 15));
+              const colUnits = [];
+              for (let rr = 0; rr < 16; rr++) {
+                const uu = state.units[rr * 16 + colInt];
+                if (uu && uu.mode !== "RESERVE") colUnits.push(uu);
+              }
+              const avgDs = colUnits.length > 0
+                ? colUnits.reduce((acc, item) => acc + Number(item.dSMicro) / 1_000_000, 0) / colUnits.length
+                : 0;
+              const norm = Math.max(0.08, Math.min(0.92, (avgDs + 1.5) / 9.5));
+              const py = my + mh - 8 - norm * (mh - 22) + (k - 1) * 5;
+              const px = 22 + xOff;
+              if (xOff === 0) ctx.moveTo(px, py);
+              else ctx.lineTo(px, py);
+            }
+            ctx.strokeStyle = curveColors[k];
+            ctx.lineWidth = 1.4;
+            ctx.stroke();
+          }
+        }
+
+        // Top scale badge
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(10, 4, 285, 18);
+        ctx.strokeStyle = "#262626";
+        ctx.strokeRect(10, 4, 285, 18);
+        ctx.fillStyle = "#00E5FF";
+        ctx.font = "700 11px 'JetBrains Mono', monospace";
+        ctx.fillText(cfg.badge, 16, 17);
+
+        ctx.restore();
+      }
+
+      // =====================================================================
+      // 5. RENDERING ALL UI VIEWS
+      // =====================================================================
+      function renderAll() {
+        let activeCount = 0;
+        let fzCount = 0;
+        let reserveCount = 0;
+        let totalNetMicro = 0n;
+        let totalMaintMicro = 0n;
+
+        for (const u of state.units) {
+          if (u.mode === "RESERVE") {
+            reserveCount += 1;
+          } else if (u.hasVote) {
+            activeCount += 1;
+            totalNetMicro += u.netDeltaMicro;
+            totalMaintMicro += u.lastMaintMicro;
+          } else {
+            fzCount += 1;
+            totalNetMicro += u.netDeltaMicro;
+            totalMaintMicro += u.lastMaintMicro;
+          }
+        }
+
+        document.getElementById("hdr-quorum-val").textContent = `${activeCount}/256 Θ`;
+        document.getElementById("kpi-quorum-main").textContent = `${activeCount} / 256 Θ`;
+        document.getElementById("kpi-quorum-detail").textContent =
+          `${activeCount} Active · ${fzCount} F/Z · ${reserveCount} Ø Reserve`;
+
+        const hourlyMicro = totalNetMicro / 4n;
+        document.getElementById("kpi-payroll-micro").textContent = `${formatInt(totalNetMicro)} µOPVS`;
+        document.getElementById("kpi-payroll-shift").textContent = `${formatMicroAsOpvs(totalNetMicro, 2)} OPVS/shift`;
+        document.getElementById("kpi-payroll-hour").textContent = `${formatMicroAsOpvs(hourlyMicro, 2)} OPVS/h`;
+
+        document.getElementById("kpi-escrow-micro").textContent = `${formatInt(totalMaintMicro)} µOPVS`;
+        document.getElementById("kpi-escrow-opvs").textContent = `${formatMicroAsOpvs(totalMaintMicro, 2)} OPVS`;
+
+        const eps = state.kirchhoffDriftMicro;
+        const epsSign = eps >= 0n ? "+" : "";
+        document.getElementById("kpi-kirchhoff-eps").textContent = `${epsSign}${formatInt(eps)} µOPVS`;
+        const statusEl = document.getElementById("kpi-kirchhoff-status");
+        const absEps = eps < 0n ? -eps : eps;
+        if (absEps <= 250_000n) {
+          statusEl.textContent = "CLOSED_WITHIN_TOLERANCE";
+          statusEl.className = "mono c-a";
+        } else if (absEps <= 1_500_000n) {
+          statusEl.textContent = "THERMAL_LINE_LOSS_DRIFT";
+          statusEl.className = "mono c-c";
+        } else {
+          statusEl.textContent = "METER_TAMPER_OR_UNMETERED_DRAW";
+          statusEl.className = "mono c-f";
+        }
+
+        const pct = Math.max(0, Math.min(100, Number((state.genesisPoolMicro * 1000n) / GENESIS_THRESHOLD_MICRO) / 10));
+        document.getElementById("kpi-genesis-val").textContent =
+          `${formatMicroAsOpvs(state.genesisPoolMicro, 2)} / 500.00 OPVS`;
+        document.getElementById("kpi-genesis-bar").style.width = `${pct.toFixed(1)}%`;
+
+        document.getElementById("sim-shift-counter").textContent =
+          `SHIFT #${String(state.shiftCount).padStart(2, "0")}`;
+
+        renderHrDossier();
+        document.getElementById("hdr-ledger-count").textContent = `[${state.ledger.length}]`;
+        renderLedgerDrawer();
+        renderCastraCanvas();
+      }
+
+      function renderHrDossier() {
+        const u = state.units[state.selectedId];
+        const t = I18N[state.lang];
+        const meta = GRADE_META[u.grade] || GRADE_META.A;
+
+        document.getElementById("hr-grade-pill").textContent = meta.label;
+        document.getElementById("hr-grade-pill").className = `mono micro-label ${meta.cssClass}`;
+        document.getElementById("hr-passport-card").style.borderLeftColor = meta.color;
+
+        document.getElementById("hr-unit-title").textContent = `${u.unitCode} · ${u.thetaCode}`;
+        document.getElementById("hr-unit-coords").textContent =
+          `COHORS ${ROMAN_NUMERALS[u.cohorsIdx]} · CENTVRIA ${ROMAN_NUMERALS[u.centuriaIdx]} · R${String(u.row + 1).padStart(2, "0")}·C${String(u.col + 1).padStart(2, "0")}`;
+
+        const badge = document.getElementById("hr-vote-badge");
+        if (u.mode === "RESERVE") {
+          badge.textContent = t.vote_reserve;
+          badge.className = "vote-badge vote-reserve";
+        } else if (u.mode === "ZOMBIE") {
+          badge.textContent = t.vote_revoked;
+          badge.className = "vote-badge vote-revoked";
+        } else if (!u.hasVote || u.dSMicro <= 0n) {
+          badge.textContent = t.vote_suspended;
+          badge.className = "vote-badge vote-suspended";
+        } else {
+          badge.textContent = t.vote_active;
+          badge.className = "vote-badge vote-active";
+        }
+
+        document.getElementById("hr-wallet-id").textContent = u.walletId;
+        document.getElementById("hr-ed25519").textContent = u.ed25519Short;
+        document.getElementById("hr-chassis").textContent = u.chassis;
+        document.getElementById("hr-policy").textContent = u.policy;
+        document.getElementById("hr-telemetry").textContent =
+          `${u.tempC}°C · τ²=${formatInt(u.torqueSq)} · Z=${formatMicroAsOpvs(u.yMicro, 2)} kWh`;
+
+        const wage = u.mode === "RESERVE" || u.mode === "ZOMBIE" ? 0n : u.wageMicro;
+        const swap = u.mode === "RESERVE" ? 0n : u.lastSwapMicro;
+        const maint = u.mode === "RESERVE" || u.mode === "ZOMBIE" ? 0n : u.lastMaintMicro;
+        const net = u.netDeltaMicro;
+
+        document.getElementById("ps-wage-micro").textContent = formatInt(wage);
+        document.getElementById("ps-wage-kwh").textContent = formatMicroAsOpvs(wage, 3);
+
+        document.getElementById("ps-swap-micro").textContent = `-${formatInt(swap)}`;
+        document.getElementById("ps-swap-kwh").textContent = `-${formatMicroAsOpvs(swap, 3)}`;
+
+        document.getElementById("ps-maint-micro").textContent = `-${formatInt(maint)}`;
+        document.getElementById("ps-maint-kwh").textContent = `-${formatMicroAsOpvs(maint, 3)}`;
+
+        const netSign = net >= 0n ? "+" : "";
+        const netEl = document.getElementById("ps-net-micro");
+        netEl.textContent = `${netSign}${formatInt(net)}`;
+        netEl.className = `num mono ${net >= 0n ? "c-a" : "c-f"}`;
+        document.getElementById("ps-net-kwh").textContent = `${netSign}${formatMicroAsOpvs(net, 3)}`;
+
+        const dsSign = u.dSMicro >= 0n ? "+" : "";
+        const dsEl = document.getElementById("ps-ds-micro");
+        dsEl.textContent = `${dsSign}${formatInt(u.dSMicro)}`;
+        dsEl.className = `num mono ${u.dSMicro > 0n ? "c-cyan" : "c-f"}`;
+        document.getElementById("ps-ds-kwh").textContent = `${dsSign}${formatMicroAsOpvs(u.dSMicro, 3)}`;
+
+        document.getElementById("ps-y-micro").textContent = formatInt(u.yMicro);
+        document.getElementById("ps-y-kwh").textContent = formatMicroAsOpvs(u.yMicro, 3);
+      }
+
+      function renderLedgerDrawer() {
+        const listEl = document.getElementById("ledger-entries-list");
+        const rootEl = document.getElementById("ledger-merkle-root");
+        if (state.ledger.length > 0) {
+          rootEl.textContent = `ROOT: SHA256:${state.ledger[0].hash.toUpperCase()} · ${state.ledger.length} COMMITS`;
+        }
+        listEl.innerHTML = state.ledger.map(ev => {
+          const sign = ev.deltaMicro >= 0n ? "+" : "";
+          return `
+            <div class="ledger-entry">
+              <div style="display:flex; justify-content:space-between; gap:0.5rem;">
+                <span class="mono c-cyan">#${String(ev.seq).padStart(4, "0")} · ${ev.type}</span>
+                <span class="mono c-label">${ev.ts}</span>
+              </div>
+              <div style="margin:0.22rem 0; display:flex; justify-content:space-between; gap:0.5rem;">
+                <span class="mono c-white">${ev.unitLabel} — ${ev.detail}</span>
+                <span class="mono ${ev.deltaMicro >= 0n ? "c-a" : "c-f"}">${sign}${formatInt(ev.deltaMicro)} µOPVS</span>
+              </div>
+              <div class="mono c-label" style="font-size:0.72rem;">SHA256:${ev.hash}</div>
+            </div>
+          `;
+        }).join("");
+      }
+
+      // =====================================================================
+      // 6. TAB II: GEMINI VLA BRIDGE SANDBOX & COMPARATOR CANVAS
+      // =====================================================================
+      function populateVlaUnitSelect() {
+        const sel = document.getElementById("vla-unit-sel");
+        sel.innerHTML = "";
+        for (let i = 0; i < 16; i++) {
+          const u = state.units[i];
+          const opt = document.createElement("option");
+          opt.value = String(i);
+          opt.textContent = `${u.unitCode} (${u.chassis} · ${u.policy})`;
+          sel.appendChild(opt);
+        }
+      }
+
+      function computeVlaRewardPreview() {
+        const baseTaskMicro = BigInt(document.getElementById("vla-task-sel").value);
+        const outcome = document.getElementById("vla-outcome-sel").value;
+        const durSec = Number(document.getElementById("vla-slider-dur").value);
+        const tauSq = Number(document.getElementById("vla-slider-tau").value);
+        const tempC = Number(document.getElementById("vla-slider-temp").value);
+        const wh = Number(document.getElementById("vla-slider-wh").value);
+
+        document.getElementById("vla-val-dur").textContent = `${durSec} s`;
+        document.getElementById("vla-val-tau").textContent = formatInt(tauSq);
+        document.getElementById("vla-val-temp").textContent = `${tempC} °C`;
+        document.getElementById("vla-val-wh").textContent = `${formatInt(wh)} Wh`;
+
+        let earnedMicro = 0n;
+        if (outcome === "SUCCESS") earnedMicro = baseTaskMicro;
+        else if (outcome === "PARTIAL") earnedMicro = (baseTaskMicro * 40n) / 100n;
+
+        const energyCostMicro = computeSwapMicro(wh);
+        const wearCostMicro = computeWearMicro(tauSq, tempC);
+        const netMarginMicro = earnedMicro - energyCostMicro - wearCostMicro;
+
+        return {
+          baseTaskMicro,
+          earnedMicro,
+          energyCostMicro,
+          wearCostMicro,
+          netMarginMicro,
+          durSec,
+          tauSq,
+          tempC,
+          wh,
+          outcome
+        };
+      }
+
+      function renderVlaWebhook(httpStatus = 200, isReplay = false) {
+        const calc = computeVlaRewardPreview();
+        const uuid = document.getElementById("vla-uuid-input").value.trim() || "ep_gemini_20261127_00194a";
+        const policy = document.getElementById("vla-policy-sel").value;
+        const unitIdx = Number(document.getElementById("vla-unit-sel").value) || 0;
+        const unit = state.units[unitIdx];
+
+        const badge = document.getElementById("vla-http-badge");
+        badge.textContent = isReplay ? "HTTP 409 IDEMPOTENT_REPLAY" : `HTTP ${httpStatus} COMMITTED`;
+        badge.className = isReplay ? "mono micro-label c-c" : "mono micro-label c-a";
+
+        const payload = {
+          protocol: "OPVS/2.0",
+          settlement_status: isReplay ? "IDEMPOTENT_REPLAY_DEDUPLICATED" : "SETTLED_INT64",
+          http_code: isReplay ? 409 : httpStatus,
+          episode_uuid: uuid,
+          unit_id: unit.unitCode,
+          wallet_id: unit.walletId,
+          vla_policy: policy,
+          telemetry: {
+            duration_s: calc.durSec,
+            outcome: calc.outcome,
+            torque_sq_integral_n2m2s: calc.tauSq,
+            peak_winding_temp_c: calc.tempC,
+            consumed_energy_wh: calc.wh
+          },
+          ledger_int64_micro_opvs: {
+            task_bounty_micro: calc.earnedMicro.toString(),
+            energy_cost_micro: calc.energyCostMicro.toString(),
+            wear_and_arrhenius_micro: calc.wearCostMicro.toString(),
+            "reward.net_thermodynamic_margin": calc.netMarginMicro.toString()
+          },
+          equivalent_kwh: formatMicroAsOpvs(calc.netMarginMicro, 4),
+          safety_envelope_orthogonal: true,
+          safety_proof: "u_exec(t) = Pi_{S_safe}(pi_theta(o_t)) with d(S_safe)/d(OPVS_balance) == 0",
+          signature_ed25519: "sig_ed25519_" + hexHash(uuid + "|" + calc.netMarginMicro.toString())
+        };
+
+        document.getElementById("vla-webhook-json").textContent = JSON.stringify(payload, null, 2);
+        renderVlaComparisonCanvas(calc);
+      }
+
+      function renderVlaComparisonCanvas(calc) {
+        const canvas = document.getElementById("vla-compare-canvas");
+        const rect = canvas.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        const w = Math.max(280, rect.width);
+        const h = Math.max(150, rect.height);
+        if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) {
+          canvas.width = Math.round(w * dpr);
+          canvas.height = Math.round(h * dpr);
+        }
+        const ctx = canvas.getContext("2d");
+        ctx.save();
+        ctx.scale(dpr, dpr);
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(0, 0, w, h);
+
+        const zeroY = h * 0.72;
+        ctx.strokeStyle = "#FF3B30";
+        ctx.setLineDash([4, 4]);
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(36, zeroY);
+        ctx.lineTo(w - 14, zeroY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = "#FF3B30";
+        ctx.font = "600 10px 'JetBrains Mono', monospace";
+        ctx.fillText("d_S=0 (ZONE 3)", 40, zeroY - 4);
+
+        const netFloat = Number(calc.netMarginMicro) / 1_000_000;
+        const stepFactor = Math.max(-0.35, Math.min(0.65, netFloat * 0.22));
+
+        ctx.beginPath();
+        for (let i = 0; i <= 40; i++) {
+          const tNorm = i / 40;
+          const x = 36 + tNorm * (w - 52);
+          const ds = 4.6 + stepFactor * (i * 0.35) + Math.sin(tNorm * Math.PI * 2) * 0.22;
+          const y = zeroY - Math.max(-1.5, Math.min(8.5, ds)) * 16;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = "#4C8DFF";
+        ctx.lineWidth = 2.2;
+        ctx.stroke();
+
+        ctx.beginPath();
+        for (let i = 0; i <= 40; i++) {
+          const tNorm = i / 40;
+          const x = 36 + tNorm * (w - 52);
+          const ds = 4.2 - tNorm * 5.6;
+          const y = zeroY - Math.max(-1.5, Math.min(8.5, ds)) * 16;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = "#FF6D00";
+        ctx.lineWidth = 1.6;
+        ctx.stroke();
+
+        ctx.fillStyle = "#4C8DFF";
+        ctx.font = "700 10px 'JetBrains Mono', monospace";
+        ctx.fillText("■ GEMINI VLA GEODESIC (d_S SUSTAINED)", 42, 18);
+        ctx.fillStyle = "#FF6D00";
+        ctx.fillText("■ MYOPIC MAX-SPEED (τ² + HEAT DRAIN)", 42, 32);
+
+        ctx.restore();
+      }
+
+      function settleVlaEpisode(forceReplayTest = false) {
+        const uuid = document.getElementById("vla-uuid-input").value.trim() || ("ep_gemini_" + Date.now().toString(16));
+        const unitIdx = Number(document.getElementById("vla-unit-sel").value) || 0;
+        const unit = state.units[unitIdx];
+        const calc = computeVlaRewardPreview();
+
+        if (state.vlaSettledMap.has(uuid)) {
+          const prev = state.vlaSettledMap.get(uuid);
+          state.vlaHistory.unshift({
+            code: "409",
+            uuid,
+            unitCode: prev.unitCode,
+            deltaMicro: prev.deltaMicro
+          });
+          renderVlaEpisodeLog();
+          renderVlaWebhook(409, true);
+          return;
+        }
+
+        state.vlaSettledMap.set(uuid, { unitCode: unit.unitCode, deltaMicro: calc.netMarginMicro });
+        unit.yMicro += calc.netMarginMicro;
+        unit.dSMicro += calc.netMarginMicro / 3n;
+        recomputeUnitMetrics(unit);
+        appendLedgerEvent("VLA_EPISODE_SETTLE", unit.unitCode, calc.netMarginMicro, `UUID ${uuid}`);
+
+        state.vlaHistory.unshift({
+          code: "200",
+          uuid,
+          unitCode: unit.unitCode,
+          deltaMicro: calc.netMarginMicro
+        });
+
+        if (forceReplayTest) {
+          state.vlaHistory.unshift({
+            code: "409",
+            uuid,
+            unitCode: unit.unitCode,
+            deltaMicro: calc.netMarginMicro
+          });
+          renderVlaEpisodeLog();
+          renderVlaWebhook(409, true);
+        } else {
+          renderVlaEpisodeLog();
+          renderVlaWebhook(200, false);
+        }
+        renderAll();
+      }
+
+      function renderVlaEpisodeLog() {
+        const tbody = document.getElementById("vla-episode-tbody");
+        document.getElementById("vla-log-count").textContent = `${state.vlaHistory.length} EPISODES`;
+        tbody.innerHTML = state.vlaHistory.map(row => {
+          const sign = row.deltaMicro >= 0n ? "+" : "";
+          const badgeCls = row.code === "200" ? "c-a" : "c-c";
+          return `
+            <tr>
+              <td class="mono ${badgeCls}"><b>${row.code}</b></td>
+              <td class="mono">${row.uuid}</td>
+              <td class="mono">${row.unitCode}</td>
+              <td class="mono ${row.deltaMicro >= 0n ? "c-a" : "c-f"}" style="text-align:right;">${sign}${formatInt(row.deltaMicro)}</td>
+            </tr>
+          `;
+        }).join("");
+      }
+
+      // =====================================================================
+      // 7. TAB IV: 3D METABOLIC PHASE SPACE & MACHINE CONTRACT
+      // =====================================================================
+      function renderPhase3DCanvas() {
+        const canvas = document.getElementById("phase3d-canvas");
+        const rect = canvas.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        const w = Math.max(280, rect.width);
+        const h = Math.max(220, rect.height);
+        if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) {
+          canvas.width = Math.round(w * dpr);
+          canvas.height = Math.round(h * dpr);
+        }
+        const ctx = canvas.getContext("2d");
+        ctx.save();
+        ctx.scale(dpr, dpr);
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(0, 0, w, h);
+
+        const cx = w * 0.5;
+        const cy = h * 0.54;
+        const scale = Math.min(w, h) * 0.28;
+        const cosA = Math.cos(state.phaseAngle);
+        const sinA = Math.sin(state.phaseAngle);
+
+        function project(x, y, z) {
+          const rx = x * cosA - z * sinA;
+          const rz = x * sinA + z * cosA;
+          return {
+            px: cx + rx * scale,
+            py: cy - (y * 0.85 + rz * 0.35) * scale
+          };
+        }
+
+        ctx.strokeStyle = "rgba(0, 229, 255, 0.35)";
+        ctx.lineWidth = 1;
+        for (let gx = -1; gx <= 1; gx += 0.25) {
+          ctx.beginPath();
+          for (let gz = -1; gz <= 1; gz += 0.1) {
+            const sy = -0.25 + 0.35 * (gx * gx + gz * gz);
+            const pt = project(gx, sy, gz);
+            if (gz === -1) ctx.moveTo(pt.px, pt.py);
+            else ctx.lineTo(pt.px, pt.py);
+          }
+          ctx.stroke();
+        }
+        for (let gz = -1; gz <= 1; gz += 0.25) {
+          ctx.beginPath();
+          for (let gx = -1; gx <= 1; gx += 0.1) {
+            const sy = -0.25 + 0.35 * (gx * gx + gz * gz);
+            const pt = project(gx, sy, gz);
+            if (gx === -1) ctx.moveTo(pt.px, pt.py);
+            else ctx.lineTo(pt.px, pt.py);
+          }
+          ctx.stroke();
+        }
+
+        const axX = project(1.25, -0.3, 0);
+        const axY = project(0, 1.25, 0);
+        const axZ = project(0, -0.3, 1.25);
+        const originPt = project(0, -0.3, 0);
+
+        ctx.strokeStyle = "#FFFFFF";
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.moveTo(originPt.px, originPt.py); ctx.lineTo(axX.px, axX.py);
+        ctx.moveTo(originPt.px, originPt.py); ctx.lineTo(axY.px, axY.py);
+        ctx.moveTo(originPt.px, originPt.py); ctx.lineTo(axZ.px, axZ.py);
+        ctx.stroke();
+
+        ctx.fillStyle = "#FFFFFF";
+        ctx.font = "700 11px 'JetBrains Mono', monospace";
+        ctx.fillText("X (BOUNTY)", axX.px + 4, axX.py);
+        ctx.fillText("Z (SURVIVAL d_S)", axY.px + 4, axY.py);
+        ctx.fillText("Y (LIQUIDITY)", axZ.px + 4, axZ.py);
+
+        for (let i = 0; i < state.units.length; i += 2) {
+          const u = state.units[i];
+          if (u.mode === "RESERVE") continue;
+          const nx = Math.max(-0.95, Math.min(0.95, (Number(u.wageMicro) - 5_400_000) / 4_000_000));
+          const ny = Math.max(-0.95, Math.min(0.95, (Number(u.yMicro) - 12_000_000) / 18_000_000));
+          const nz = Math.max(-0.85, Math.min(0.95, Number(u.dSMicro) / 8_000_000));
+          const p = project(nx, nz, ny);
+          const meta = GRADE_META[u.grade] || GRADE_META.A;
+          ctx.fillStyle = meta.color;
+          ctx.fillRect(p.px - 2.5, p.py - 2.5, 5, 5);
+        }
+
+        ctx.restore();
+      }
+
+      function populateMachineContract() {
+        const contract = {
+          mime_type: "application/opvs+json",
+          protocol_version: "2.0.0",
+          position: "Energy as Currency. Survival as Governance. The Protocol for Machine Economies.",
+          thermodynamic_parity: {
+            opvs_to_kwh: "1 OPVS = 1 kWh",
+            opvs_to_joules: "1 OPVS = 3,600,000 J (3.6 MJ)",
+            micro_opvs_to_joules: "1 micro-OPVS = 3.6 J",
+            integer_type: "INT64"
+          },
+          governance_quorum: {
+            identity_rule: "1 sovereign robot = 1 active Theta holder",
+            zone_3_soft_bankruptcy: "d_S <= 0 => 0 Theta voting power; emergency BMS swap overdraft permitted"
+          },
+          embodied_vla_bridge: {
+            target_stack: "Google DeepMind Gemini Robotics",
+            endpoint: "POST /v1/episodes/settle",
+            reward_scalar_key: "reward.net_thermodynamic_margin",
+            idempotency_header: "Idempotency-Key: <episode_uuid>",
+            safety_orthogonality: "safety_envelope_orthogonal = true"
+          },
+          executive_contact: "antonin@operaevis.com"
+        };
+        document.getElementById("opvs-machine-contract").textContent = JSON.stringify(contract, null, 2);
+      }
+
+      // =====================================================================
+      // 8. LANGUAGE SWITCHER, TABS, DRAWER & EVENT LISTENERS
+      // =====================================================================
+      function applyLanguage(lang) {
+        state.lang = lang === "fr" ? "fr" : "en";
+        document.documentElement.lang = state.lang;
+        document.getElementById("lang-btn-en").classList.toggle("active", state.lang === "en");
+        document.getElementById("lang-btn-fr").classList.toggle("active", state.lang === "fr");
+
+        const dict = I18N[state.lang];
+        document.querySelectorAll("[data-i18n]").forEach(el => {
+          const key = el.getAttribute("data-i18n");
+          if (dict[key]) el.textContent = dict[key];
+        });
+
+        renderAll();
+      }
+
+      function switchTab(tabId) {
+        state.activeTab = tabId;
+        document.querySelectorAll(".nav-tab").forEach(btn => {
+          btn.classList.toggle("active", btn.getAttribute("data-tab") === tabId);
+        });
+        document.querySelectorAll(".tab-view").forEach(sec => {
+          sec.classList.toggle("active", sec.id === "view-" + tabId);
+        });
+
+        if (tabId === "castra") renderCastraCanvas();
+        if (tabId === "vla") renderVlaWebhook(200, false);
+        if (tabId === "law") renderPhase3DCanvas();
+      }
+
+      function copyTextSafe(text, buttonEl) {
+        const orig = buttonEl.textContent;
+        const done = () => {
+          buttonEl.textContent = "✓ COPIED";
+          setTimeout(() => { buttonEl.textContent = orig; }, 1200);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+        } else {
+          fallbackCopy(text, done);
+        }
+      }
+
+      function fallbackCopy(text, done) {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand("copy"); } catch (_) {}
+        document.body.removeChild(ta);
+        done();
+      }
+
+      function bindEvents() {
+        document.querySelectorAll(".nav-tab").forEach(btn => {
+          btn.addEventListener("click", () => switchTab(btn.getAttribute("data-tab")));
+        });
+
+        document.getElementById("lang-btn-en").addEventListener("click", () => applyLanguage("en"));
+        document.getElementById("lang-btn-fr").addEventListener("click", () => applyLanguage("fr"));
+
+        const drawer = document.getElementById("ledger-drawer");
+        const backdrop = document.getElementById("ledger-backdrop");
+        document.getElementById("btn-open-ledger").addEventListener("click", () => {
+          drawer.classList.add("open");
+          backdrop.classList.add("open");
+        });
+        const closeDrawer = () => {
+          drawer.classList.remove("open");
+          backdrop.classList.remove("open");
+        };
+        document.getElementById("btn-close-ledger").addEventListener("click", closeDrawer);
+        backdrop.addEventListener("click", closeDrawer);
+
+        document.getElementById("btn-export-ledger-json").addEventListener("click", () => {
+          const exportObj = {
+            protocol: "OPVS/2.0",
+            exported_at: new Date().toISOString(),
+            merkle_root: state.ledger[0] ? state.ledger[0].hash : null,
+            entries: state.ledger.map(e => ({
+              ...e,
+              deltaMicro: e.deltaMicro.toString()
+            }))
+          };
+          const blob = new Blob([JSON.stringify(exportObj, null, 2)], { type: "application/json" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "opvs-v2-theta-ledger.json";
+          a.click();
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
+        });
+
+        document.querySelectorAll("[data-scope]").forEach(btn => {
+          btn.addEventListener("click", () => {
+            state.scope = btn.getAttribute("data-scope");
+            document.querySelectorAll("[data-scope]").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+          });
+        });
+
+        document.querySelectorAll("[data-preset]").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const pre = btn.getAttribute("data-preset");
+            if (pre === "geodesic") {
+              state.params.wageMicro = 5_850_000n;
+              state.params.swapWh = 2750;
+              state.params.tempC = 41;
+              state.params.torqueSq = 1320;
+            } else if (pre === "thermal") {
+              state.params.wageMicro = 5_200_000n;
+              state.params.swapWh = 3350;
+              state.params.tempC = 64;
+              state.params.torqueSq = 2850;
+            } else if (pre === "lowyield") {
+              state.params.wageMicro = 2_450_000n;
+              state.params.swapWh = 3100;
+              state.params.tempC = 46;
+              state.params.torqueSq = 1900;
+            } else if (pre === "zombie") {
+              state.params.wageMicro = 1_650_000n;
+              state.params.swapWh = 4100;
+              state.params.tempC = 71;
+              state.params.torqueSq = 4100;
+            }
+            document.getElementById("slider-wage").value = String(Number(state.params.wageMicro));
+            document.getElementById("slider-swap").value = String(state.params.swapWh);
+            document.getElementById("slider-temp").value = String(state.params.tempC);
+            document.getElementById("slider-torque").value = String(state.params.torqueSq);
+            applySlidersToScope();
+            setToast(`PRESET APPLIED (${state.scope.toUpperCase()}): ${pre.toUpperCase()}`);
+          });
+        });
+
+        document.getElementById("slider-wage").addEventListener("input", e => {
+          state.params.wageMicro = BigInt(e.target.value);
+          applySlidersToScope();
+        });
+        document.getElementById("slider-swap").addEventListener("input", e => {
+          state.params.swapWh = Number(e.target.value);
+          applySlidersToScope();
+        });
+        document.getElementById("slider-temp").addEventListener("input", e => {
+          state.params.tempC = Number(e.target.value);
+          applySlidersToScope();
+        });
+        document.getElementById("slider-torque").addEventListener("input", e => {
+          state.params.torqueSq = Number(e.target.value);
+          applySlidersToScope();
+        });
+
+        const liveBtn = document.getElementById("btn-live-toggle");
+        liveBtn.addEventListener("click", () => {
+          state.liveTick = !state.liveTick;
+          liveBtn.textContent = state.liveTick ? "LIVE: ON (2.5s)" : "LIVE: PAUSED";
+          liveBtn.classList.toggle("active", state.liveTick);
+        });
+
+        document.getElementById("btn-step-shift").addEventListener("click", () => runShiftTick(false));
+
+        document.getElementById("btn-reset-castrum").addEventListener("click", () => {
+          state.shiftCount = 4;
+          state.genesisPoolMicro = 412_500_000n;
+          state.kirchhoffDriftMicro = 14_200n;
+          state.selectedId = 0;
+          initUnits();
+          syncSlidersFromSelected();
+          renderAll();
+          setToast("CASTRVM RESET TO NOMINAL 238/256 Θ");
+        });
+
+        document.getElementById("btn-ovr-quarantine").addEventListener("click", () => {
+          const u = state.units[state.selectedId];
+          u.mode = "QUARANTINE";
+          u.dSMicro = -250_000n;
+          u.hasVote = false;
+          recomputeUnitMetrics(u);
+          appendLedgerEvent("HOTL_QUARANTINE", u.unitCode, -250_000n, "Soft bankruptcy quarantine (0 Θ, swap overdraft active)");
+          renderAll();
+          setToast(`${u.unitCode} QUARANTINED (GRADE F · 0 Θ · SWAP OVERDRAFT PERMITTED)`);
+        });
+
+        document.getElementById("btn-ovr-zombie").addEventListener("click", () => {
+          const u = state.units[state.selectedId];
+          u.mode = "ZOMBIE";
+          u.hasVote = false;
+          recomputeUnitMetrics(u);
+          appendLedgerEvent("ZOMBIE_SEVERED", u.unitCode, 0n, "Zombie helix severed (0 Θ REVOKED)");
+          renderAll();
+          setToast(`${u.unitCode} ZOMBIE HELIX SEVERED (0 Θ REVOKED)`);
+        });
+
+        document.getElementById("btn-ovr-endow").addEventListener("click", () => {
+          const u = state.units[state.selectedId];
+          u.mode = "ACTIVE";
+          u.yMicro += GENESIS_ENDOWMENT_MICRO;
+          u.dSMicro = 5_400_000n;
+          u.tempC = 41;
+          u.torqueSq = 1350;
+          u.swapWh = 2800;
+          u.wageMicro = 5_550_000n;
+          u.hasVote = true;
+          recomputeUnitMetrics(u);
+          appendLedgerEvent("ENDOW_RESTORE_1THETA", u.unitCode, GENESIS_ENDOWMENT_MICRO, "+50.00 OPVS endowment & 1 Θ restored");
+          syncSlidersFromSelected();
+          renderAll();
+          setToast(`${u.unitCode} ENDOWED +50.00 OPVS & 1 Θ RESTORED`);
+        });
+
+        document.querySelectorAll("[data-scale]").forEach(btn => {
+          btn.addEventListener("click", () => {
+            state.zoomScale = btn.getAttribute("data-scale");
+            document.querySelectorAll("[data-scale]").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            renderCastraCanvas();
+          });
+        });
+
+        const linksBtn = document.getElementById("btn-toggle-links");
+        linksBtn.addEventListener("click", () => {
+          state.showLinks = !state.showLinks;
+          linksBtn.classList.toggle("active", state.showLinks);
+          linksBtn.textContent = state.showLinks
+            ? I18N[state.lang].btn_links_on
+            : I18N[state.lang].btn_links_off;
+          renderCastraCanvas();
+        });
+
+        const tooltip = document.getElementById("castra-tooltip");
+        castraCanvas.addEventListener("mousemove", e => {
+          const rect = castraCanvas.getBoundingClientRect();
+          const mx = e.clientX - rect.left;
+          const my = e.clientY - rect.top;
+          let hit = null;
+          for (const hb of unitHitBoxes) {
+            const dx = mx - hb.cx;
+            const dy = my - hb.cy;
+            if (dx * dx + dy * dy <= hb.r * hb.r) {
+              hit = state.units[hb.id];
+              break;
+            }
+          }
+          if (hit) {
+            state.hoverId = hit.index;
+            tooltip.style.display = "block";
+            tooltip.style.left = `${Math.min(rect.width - 235, mx + 12)}px`;
+            tooltip.style.top = `${Math.min(rect.height - 115, my + 12)}px`;
+            const meta = GRADE_META[hit.grade] || GRADE_META.A;
+            tooltip.innerHTML = `
+              <div class="mono ${meta.cssClass}"><b>${hit.unitCode} · ${hit.thetaCode} (${meta.label})</b></div>
+              <div class="mono c-label">${hit.chassis}</div>
+              <div class="mono">d_S: ${formatMicroAsOpvs(hit.dSMicro, 2)} OPVS · T: ${hit.tempC}°C</div>
+              <div class="mono c-cyan">ΔM: ${formatInt(hit.netDeltaMicro)} µOPVS</div>
+            `;
+          } else {
+            state.hoverId = -1;
+            tooltip.style.display = "none";
+          }
+        });
+
+        castraCanvas.addEventListener("mouseleave", () => {
+          state.hoverId = -1;
+          tooltip.style.display = "none";
+        });
+
+        castraCanvas.addEventListener("click", e => {
+          const rect = castraCanvas.getBoundingClientRect();
+          const mx = e.clientX - rect.left;
+          const my = e.clientY - rect.top;
+          for (const hb of unitHitBoxes) {
+            const dx = mx - hb.cx;
+            const dy = my - hb.cy;
+            if (dx * dx + dy * dy <= hb.r * hb.r) {
+              state.selectedId = hb.id;
+              syncSlidersFromSelected();
+              renderAll();
+              break;
+            }
+          }
+        });
+
+        document.getElementById("btn-hr-vla").addEventListener("click", () => {
+          const u = state.units[state.selectedId];
+          const curIdx = VLA_POLICIES.indexOf(u.policy);
+          u.policy = VLA_POLICIES[(curIdx + 1) % VLA_POLICIES.length];
+          appendLedgerEvent("VLA_POLICY_ASSIGNED", u.unitCode, 0n, `Policy -> ${u.policy}`);
+          renderHrDossier();
+          renderLedgerDrawer();
+        });
+
+        document.getElementById("btn-hr-bonus").addEventListener("click", () => {
+          const u = state.units[state.selectedId];
+          if (u.mode === "RESERVE") return;
+          u.yMicro += BONUS_MICRO;
+          u.dSMicro += BONUS_MICRO;
+          recomputeUnitMetrics(u);
+          appendLedgerEvent("OPERATOR_BONUS", u.unitCode, BONUS_MICRO, "+250,000 µOPVS precision operator bonus");
+          renderAll();
+        });
+
+        document.getElementById("btn-hr-m2m").addEventListener("click", () => {
+          const u = state.units[state.selectedId];
+          if (u.mode === "RESERVE") return;
+          const partner = state.units[(u.index + 17) % 256];
+          u.yMicro += M2M_SUBCONTRACT_MICRO;
+          if (partner.mode !== "RESERVE") partner.yMicro -= M2M_SUBCONTRACT_MICRO;
+          appendLedgerEvent("M2M_SUBCONTRACT", u.unitCode, M2M_SUBCONTRACT_MICRO, `1.50 OPVS task settlement with ${partner.unitCode}`);
+          renderAll();
+        });
+
+        document.getElementById("btn-hr-merkle").addEventListener("click", e => {
+          const u = state.units[state.selectedId];
+          const proof = {
+            protocol: "OPVS/2.0",
+            unit: u.unitCode,
+            wallet: u.walletId,
+            grade: u.grade,
+            d_s_micro_opvs: u.dSMicro.toString(),
+            y_micro_opvs: u.yMicro.toString(),
+            merkle_leaf_sha256: hexHash(`${u.unitCode}|${u.dSMicro}|${u.yMicro}|${state.shiftCount}`)
+          };
+          copyTextSafe(JSON.stringify(proof, null, 2), e.currentTarget);
+        });
+
+        ["vla-policy-sel", "vla-unit-sel", "vla-task-sel", "vla-outcome-sel",
+         "vla-slider-dur", "vla-slider-tau", "vla-slider-temp", "vla-slider-wh"].forEach(id => {
+          document.getElementById(id).addEventListener("input", () => renderVlaWebhook(200, false));
+          document.getElementById(id).addEventListener("change", () => renderVlaWebhook(200, false));
+        });
+
+        document.getElementById("btn-vla-new-uuid").addEventListener("click", () => {
+          const rnd = Math.floor(Math.random() * 0xffffff).toString(16).padStart(6, "0");
+          document.getElementById("vla-uuid-input").value = `ep_gemini_20261127_${rnd}`;
+          renderVlaWebhook(200, false);
+        });
+
+        document.getElementById("btn-vla-settle").addEventListener("click", () => settleVlaEpisode(false));
+        document.getElementById("btn-vla-replay").addEventListener("click", () => settleVlaEpisode(true));
+        document.getElementById("btn-copy-vla-json").addEventListener("click", e => {
+          copyTextSafe(document.getElementById("vla-webhook-json").textContent, e.currentTarget);
+        });
+
+        document.querySelectorAll("[data-raft]").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const mode = btn.getAttribute("data-raft");
+            state.raftMode = mode;
+            document.querySelectorAll("[data-raft]").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            const badge = document.getElementById("raft-sim-badge");
+            const out = document.getElementById("raft-sim-readout");
+            if (mode === "nominal") {
+              badge.textContent = "5/5 NODES UP";
+              out.textContent = "LEADER: node_01 · QUORUM: 5/5 · LATENCY p99: 18.4 ms · SWAPS: UNBLOCKED";
+            } else if (mode === "airgap") {
+              badge.textContent = "AIR-GAPPED OT-LAN";
+              out.textContent = "EXTERNAL WAN: SEVERED · RAFT QUORUM: 5/5 · LATENCY p99: 17.9 ms · ZERO CLOUD DEPENDENCY";
+            } else if (mode === "failover") {
+              badge.textContent = "LEADER ELECTED: node_02";
+              out.textContent = "node_01 OFFLINE · NEW LEADER: node_02 (42 ms) · QUORUM: 4/5 · BMS SWAP BUFFER: ACTIVE";
+            }
+          });
+        });
+
+        document.getElementById("btn-rotate-3d").addEventListener("click", () => {
+          state.phaseAngle = (state.phaseAngle + 0.61) % (Math.PI * 2);
+          renderPhase3DCanvas();
+        });
+
+        document.getElementById("btn-copy-contract").addEventListener("click", e => {
+          copyTextSafe(document.getElementById("opvs-machine-contract").textContent, e.currentTarget);
+        });
+
+        window.addEventListener("resize", () => {
+          if (state.activeTab === "castra") renderCastraCanvas();
+          if (state.activeTab === "vla") renderVlaComparisonCanvas(computeVlaRewardPreview());
+          if (state.activeTab === "law") renderPhase3DCanvas();
+        });
+
+        setInterval(() => {
+          if (state.liveTick) {
+            runShiftTick(true);
+          }
+        }, 2500);
+      }
+
+      // =====================================================================
+      // 9. INITIALIZATION
+      // =====================================================================
+      initUnits();
+      appendLedgerEvent("GENESIS_ANCHOR", "CASTRVM-256", 0n, "OPVS v2.0 thermodynamic parity locked (1 OPVS = 1 kWh = 3.6 MJ)");
+      populateVlaUnitSelect();
+      populateMachineContract();
+      bindEvents();
+      syncSlidersFromSelected();
+      renderAll();
+      renderVlaWebhook(200, false);
+      renderPhase3DCanvas();
+    })();
+  </script>
+</body>
+</html>
