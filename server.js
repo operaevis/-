@@ -162,6 +162,15 @@ app.get(['/workforce-os', '/simulator-3d'], (_req, res) => {
   );
 });
 
+app.get(['/castra', '/castra-256', '/workforce-v2'], (_req, res) => {
+  res.sendFile(
+    path.join(
+      __dirname,
+      'opvs_v2_0_thermodynamic_protocol_robot_workforce_os.html'
+    )
+  );
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(__dirname));
 

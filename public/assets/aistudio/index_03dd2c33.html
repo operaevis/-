@@ -1,0 +1,2987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#000000" />
+  <title>OPERAE VIS — OPVS | Energy as Currency. Survival as Governance. The Protocol for Machine Economies.</title>
+  <meta name="description" content="Energy as Currency. Survival as Governance. The Protocol for Machine Economies. OPVS (1 OPVS = 1 kWh; 1 micro-OPVS = 3.6 J) bridges Google DeepMind Gemini Robotics VLA policies and Boston Dynamics Orbit, Spot, Stretch, and 56-DoF electric Atlas fleets." />
+  <meta name="keywords" content="OPERAE VIS, OPVS, Energy as Currency, Survival as Governance, Machine Economies, Boston Dynamics Orbit, Electric Atlas 56-DoF, Google DeepMind Gemini Robotics, Embodied AI, Survival Manifold, Thermodynamic Settlement Protocol" />
+  <link rel="canonical" href="https://www.operaevis.com/" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%23000000'/%3E%3Ccircle cx='50' cy='50' r='34' fill='none' stroke='%23FFFFFF' stroke-width='11'/%3E%3Cline x1='32' y1='50' x2='68' y2='50' stroke='%2300E5FF' stroke-width='11'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+
+  <!-- Crawlable Machine & Embodied Agent Schema -->
+  <script id="opvs-schema-graph" type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "OPVS — Operae Vis System",
+    "alternateName": "Energy as Currency. Survival as Governance. The Protocol for Machine Economies.",
+    "url": "https://www.operaevis.com",
+    "applicationCategory": "Thermodynamic Settlement & Autonomous Robot Fleet Governance Protocol",
+    "operatingSystem": "On-Premises OT LAN (Raft/BFT), Orbit Site Hub (1U), AWS Cloud, OVA Virtual Machine",
+    "softwareVersion": "2.0",
+    "dateModified": "2026-11-24",
+    "author": {
+      "@type": "Person",
+      "name": "Canius, Antoine De Cagny"
+    },
+    "description": "Thermodynamic settlement protocol (1 OPVS = 1 kWh = 3.6 MJ; 1 micro-OPVS = 3.6 J INT64) closing the Organism Triad between embodied VLA policies (target stack: Google DeepMind Gemini Robotics) and enterprise robot orchestration (reference platform: Boston Dynamics Orbit & 56-DoF electric Atlas)."
+  }
+  </script>
+
+  <style>
+    @font-face {
+      font-family: "DIN 1451";
+      src: url("https://cdn.jsdelivr.net/gh/playbeing/dinish@4.007/fonts/woff2/DINish/DINish-Regular.woff2") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "DIN 1451";
+      src: url("https://cdn.jsdelivr.net/gh/playbeing/dinish@4.007/fonts/woff2/DINish/DINish-Italic.woff2") format("woff2");
+      font-weight: 400;
+      font-style: italic;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "DIN 1451";
+      src: url("https://cdn.jsdelivr.net/gh/playbeing/dinish@4.007/fonts/woff2/DINish/DINish-Medium.woff2") format("woff2");
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "DIN 1451";
+      src: url("https://cdn.jsdelivr.net/gh/playbeing/dinish@4.007/fonts/woff2/DINish/DINish-SemiBold.woff2") format("woff2");
+      font-weight: 600;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "DIN 1451";
+      src: url("https://cdn.jsdelivr.net/gh/playbeing/dinish@4.007/fonts/woff2/DINish/DINish-Bold.woff2") format("woff2");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      color-scheme: dark;
+      --bg-void: #000000;
+      --bg-panel: #070707;
+      --bg-hover: #111111;
+      --border-grid: #262626;
+      --border-strong: #FFFFFF;
+      --fg-white: #FFFFFF;
+      --fg-muted: #B8B8B8;
+      --fg-dim: #7A7A7A;
+
+      /* Robot-Oriented High-Contrast Signal Code on Pure Black (#000000 OLED) */
+      --sig-energy: #00E5FF;   /* Cyan: kWh parity, Orbit telemetry, swap energy */
+      --sig-nominal: #00E676;  /* Green: Z0 Ascending, +margin, Kirchhoff closed */
+      --sig-caution: #FFAB00;  /* Amber: DeepMind VLA signal, Z1/Z2 Conservation */
+      --sig-breach: #FF3B30;   /* Red: Z3 Plane Breach, Soft Bankruptcy, Zombie Helix */
+
+      --font-din: "DIN 1451", "DIN 1451 Mittelschrift", "DIN Alternate", "Bahnschrift", sans-serif;
+      --max-w: 1180px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; background-color: var(--bg-void); }
+
+    body {
+      background-color: var(--bg-void);
+      color: var(--fg-white);
+      font-family: var(--font-din);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input, select, textarea, code, pre, svg text {
+      font-family: var(--font-din);
+    }
+
+    .mono { font-family: var(--font-din); font-variant-numeric: tabular-nums; }
+    .hidden { display: none !important; }
+
+    /* Energy-Saving Top Signal Key */
+    .signal-strip {
+      border-bottom: 1px solid var(--border-grid);
+      background: var(--bg-void);
+    }
+
+    .signal-strip-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0.45rem 1.5rem;
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      font-size: 0.69rem;
+      letter-spacing: 0.055em;
+      text-transform: uppercase;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .signal-legend {
+      width: 100%;
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 0.75rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sig-key {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.38rem;
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .sig-dot {
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      flex-shrink: 0;
+    }
+
+    /* Dedicated Sticky Header & Single-Row Aligned Tab Navigation */
+    header {
+      border-bottom: 2px solid var(--border-strong);
+      background: var(--bg-void);
+      position: sticky;
+      top: 0;
+      z-index: 30;
+    }
+
+    .nav-wrap {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0.62rem 1.5rem;
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand-lockup {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.78rem;
+      text-decoration: none;
+      color: var(--fg-white);
+      cursor: pointer;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    .brand-lockup svg {
+      display: block;
+      width: 50px;
+      height: 50px;
+      flex-shrink: 0;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.16rem;
+      line-height: 0.94;
+    }
+
+    .brand-opvs {
+      font-size: clamp(2.15rem, 3.5vw, 3.25rem);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--fg-white);
+      line-height: 0.92;
+    }
+
+    .brand-corp {
+      font-size: 0.66rem;
+      letter-spacing: 0.11em;
+      color: var(--sig-energy);
+      font-weight: 600;
+      text-transform: uppercase;
+      line-height: 1.1;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.42rem;
+      flex-wrap: nowrap;
+    }
+
+    .nav-tab-btn {
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      text-decoration: none;
+      background: var(--bg-void);
+      border: 1.5px solid var(--border-grid);
+      color: var(--fg-muted);
+      padding: 0 0.72rem;
+      font-size: 0.74rem;
+      letter-spacing: 0.075em;
+      text-transform: uppercase;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .nav-tab-btn:hover, .nav-tab-btn:focus-visible {
+      color: var(--fg-white);
+      border-color: var(--fg-white);
+      outline: none;
+    }
+
+    /* Home Tab: Exclusive Whitepaper Vault (Pure White) */
+    .nav-tab-btn.tab-wp {
+      border-color: var(--fg-white);
+      color: var(--fg-white);
+    }
+    .nav-tab-btn.tab-wp:hover,
+    .nav-tab-btn.tab-wp.active {
+      background: var(--fg-white);
+      color: var(--bg-void);
+      border-color: var(--fg-white);
+    }
+
+    /* Boston Dynamics / Orbit (Cyan) */
+    .nav-tab-btn.tab-orbit {
+      border-color: var(--sig-energy);
+      color: var(--sig-energy);
+    }
+    .nav-tab-btn.tab-orbit:hover,
+    .nav-tab-btn.tab-orbit.active {
+      background: var(--sig-energy);
+      color: var(--bg-void);
+      border-color: var(--sig-energy);
+    }
+
+    /* Survival Lab Simulator (Cyan Dim) */
+    .nav-tab-btn.tab-sim {
+      border-color: #1f5c66;
+      color: var(--sig-energy);
+    }
+    .nav-tab-btn.tab-sim:hover,
+    .nav-tab-btn.tab-sim.active {
+      background: var(--sig-energy);
+      color: var(--bg-void);
+      border-color: var(--sig-energy);
+    }
+
+    /* Google DeepMind VLA (Amber) */
+    .nav-tab-btn.tab-dm {
+      border-color: var(--sig-caution);
+      color: var(--sig-caution);
+    }
+    .nav-tab-btn.tab-dm:hover,
+    .nav-tab-btn.tab-dm.active {
+      background: var(--sig-caution);
+      color: var(--bg-void);
+      border-color: var(--sig-caution);
+    }
+
+    /* Metabolic Law OPVS (Nominal Green) */
+    .nav-tab-btn.tab-opvs {
+      border-color: var(--sig-nominal);
+      color: var(--sig-nominal);
+    }
+    .nav-tab-btn.tab-opvs:hover,
+    .nav-tab-btn.tab-opvs.active {
+      background: var(--sig-nominal);
+      color: var(--bg-void);
+      border-color: var(--sig-nominal);
+    }
+
+    .lang-btn {
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      background: var(--bg-void);
+      color: var(--fg-white);
+      border: 1.5px solid var(--fg-white);
+      padding: 0 0.7rem;
+      margin-left: 0.35rem;
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 0.08em;
+      flex-shrink: 0;
+    }
+
+    .lang-btn:hover, .lang-btn:focus-visible {
+      background: var(--fg-white);
+      color: var(--bg-void);
+      outline: none;
+    }
+
+    /* Sections & Monumental Packshot Typography */
+    .section-band {
+      background: var(--bg-void);
+      border-bottom: 1px solid var(--border-grid);
+    }
+
+    .section {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem;
+    }
+
+    .section-compact {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 2.1rem 1.5rem 1.75rem;
+    }
+
+    .eyebrow {
+      font-size: 0.8rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--sig-energy);
+      margin-bottom: 0.65rem;
+      font-weight: 600;
+    }
+
+    .packshot-h1 {
+      font-size: clamp(2rem, 4.6vw, 3.35rem);
+      line-height: 1.06;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--fg-white);
+      margin-bottom: 1.05rem;
+    }
+
+    .packshot-line {
+      display: block;
+    }
+
+    .packshot-line + .packshot-line {
+      margin-top: 0.07em;
+    }
+
+    h2 {
+      font-size: clamp(1.35rem, 2.6vw, 1.95rem);
+      letter-spacing: 0.045em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+      color: var(--fg-white);
+      font-weight: 700;
+    }
+
+    h3 {
+      font-size: 1.02rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 0.45rem;
+      font-weight: 700;
+    }
+
+    .lead {
+      font-size: 1.03rem;
+      max-width: 80ch;
+      margin-bottom: 1.35rem;
+      color: var(--fg-muted);
+    }
+
+    .c-white { color: var(--fg-white); }
+    .c-energy { color: var(--sig-energy); }
+    .c-nominal { color: var(--sig-nominal); }
+    .c-caution { color: var(--sig-caution); }
+    .c-breach { color: var(--sig-breach); }
+
+    /* Color-Coded Parity Strip */
+    .parity-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      border-top: 2px solid var(--border-strong);
+      border-bottom: 2px solid var(--border-strong);
+      margin: 1.5rem 0;
+      background: var(--bg-void);
+    }
+
+    .parity-item {
+      padding: 1rem;
+      border-right: 1px solid var(--border-grid);
+    }
+    .parity-item:last-child { border-right: none; }
+
+    .parity-item .label {
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--fg-muted);
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+
+    .parity-item .val {
+      font-size: 1.1rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.02em;
+    }
+
+    .btn-row { display: flex; flex-wrap: wrap; gap: 0.85rem; margin-top: 1.25rem; }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--fg-white);
+      color: var(--bg-void);
+      text-decoration: none;
+      padding: 0.85rem 1.6rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      border: 2px solid var(--fg-white);
+      cursor: pointer;
+    }
+
+    .btn-primary:hover, .btn-primary:focus-visible {
+      background: var(--sig-energy);
+      border-color: var(--sig-energy);
+      color: var(--bg-void);
+      outline: none;
+    }
+
+    /* STRICT DOWNLOAD-ONLY CENTRAL WHITEPAPER VAULT */
+    .wp-vault-box {
+      border: 2px solid var(--border-strong);
+      background: var(--bg-panel);
+      padding: 3rem 2rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.15rem;
+    }
+
+    .wp-lock-tag {
+      display: inline-block;
+      border: 1px solid var(--sig-energy);
+      color: var(--sig-energy);
+      padding: 0.25rem 0.75rem;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .wp-notice {
+      border: 1px solid var(--border-grid);
+      border-left: 4px solid var(--sig-caution);
+      background: var(--bg-panel);
+      padding: 0.8rem 1rem;
+      font-size: 0.8rem;
+      color: var(--fg-muted);
+      margin-top: 1.25rem;
+      text-align: left;
+    }
+
+    /* Grids & Cards */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.15rem;
+      margin-top: 1.25rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.15rem;
+      margin-top: 1.25rem;
+    }
+
+    .card {
+      border: 1px solid var(--border-grid);
+      border-top: 3px solid var(--fg-white);
+      padding: 1.25rem;
+      background: var(--bg-void);
+    }
+
+    .card.card-energy { border-top-color: var(--sig-energy); }
+    .card.card-caution { border-top-color: var(--sig-caution); }
+    .card.card-nominal { border-top-color: var(--sig-nominal); }
+    .card.card-breach { border-top-color: var(--sig-breach); }
+    .card p { color: var(--fg-muted); font-size: 0.94rem; }
+
+    .formula-box {
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 0.75rem 0.9rem;
+      border: 1px solid var(--border-grid);
+      border-left: 3px solid var(--fg-white);
+      background: var(--bg-panel);
+      color: var(--fg-white);
+      margin-top: 0.85rem;
+      overflow-x: auto;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.02em;
+    }
+
+    .card-energy .formula-box { border-left-color: var(--sig-energy); color: var(--sig-energy); }
+    .card-caution .formula-box { border-left-color: var(--sig-caution); color: var(--sig-caution); }
+    .card-nominal .formula-box { border-left-color: var(--sig-nominal); color: var(--sig-nominal); }
+    .card-breach .formula-box { border-left-color: var(--sig-breach); color: var(--sig-breach); }
+
+    /* Dashboard, Tables & Simulators */
+    .proto-banner {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 0.65rem 1rem;
+      border: 1px solid var(--sig-caution);
+      background: var(--bg-void);
+      color: var(--sig-caution);
+      margin-bottom: 1.15rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    #sim-clock, #g5-clock {
+      color: var(--sig-energy);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.85rem;
+      margin-bottom: 1.15rem;
+    }
+
+    .ctrl-group { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+
+    .roster-search {
+      background: var(--bg-void);
+      color: var(--fg-white);
+      border: 1.5px solid var(--border-grid);
+      padding: 0.44rem 0.75rem;
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      min-width: 210px;
+      outline: none;
+    }
+    .roster-search:focus { border-color: var(--sig-energy); }
+    .roster-search::placeholder { color: var(--fg-dim); }
+
+    .ctrl-btn {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.46rem 0.82rem;
+      border: 1.5px solid var(--border-grid);
+      background: var(--bg-void);
+      color: var(--fg-white);
+      cursor: pointer;
+    }
+
+    .ctrl-btn:hover, .ctrl-btn:focus-visible {
+      border-color: var(--fg-white);
+      outline: none;
+    }
+
+    .ctrl-btn.active {
+      background: var(--fg-white);
+      border-color: var(--fg-white);
+      color: var(--bg-void);
+      font-weight: 700;
+    }
+
+    .ctrl-btn[data-filter="NOMINAL"].active {
+      background: var(--sig-nominal);
+      border-color: var(--sig-nominal);
+      color: var(--bg-void);
+    }
+
+    .ctrl-btn[data-filter="ALERT"].active {
+      background: var(--sig-breach);
+      border-color: var(--sig-breach);
+      color: var(--bg-void);
+    }
+
+    .ctrl-btn.btn-action-energy { border-color: var(--sig-energy); color: var(--sig-energy); }
+    .ctrl-btn.btn-action-energy:hover { background: var(--sig-energy); color: var(--bg-void); }
+
+    .ctrl-btn.btn-action-nominal { border-color: var(--sig-nominal); color: var(--sig-nominal); }
+    .ctrl-btn.btn-action-nominal:hover { background: var(--sig-nominal); color: var(--bg-void); }
+
+    .ctrl-btn.btn-action-caution { border-color: var(--sig-caution); color: var(--sig-caution); }
+    .ctrl-btn.btn-action-caution:hover { background: var(--sig-caution); color: var(--bg-void); }
+
+    .ctrl-btn.btn-action-breach { border-color: var(--sig-breach); color: var(--sig-breach); }
+    .ctrl-btn.btn-action-breach:hover { background: var(--sig-breach); color: var(--bg-void); }
+
+    .kpi-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 1.05rem;
+    }
+
+    .sim-layout .kpi-bar {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .kpi-cell {
+      border: 1px solid var(--border-grid);
+      border-left: 3px solid var(--fg-white);
+      background: var(--bg-void);
+      padding: 0.75rem 0.85rem;
+    }
+    .kpi-cell.kpi-energy { border-left-color: var(--sig-energy); }
+    .kpi-cell.kpi-caution { border-left-color: var(--sig-caution); }
+    .kpi-cell.kpi-nominal { border-left-color: var(--sig-nominal); }
+    .kpi-cell.kpi-breach { border-left-color: var(--sig-breach); }
+
+    .kpi-cell .k-label {
+      font-size: 0.72rem;
+      color: var(--fg-muted);
+      letter-spacing: 0.06em;
+      font-weight: 600;
+    }
+
+    .kpi-cell .k-val {
+      font-size: 1.08rem;
+      font-weight: 700;
+      margin-top: 0.22rem;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    .sim-layout .kpi-cell .k-val {
+      font-size: 0.96rem;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border-grid);
+      background: var(--bg-void);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      text-align: left;
+      font-variant-numeric: tabular-nums;
+    }
+
+    th, td {
+      padding: 0.68rem 0.82rem;
+      border-bottom: 1px solid var(--border-grid);
+      white-space: nowrap;
+    }
+
+    th {
+      color: var(--fg-muted);
+      text-transform: uppercase;
+      font-size: 0.73rem;
+      letter-spacing: 0.09em;
+      font-weight: 700;
+      border-bottom: 2px solid var(--border-strong);
+      background: var(--bg-void);
+    }
+
+    tr.clickable { cursor: pointer; }
+    tr.clickable:hover { background: var(--bg-hover); }
+    tr.row-z0 td:first-child { border-left: 4px solid var(--sig-nominal); }
+    tr.row-z1 td:first-child { border-left: 4px solid var(--sig-caution); }
+    tr.row-z2 td:first-child { border-left: 4px solid var(--sig-caution); }
+    tr.row-z3 td:first-child { border-left: 4px solid var(--sig-breach); }
+    tr.row-selected { background: #141414; }
+
+    .thermal-cell {
+      min-width: 158px;
+      padding: 0.45rem 0.65rem;
+    }
+    .thermal-chip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.55rem;
+      padding: 0.28rem 0.55rem;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      font-size: 0.78rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.04em;
+    }
+    .thermal-chip.thermal-over {
+      border-color: rgba(255, 171, 0, 0.7);
+      box-shadow: inset 3px 0 0 var(--sig-caution);
+    }
+    .thermal-chip.thermal-crit {
+      border-color: rgba(255, 59, 48, 0.9);
+      box-shadow: inset 3px 0 0 var(--sig-breach);
+    }
+    .thermal-tag {
+      font-size: 0.66rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.12rem 0.45rem;
+      font-size: 0.71rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      border: 1px solid currentColor;
+      margin-right: 0.4rem;
+    }
+    .badge-nom { color: var(--sig-nominal); border-color: var(--sig-nominal); }
+    .badge-stasis { color: var(--fg-white); border-color: var(--fg-white); }
+    .badge-cons { color: var(--sig-caution); border-color: var(--sig-caution); }
+    .badge-breach { background: var(--sig-breach); color: var(--bg-void); border-color: var(--sig-breach); }
+
+    .ledger-drawer {
+      margin-top: 1.1rem;
+      padding: 0.95rem 1.05rem;
+      border: 1px solid var(--border-strong);
+      border-left: 4px solid var(--sig-energy);
+      font-size: 0.84rem;
+      background: var(--bg-panel);
+      color: var(--fg-muted);
+      overflow-wrap: anywhere;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .ledger-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 0.65rem 1rem;
+      margin-top: 0.55rem;
+    }
+    .ledger-kv-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg-dim); }
+    .ledger-kv-val { font-size: 0.88rem; font-weight: 600; color: var(--fg-white); }
+
+    /* Simulator Layout */
+    .sim-layout {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 1.25rem;
+      align-items: start;
+    }
+
+    .sim-panel {
+      border: 1px solid var(--border-grid);
+      background: var(--bg-void);
+      padding: 1.1rem;
+    }
+
+    .sim-panel-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sig-energy);
+      border-bottom: 1px solid var(--border-grid);
+      padding-bottom: 0.5rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .sim-field { margin-bottom: 0.95rem; }
+    .sim-field-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 0.76rem;
+      letter-spacing: 0.05em;
+      color: var(--fg-muted);
+      margin-bottom: 0.32rem;
+    }
+    .sim-field-val { color: var(--fg-white); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+    .sim-select, .sim-input {
+      width: 100%;
+      background: var(--bg-void);
+      color: var(--fg-white);
+      border: 1.5px solid var(--border-grid);
+      padding: 0.48rem 0.65rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .sim-select:focus, .sim-input:focus { border-color: var(--sig-energy); outline: none; }
+
+    .sim-range {
+      width: 100%;
+      accent-color: var(--sig-energy);
+      background: var(--border-grid);
+      cursor: pointer;
+    }
+
+    .preset-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.45rem;
+      margin-bottom: 0.95rem;
+    }
+
+    .preset-btn {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.45rem 0.5rem;
+      border: 1px solid var(--border-grid);
+      background: var(--bg-void);
+      color: var(--fg-muted);
+      cursor: pointer;
+      text-align: left;
+    }
+    .preset-btn:hover, .preset-btn.active {
+      border-color: var(--fg-white);
+      color: var(--fg-white);
+      background: var(--bg-hover);
+    }
+    .preset-btn.active { border-left: 3px solid var(--sig-energy); }
+
+    .chart-box {
+      border: 1px solid var(--border-grid);
+      background: var(--bg-void);
+      padding: 0.95rem;
+      margin-bottom: 1.1rem;
+    }
+    .chart-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.45rem;
+      margin-bottom: 0.7rem;
+      font-size: 0.73rem;
+      letter-spacing: 0.06em;
+    }
+    .k4d-header-tools {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.45rem;
+    }
+    .workforce-shell {
+      border-bottom: 1px solid var(--border-grid);
+      background: var(--bg-void);
+      display: flex;
+      flex-direction: column;
+      min-height: calc(100vh - 118px);
+    }
+    .workforce-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.55rem 1.25rem;
+      border-bottom: 1px solid var(--border-grid);
+      background: #060608;
+      font-size: 0.74rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .workforce-stage {
+      position: relative;
+      flex: 1 1 auto;
+      width: 100%;
+      min-height: 760px;
+      height: calc(100vh - 160px);
+      background: #000000;
+    }
+    #workforce-os-frame {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #000000;
+    }
+    @media (max-width: 900px) {
+      .workforce-stage {
+        min-height: 680px;
+        height: 82vh;
+      }
+    }
+    .k4d-aura-panel {
+      margin-top: 0.75rem;
+      border: 1px solid var(--border-grid);
+      background: #050505;
+      padding: 0.65rem 0.85rem;
+    }
+    .k4d-aura-head {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      font-variant-numeric: tabular-nums;
+      margin-bottom: 0.42rem;
+    }
+    .k4d-aura-track {
+      width: 100%;
+      height: 8px;
+      background: #0F0F11;
+      border: 1px solid #222226;
+      overflow: hidden;
+    }
+    .k4d-aura-fill {
+      height: 100%;
+      width: 0%;
+      transition: width 160ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .k4d-grades-wrap {
+      margin-top: 0.75rem;
+    }
+    .k4d-grades-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--fg-dim);
+      margin-bottom: 0.38rem;
+    }
+    .k4d-grade-strip {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 0.38rem;
+    }
+    .k4d-grade-item {
+      border: 1px solid #262626;
+      background: #070707;
+      padding: 0.42rem 0.52rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.16rem;
+      font-variant-numeric: tabular-nums;
+      min-width: 0;
+    }
+    .k4d-grade-item.is-active {
+      border-width: 1.5px;
+    }
+    .k4d-grade-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.25rem;
+    }
+    .k4d-grade-code {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    .k4d-grade-name {
+      font-size: 0.67rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .k4d-grade-mark {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+    @media (max-width: 980px) {
+      .sim-layout .kpi-bar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 900px) {
+      .k4d-grade-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    .api-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+    }
+    @media (max-width: 1180px) {
+      .api-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 640px) {
+      .api-grid { grid-template-columns: 1fr; }
+    }
+    .api-card {
+      border: 1px solid var(--border-grid);
+      background: var(--bg-panel);
+      padding: 0.75rem 0.85rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.6rem;
+    }
+    .api-route { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.06em; color: var(--sig-energy); }
+    .api-desc { font-size: 0.79rem; color: var(--fg-muted); line-height: 1.35; }
+
+    .event-log {
+      border: 1px solid var(--border-grid);
+      background: var(--bg-panel);
+      max-height: 250px;
+      overflow-y: auto;
+      font-size: 0.79rem;
+      font-variant-numeric: tabular-nums;
+    }
+    .event-row {
+      padding: 0.52rem 0.82rem;
+      border-bottom: 1px solid var(--border-grid);
+      display: grid;
+      grid-template-columns: 92px 140px 1fr auto;
+      gap: 0.65rem;
+      align-items: center;
+    }
+    .event-row:last-child { border-bottom: none; }
+
+    .json-drawer {
+      margin-top: 0.95rem;
+      border: 1px solid var(--border-strong);
+      border-left: 4px solid var(--sig-nominal);
+      background: var(--bg-panel);
+      padding: 0.9rem 1rem;
+      font-size: 0.78rem;
+      color: var(--fg-muted);
+      white-space: pre-wrap;
+      overflow-x: auto;
+      max-height: 300px;
+    }
+
+    .pilot-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    .pilot-table th, .pilot-table td {
+      border-bottom: 1px solid var(--border-grid);
+      padding: 0.78rem 0.75rem;
+      text-align: left;
+      white-space: normal;
+      vertical-align: top;
+    }
+    .pilot-table th {
+      color: var(--fg-muted);
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      border-bottom: 2px solid var(--border-strong);
+    }
+    .pilot-table td { color: var(--fg-muted); font-size: 0.88rem; }
+    .pilot-table td.phase-cell { font-weight: 700; white-space: nowrap; }
+
+    .dm-pipeline {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 1.2rem;
+    }
+    .dm-step {
+      border: 1px solid var(--border-grid);
+      border-top: 3px solid var(--fg-white);
+      background: var(--bg-panel);
+      padding: 0.75rem 0.9rem;
+    }
+    .dm-step-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.2rem;
+    }
+
+    footer {
+      border-top: 2px solid var(--border-strong);
+      background: var(--bg-void);
+    }
+    .footer-wrap {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .seal-block { display: flex; align-items: center; gap: 1rem; }
+    .sig { font-size: 0.9rem; font-style: italic; color: var(--fg-muted); }
+
+    @media (max-width: 1020px) {
+      .signal-strip-inner,
+      .signal-legend {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 0.45rem 1rem;
+      }
+      .nav-wrap {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.85rem;
+      }
+      nav {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+      }
+      .lang-btn { margin-left: auto; }
+      .sim-layout { grid-template-columns: 1fr; }
+      .event-row { grid-template-columns: 1fr; gap: 0.2rem; }
+    }
+
+    @media (max-width: 720px) {
+      .parity-item { border-right: none; border-bottom: 1px solid var(--border-grid); }
+      .parity-item:last-child { border-bottom: none; }
+      .k4d-viewport { height: 320px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- TOP ROBOT TELEMETRY SIGNAL STRIP -->
+  <div class="signal-strip" aria-label="Robot color-code legend">
+    <div class="signal-strip-inner">
+      <div class="signal-legend">
+        <span class="sig-key c-white"><span class="sig-dot" style="background:#FFFFFF;"></span><span data-i18n="leg_id">IDENTITY / PERMISSIONED LEDGER</span></span>
+        <span class="sig-key c-energy"><span class="sig-dot" style="background:#00E5FF;"></span><span data-i18n="leg_kwh">ORBIT &amp; kWh PARITY (Θ 1 OPVS ≡ 1 kWh)</span></span>
+        <span class="sig-key c-nominal"><span class="sig-dot" style="background:#00E676;"></span><span data-i18n="leg_z0">▲ Z0 ASCENDING (+ΔM)</span></span>
+        <span class="sig-key c-caution"><span class="sig-dot" style="background:#FFAB00;"></span><span data-i18n="leg_z12">◆ DEEPMIND VLA / Z1-Z2 CONSERVE</span></span>
+        <span class="sig-key c-breach"><span class="sig-dot" style="background:#FF3B30;"></span><span data-i18n="leg_z3">✕ Z3 BREACH · SOFT BANKRUPTCY</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEDICATED STICKY HEADER WITH SINGLE TAB NAVIGATION -->
+  <header>
+    <div class="nav-wrap">
+      <a href="#whitepaper" class="brand-lockup" id="brand-home" aria-label="OPERAE VIS OPVS">
+        <svg width="50" height="50" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="39" fill="none" stroke="#FFFFFF" stroke-width="11" />
+          <line x1="30" y1="50" x2="70" y2="50" stroke="#00E5FF" stroke-width="11" stroke-linecap="butt" />
+        </svg>
+        <div class="brand-text">
+          <span class="brand-opvs">OPVS</span>
+          <span class="brand-corp" data-i18n="brand_sub">OPERAE VIS · MIND × BODY × METABOLISM</span>
+        </div>
+      </a>
+      <nav aria-label="Primary navigation">
+        <button type="button" class="nav-tab-btn tab-orbit" id="tab-btn-orbit" data-i18n="nav_orbit">I · Orbit</button>
+        <button type="button" class="nav-tab-btn tab-sim" id="tab-btn-simulator" data-i18n="nav_sim">II · Simulator</button>
+        <button type="button" class="nav-tab-btn tab-dm" id="tab-btn-deepmind" data-i18n="nav_dm">III · DeepMind</button>
+        <button type="button" class="nav-tab-btn tab-opvs" id="tab-btn-opvs" data-i18n="nav_opvs">IV · OPVS Law</button>
+        <button type="button" class="nav-tab-btn tab-wp active" id="tab-btn-whitepaper" data-i18n="nav_wp">Θ · Whitepaper</button>
+        <button type="button" class="lang-btn" id="lang-toggle">FR</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- ==================== HOME TAB (EXCLUSIVE): DOWNLOAD-ONLY WHITEPAPER VAULT ==================== -->
+    <div id="view-whitepaper">
+      <section class="section-band" aria-label="Exclusive Whitepaper Home Page">
+        <div class="section">
+          <div class="eyebrow" data-i18n="seo_eye">
+            Θ OPVS V2.0 · 1 OPVS ≡ 1 KWH · EMBODIED AI &amp; FLEET SETTLEMENT ARCHITECTURE
+          </div>
+
+          <h1 class="packshot-h1" id="packshot-heading" aria-label="Energy as Currency. Survival as Governance. The Protocol for Machine Economies.">
+            <span class="packshot-line"><span class="c-energy" data-i18n="m_l1_accent">ENERGY</span> <span data-i18n="m_l1_rest">AS CURRENCY.</span></span>
+            <span class="packshot-line"><span class="c-caution" data-i18n="m_l2_accent">SURVIVAL</span> <span data-i18n="m_l2_rest">AS GOVERNANCE.</span></span>
+            <span class="packshot-line c-white" data-i18n="m_l3">THE PROTOCOL FOR MACHINE ECONOMIES.</span>
+          </h1>
+
+          <div class="wp-vault-box" style="margin-top:1.75rem;">
+            <span class="wp-lock-tag" data-i18n="wp_vault_badge">CENTRAL VAULT · DOWNLOAD-ONLY ACCESS · ZERO ON-PAGE PROSE</span>
+            <svg width="56" height="56" viewBox="0 0 100 100" aria-hidden="true">
+              <circle cx="50" cy="50" r="40" fill="none" stroke="#FFFFFF" stroke-width="10" />
+              <line x1="28" y1="50" x2="72" y2="50" stroke="#00E5FF" stroke-width="10" stroke-linecap="butt" />
+            </svg>
+            <h2 style="max-width:34ch; margin-bottom:0; line-height:1.15;" data-i18n="wp_title">
+              OPVS v2.0 — Energy as Currency. Survival as Governance.
+            </h2>
+            <div class="mono" style="font-size:0.84rem; color:var(--fg-muted); letter-spacing:0.08em;" data-i18n="wp_meta">
+              SPECIFICATION V2.0 · 24/11/26 · 19 PAGES · AUTHOR: CANIUS · LINEAGE: D-TEAM (2016) → OPVS (2026)
+            </div>
+
+            <div class="parity-strip" style="width:100%; max-width:920px; margin:0.75rem 0;">
+              <div class="parity-item">
+                <div class="label" data-i18n="wp_m1_l">Parity Invariant</div>
+                <div class="val c-energy">Θ 1 OPVS ≡ 1 kWh (3.6 MJ)</div>
+              </div>
+              <div class="parity-item">
+                <div class="label" data-i18n="wp_m2_l">Atomic Ledger Integer</div>
+                <div class="val c-white">1 µOPVS ≡ 3.6 J (INT64)</div>
+              </div>
+              <div class="parity-item">
+                <div class="label" data-i18n="wp_m3_l">Access Policy</div>
+                <div class="val c-caution" data-i18n="wp_m3_v">PDF Download Required</div>
+              </div>
+            </div>
+
+            <div class="btn-row" style="justify-content:center; margin-top:0.5rem;">
+              <a class="btn-primary" href="/public/assets/aistudio/Operae_Vis_OPVS_Technical_Whitepaper_v2.0_print_1bd25ab0.pdf" download="Operae_Vis_OPVS_Technical_Whitepaper_v2.0.pdf" data-i18n="wp_dl_btn">⬇ Download Official Whitepaper PDF (v2.0 · 19 pp.)</a>
+            </div>
+          </div>
+
+          <div class="wp-notice">
+            <strong class="c-caution" data-i18n="wp_notice_lbl">NOTICE:</strong>
+            <span data-i18n="wp_notice_txt">Boston Dynamics, Orbit, Spot, Stretch, Atlas, Google DeepMind, Gemini Robotics, Google Cloud, and Hyundai are named from public sources as target platforms and reference architectures. OPERAE VIS has no partnership, endorsement, or commercial agreement with any of them; all trademarks belong to their respective owners. Numerical examples across simulators are illustrative and uncalibrated.</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ==================== TAB I (L1): BOSTON DYNAMICS · ORBIT SHOWCASE & 10-ATLAS ROSTER ==================== -->
+    <div id="view-orbit" class="hidden">
+      <section class="section-band">
+        <div class="section">
+          <div class="eyebrow" data-i18n="bd_eye">SOLUTION SHOWCASE 01 · DIRECTOR OF ORBIT SOFTWARE BRIEFING (BOSTON DYNAMICS)</div>
+          <h2 data-i18n="bd_title">Native Metabolic Accounting for Orbit™ Fleet Orchestration &amp; Electric Atlas</h2>
+          <p class="lead" data-i18n="bd_lead">
+            Orbit unifies physical-to-digital site visibility across Spot, Stretch, and 56-DoF electric Atlas. OPVS plugs directly into Orbit Webhooks, REST APIs, and autonomous battery-swap BMS bays—adding per-unit economic solvency, actuator wear escrow, and audited hourly ROI without modifying robot hardware or operator consoles.
+          </p>
+
+          <div class="grid-3">
+            <article class="card card-energy">
+              <h3 class="c-energy" data-i18n="bd_c1_t">Cloud, 1U Site Hub &amp; OVA Parity</h3>
+              <p data-i18n="bd_c1_p">
+                Deploys as a 3- or 5-node permissioned Raft cluster alongside AWS-hosted Orbit, 1U on-premise Site Hub rack hardware, or air-gapped OVA Virtual Machines within SOC2 Type II and SAML SSO boundaries. Swaps never block on network outages via cached UUID Idempotency-Keys.
+              </p>
+              <div class="formula-box">OT LAN p99 &lt; 100 ms · Offline-Safe BMS Swap Replay</div>
+            </article>
+
+            <article class="card">
+              <h3 class="c-white" data-i18n="bd_c2_t">Site View, Stretch &amp; Atlas Synergy</h3>
+              <p data-i18n="bd_c2_p">
+                Converts Orbit task completions—Spot 360° Site View thermal/acoustic checks, Stretch trailer case throughput, and Atlas 30 kg sustained / 50 kg peak lifts—into integer µOPVS wages reconciled against 3-minute autonomous battery swaps.
+              </p>
+              <div class="formula-box">ΔM_t = Wage_orbit − E_swap,bms − ΔR_maint(τ², T)</div>
+            </article>
+
+            <article class="card card-nominal">
+              <h3 class="c-nominal" data-i18n="bd_c3_t">Zero-Halt Soft Bankruptcy</h3>
+              <p data-i18n="bd_c3_p">
+                If an experimental manipulation policy over-heats actuators or drains battery packs below the curved Survival Manifold (d_S ≤ 0), Supervisor Mode authorizes an emergency swap overdraft so the factory line never stalls—while rolling back the policy checkpoint.
+              </p>
+              <div class="formula-box">Zone 3 Breach → Overdraft Swap + Policy Rollback</div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- LIVE 10-UNIT FLEET ROSTER -->
+      <section class="section-band">
+        <div class="section">
+          <div class="eyebrow" data-i18n="pr_eye">LIVE ORBIT × OPVS SUPERVISOR CONSOLE · REFERENCE SITE: HYUNDAI GEORGIA METAPLANT</div>
+          <h2 data-i18n="pr_title">10 Electric Atlas Humanoids · Real-Time Solvency &amp; Swap Roster</h2>
+
+          <div class="proto-banner">
+            <span data-i18n="pr_warn">PERMISSIONED OT-LAN SETTLEMENT STREAM · mTLS v1.3 · ED25519 HARDWARE WALLETS · IDEMPOTENCY LOCK</span>
+            <span class="mono" id="sim-clock">CYCLE: 01 · DAY: 16/90 · FLEET: 10/10 ACTIVE</span>
+          </div>
+
+          <div class="controls">
+            <div class="ctrl-group" role="group" aria-label="Zone filter">
+              <button type="button" class="ctrl-btn active" data-filter="ALL" data-i18n="flt_all">All (10)</button>
+              <button type="button" class="ctrl-btn" data-filter="NOMINAL" data-i18n="flt_nom">▲ Z0/Z1 Nominal / Stasis</button>
+              <button type="button" class="ctrl-btn" data-filter="ALERT" data-i18n="flt_alert">✕ Z2/Z3 Conservation / Breach</button>
+              <input type="search" id="roster-search" class="roster-search" placeholder="Filter unit ID or policy..." aria-label="Filter Atlas units" data-i18n-placeholder="flt_search" />
+            </div>
+            <div class="ctrl-group">
+              <button type="button" class="ctrl-btn btn-action-energy" id="btn-step" data-i18n="btn_step">⚡ Step 4h Work-Swap Cycle</button>
+              <button type="button" class="ctrl-btn btn-action-caution" id="trigger-reckless" data-i18n="trig_reck">⚠️ Sim Reckless Policy (v2.5)</button>
+              <button type="button" class="ctrl-btn btn-action-breach" id="trigger-zombie" data-i18n="trig_zom">🧬 Sim Zombie Helix</button>
+              <button type="button" class="ctrl-btn" id="btn-roster-reset" data-i18n="btn_roster_reset">↺ Reset Fleet</button>
+              <button type="button" class="ctrl-btn btn-action-nominal" id="roster-open-sim" data-i18n="cta_sim">Open Unit in Survival Lab →</button>
+            </div>
+          </div>
+
+          <div class="kpi-bar">
+            <div class="kpi-cell kpi-energy">
+              <div class="k-label" data-i18n="kpi_sub">η · E_substation (OPVS eq.)</div>
+              <div class="k-val c-energy" id="kpi-substation">—</div>
+            </div>
+            <div class="kpi-cell">
+              <div class="k-label" data-i18n="kpi_swaps">Σ OPVS_swap Debits</div>
+              <div class="k-val c-white" id="kpi-swaps">—</div>
+            </div>
+            <div class="kpi-cell kpi-caution">
+              <div class="k-label" data-i18n="kpi_buf">ΔE_bay_buffer</div>
+              <div class="k-val c-caution" id="kpi-buffer">—</div>
+            </div>
+            <div class="kpi-cell kpi-nominal">
+              <div class="k-label" data-i18n="kpi_eps">Kirchhoff Residual ε_drift</div>
+              <div class="k-val c-nominal" id="kpi-epsilon">—</div>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th data-i18n="th_wlt">Wallet ID</th>
+                  <th data-i18n="th_pol">Active VLA Policy</th>
+                  <th data-i18n="th_liq">Liquidity (µOPVS)</th>
+                  <th data-i18n="th_soc">Battery SoC</th>
+                  <th data-i18n="th_ds">Altitude d_S</th>
+                  <th data-i18n="th_pitch">Pitch θ_intrinsic</th>
+                  <th data-i18n="th_therm">Thermal Intensity</th>
+                  <th data-i18n="th_zone">Supervisor Zone &amp; Status</th>
+                </tr>
+              </thead>
+              <tbody id="fleet-tbody"></tbody>
+            </table>
+          </div>
+
+          <div class="ledger-drawer" id="ledger-inspector" data-i18n="drawer_hint">
+            Click any Atlas unit row above to inspect its hardware-bound Ed25519 wallet, Survival Manifold altitude, and double-entry settlement proof.
+          </div>
+        </div>
+      </section>
+
+      <!-- 90-DAY PILOT ROADMAP -->
+      <section class="section-band">
+        <div class="section">
+          <div class="eyebrow" data-i18n="pil_eye">90-DAY CLOSED-SITE REFERENCE DEPLOYMENT</div>
+          <h2 data-i18n="pil_title">Four Phases to the First Audited Machine Balance Sheet</h2>
+          <table class="pilot-table">
+            <thead>
+              <tr>
+                <th data-i18n="th_phase">Phase</th>
+                <th data-i18n="th_win">Window</th>
+                <th data-i18n="th_obj">Operational Objective</th>
+                <th data-i18n="th_exit">Verification Exit Criterion</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="phase-cell c-energy" data-i18n="p1_n">Phase 1 · Shadow Mode</td>
+                <td class="c-white" data-i18n="p1_w">Days 1–15</td>
+                <td data-i18n="p1_o">Read-only telemetry ingestion from Orbit webhooks, swap-bay BMS, MES, and Atlas joint sensors; zero production interference.</td>
+                <td data-i18n="p1_e">Calibration of 1 OPVS = 1 kWh parity and manifold wear constants (α, β, γ).</td>
+              </tr>
+              <tr>
+                <td class="phase-cell c-white" data-i18n="p2_n">Phase 2 · Endowed Loop</td>
+                <td class="c-white" data-i18n="p2_w">Days 16–45</td>
+                <td data-i18n="p2_o">Activate 10 endowed wallets (14–18 rotating battery packs) running live Work → Earn → Swap settlement on the OT-LAN ledger.</td>
+                <td data-i18n="p2_e">Autonomous loop closure without manual invoicing; Kirchhoff residual ε_drift within tolerance.</td>
+              </tr>
+              <tr>
+                <td class="phase-cell c-caution" data-i18n="p3_n">Phase 3 · Margin Switchback</td>
+                <td class="c-white" data-i18n="p3_w">Days 46–75</td>
+                <td data-i18n="p3_o">5 units conditioned on live ΔM reward webhooks vs. 5 control units; M2M subcontracting and Zombie Helix filters active.</td>
+                <td data-i18n="p3_e">Statistically significant gain in net margin (OPVS/h) and θ_intrinsic with zero safety regressions.</td>
+              </tr>
+              <tr>
+                <td class="phase-cell c-nominal" data-i18n="p4_n">Phase 4 · External Audit</td>
+                <td class="c-white" data-i18n="p4_w">Days 76–90</td>
+                <td data-i18n="p4_o">Freeze protocol constants; reconcile cryptographic Merkle roots directly against plant substation kWh meters.</td>
+                <td data-i18n="p4_e">Publication of the first audited machine balance sheet (P&amp;L, energy cash flow, asset ROI).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- ==================== TAB II (L2): WORKFORCE OS 3D PHALANX & SIRH SIMULATOR ==================== -->
+    <div id="view-simulator" class="hidden">
+      <div class="workforce-shell">
+        <div class="workforce-bar">
+          <div style="display:flex; flex-wrap:wrap; align-items:center; gap:0.7rem;">
+            <span class="c-energy" style="font-weight:700;" data-i18n="sim_bar_tag">SCALE L2 · WORKFORCE OS v2.0</span>
+            <span class="c-white" style="font-weight:600;" data-i18n="sim_bar_title">3D Xi'an Terracotta Phalanx · 48 Robots · Embodied SIRH Payslip &amp; Gemini VLA Bridge</span>
+          </div>
+          <a href="/workforce-os" target="_blank" rel="noopener" class="ctrl-btn btn-action-energy" style="text-decoration:none; padding:0.32rem 0.68rem; font-size:0.72rem;" data-i18n="sim_open_full">
+            ↗ Standalone /workforce-os
+          </a>
+        </div>
+        <div class="workforce-stage">
+          <iframe
+            id="workforce-os-frame"
+            data-src="/assets/aistudio/opvs_workforce_os_simulateur_3d_phalange_sirh_robotique_0c03274d.html"
+            title="OPVS Workforce OS — 3D Terracotta Phalanx &amp; Embodied SIRH Simulator"
+            allow="fullscreen"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB III (L3): GOOGLE DEEPMIND · VLA REWARD GROUNDING & ADAPTER ==================== -->
+    <div id="view-deepmind" class="hidden">
+      <section class="section-band">
+        <div class="section">
+          <div class="eyebrow" style="color:var(--sig-caution);" data-i18n="dm_eye">SOLUTION SHOWCASE 02 · HEAD OF ROBOTICS &amp; VLA RESEARCH BRIEFING (GOOGLE DEEPMIND)</div>
+          <h2 data-i18n="dm_main_t">Thermodynamic Grounding for Embodied VLA Policies &amp; Gemini Robotics</h2>
+          <p class="lead" data-i18n="dm_main_l">
+            Simulation rewards optimize task completion speed while ignoring harmonic-drive fatigue, winding temperature, and battery swap cost. OPVS supplies embodied foundation models with an exact, ungameable physical scalar—net energy margin ΔM—while enforcing hard safety orthogonality.
+          </p>
+
+          <div class="grid-3" style="margin-bottom:2rem;">
+            <article class="card card-caution">
+              <h3 class="c-caution" data-i18n="dm_v1_t">Geodesic Minimum-Effort Control</h3>
+              <p data-i18n="dm_v1_p">
+                Conditioning VLA policies on reward.margin_settled teaches agents to navigate geodesics on the curved Survival Manifold—minimizing quadratic torque norms and thermal spikes per verified industrial output.
+              </p>
+              <div class="formula-box">s = tan θ_int = (ΔM − ΔM_ext) / ΔW</div>
+            </article>
+
+            <article class="card card-breach">
+              <h3 class="c-breach" data-i18n="dm_v2_t">Zombie Helix Quarantine</h3>
+              <p data-i18n="dm_v2_p">
+                Prevents reward hacking in multi-agent fleets: if a policy masks negative intrinsic margin (θ_int &lt; 0) across 3 consecutive swaps via peer M2M borrowing or tips, Supervisor severs inbound credit and rolls back the checkpoint.
+              </p>
+              <div class="formula-box">3 Swaps · θ_int &lt; 0 ∧ θ_app ≥ 0 → QUARANTINE</div>
+            </article>
+
+            <article class="card card-nominal">
+              <h3 class="c-nominal" data-i18n="dm_v3_t">Safety Strictly Outside Economy</h3>
+              <p data-i18n="dm_v3_p">
+                No OPVS balance or task bounty can relax joint force, velocity, human-separation, E-stop, or thermal limits. The economy evaluates outcomes after safe motion—it never commands actuation.
+              </p>
+              <div class="formula-box">Safety Envelope ⊥ Economic Objective (Invariant)</div>
+            </article>
+          </div>
+
+          <!-- LIVE ADAPTER SANDBOX -->
+          <div class="eyebrow" style="color:var(--sig-energy);" data-i18n="dm_sub_eye">LIVE INTEGRATION SANDBOX · ORBIT ↔ AIVI-LEARNING ↔ ATLASWAGESERVICE → OPVS</div>
+          <h3 style="font-size:1.25rem; margin-bottom:0.85rem;" data-i18n="dm_title">Bidirectional LearningEvent Sync &amp; Idempotent µOPVS Wage Settlement</h3>
+
+          <div class="dm-pipeline">
+            <div class="dm-step" style="border-top-color:var(--sig-energy);">
+              <div class="dm-step-tag c-energy" data-i18n="dm_s1_k">01 · EVENT SOURCE</div>
+              <div class="c-white" style="font-weight:700;">Orbit / AIVI-Learning</div>
+              <div style="font-size:0.8rem; color:var(--fg-muted);" data-i18n="dm_p1">Bidirectional state sync on every LearningEvent</div>
+            </div>
+            <div class="dm-step" style="border-top-color:var(--sig-caution);">
+              <div class="dm-step-tag c-caution" data-i18n="dm_s2_k">02 · ADAPTER GATE</div>
+              <div class="c-white" style="font-weight:700;">OrbitAiviAdapter</div>
+              <div style="font-size:0.8rem; color:var(--fg-muted);" data-i18n="dm_p2">Filters agent="atlas" &amp; qualifying actions</div>
+            </div>
+            <div class="dm-step" style="border-top-color:#FFFFFF;">
+              <div class="dm-step-tag c-white" data-i18n="dm_s3_k">03 · IDEMPOTENCY</div>
+              <div class="c-white" style="font-weight:700;">AtlasWageService</div>
+              <div style="font-size:0.8rem; color:var(--fg-muted);" data-i18n="dm_p3">ROUND_HALF_UP wage + _processed_events lock</div>
+            </div>
+            <div class="dm-step" style="border-top-color:var(--sig-nominal);">
+              <div class="dm-step-tag c-nominal" data-i18n="dm_s4_k">04 · OPVS SETTLEMENT</div>
+              <div class="c-white" style="font-weight:700;">wlt_atlas_01 (µOPVS)</div>
+              <div style="font-size:0.8rem; color:var(--fg-muted);" data-i18n="dm_p4">Credits INT64 µOPVS at 1 OPVS = 1 kWh parity</div>
+            </div>
+          </div>
+
+          <div class="sim-layout">
+            <aside class="sim-panel">
+              <div class="sim-panel-title" style="color:var(--sig-caution);" data-i18n="dm_ctrl_t">LEARNING EVENT DISPATCHER</div>
+
+              <div class="sim-field">
+                <div class="sim-field-head">
+                  <label for="dm-event-id">event_id (Idempotency Key)</label>
+                  <button type="button" class="ctrl-btn" id="dm-new-uuid" style="padding:0.15rem 0.45rem; font-size:0.72rem;" data-i18n="dm_new_id">New ID</button>
+                </div>
+                <input type="text" id="dm-event-id" class="sim-input" value="evt_dm_atlas_001" />
+              </div>
+
+              <div class="sim-field">
+                <div class="sim-field-head"><label for="dm-source">source (EventSource)</label></div>
+                <select id="dm-source" class="sim-select">
+                  <option value="aivi_learning">aivi_learning → synced_to_orbit</option>
+                  <option value="orbit">orbit → synced_to_aivi</option>
+                </select>
+              </div>
+
+              <div class="sim-field">
+                <div class="sim-field-head"><label for="dm-agent">user_or_agent_id</label></div>
+                <select id="dm-agent" class="sim-select">
+                  <option value="atlas">atlas (Qualifying Embodied Agent)</option>
+                  <option value="spot_04">spot_04 (Non-Atlas — Sync Only)</option>
+                </select>
+              </div>
+
+              <div class="sim-field">
+                <div class="sim-field-head"><label for="dm-module">module_id</label></div>
+                <select id="dm-module" class="sim-select">
+                  <option value="mod_bimanual_grasp_v3">mod_bimanual_grasp_v3</option>
+                  <option value="mod_thermal_safe_walk">mod_thermal_safe_walk</option>
+                  <option value="mod_swap_docking_02">mod_swap_docking_02</option>
+                </select>
+              </div>
+
+              <div class="sim-field">
+                <div class="sim-field-head"><label for="dm-action">action</label></div>
+                <select id="dm-action" class="sim-select">
+                  <option value="module_completed">module_completed (Qualifying)</option>
+                  <option value="system_adopted">system_adopted (Qualifying)</option>
+                  <option value="assessment_passed">assessment_passed (Qualifying)</option>
+                  <option value="telemetry_heartbeat">telemetry_heartbeat (Non-Qualifying)</option>
+                </select>
+              </div>
+
+              <div class="sim-field">
+                <div class="sim-field-head">
+                  <label for="dm-duration">duration_minutes</label>
+                  <span class="sim-field-val c-energy" id="dm-dur-val">45 min</span>
+                </div>
+                <input type="range" id="dm-duration" class="sim-range" min="0" max="180" step="5" value="45" />
+              </div>
+
+              <div class="sim-field">
+                <div class="sim-field-head">
+                  <label for="dm-score">score (0.0 – 1.0)</label>
+                  <span class="sim-field-val c-nominal" id="dm-score-val">0.95</span>
+                </div>
+                <input type="range" id="dm-score" class="sim-range" min="0" max="1" step="0.05" value="0.95" />
+              </div>
+
+              <div class="formula-box" id="dm-calc-preview" style="margin-top:0.5rem; margin-bottom:1rem; font-size:0.82rem; border-left-color:var(--sig-caution); color:var(--sig-caution);">
+                Payout = 23.50 CREDITS → +5 875 000 µOPVS
+              </div>
+
+              <div class="ctrl-group" style="display:grid; grid-template-columns:1fr; gap:0.5rem;">
+                <button type="button" class="ctrl-btn btn-action-caution" id="dm-dispatch-btn" data-i18n="dm_send">⚡ Dispatch LearningEvent</button>
+                <button type="button" class="ctrl-btn btn-action-energy" id="dm-replay-btn" data-i18n="dm_replay">↻ Replay Last event_id (Test Idempotency)</button>
+                <button type="button" class="ctrl-btn" id="dm-reset-btn" data-i18n="dm_reset">↺ Reset Adapter State</button>
+              </div>
+            </aside>
+
+            <div>
+              <div class="kpi-bar">
+                <div class="kpi-cell kpi-nominal">
+                  <div class="k-label" data-i18n="dm_k_wlt">Atlas OPVS Balance (wlt_atlas_01)</div>
+                  <div class="k-val c-nominal" id="dm-kpi-wallet">518 420 000 µOPVS</div>
+                </div>
+                <div class="kpi-cell kpi-caution">
+                  <div class="k-label" data-i18n="dm_k_cred">Total Atlas CREDITS</div>
+                  <div class="k-val c-caution" id="dm-kpi-credits">0.00 CREDITS</div>
+                </div>
+                <div class="kpi-cell kpi-energy">
+                  <div class="k-label" data-i18n="dm_k_proc">Processed Events (_processed_events)</div>
+                  <div class="k-val c-energy" id="dm-kpi-proc">0</div>
+                </div>
+                <div class="kpi-cell">
+                  <div class="k-label" data-i18n="dm_k_sync">Last Adapter Sync Result</div>
+                  <div class="k-val c-white" id="dm-kpi-sync">—</div>
+                </div>
+              </div>
+
+              <div class="sim-panel" style="padding:0; margin-bottom:1.1rem;">
+                <div style="padding:0.68rem 0.9rem; border-bottom:1px solid var(--border-grid); display:flex; justify-content:space-between; align-items:center;">
+                  <span style="font-size:0.76rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--fg-white);" data-i18n="dm_log_t">ORBIT ↔ AIVI ↔ ATLAS ADAPTER EXECUTION LOG</span>
+                  <span style="font-size:0.73rem; color:var(--sig-caution); font-weight:700;" id="dm-idemp-badge">IDEMPOTENCY GUARD: READY</span>
+                </div>
+                <div class="event-log" id="dm-event-log"></div>
+              </div>
+
+              <pre class="json-drawer" id="dm-last-json" style="margin-top:0; border-left-color:var(--sig-caution);" data-i18n="dm_json_empty">Dispatch a LearningEvent to inspect deterministic Orbit ↔ AIVI ↔ OPVS settlement JSON.</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ==================== TAB IV (L4): METABOLIC LAW [OPVS] & ROBOT AGENT MANIFEST ==================== -->
+    <div id="view-opvs" class="hidden">
+      <section class="section-band">
+        <div class="section">
+          <div class="eyebrow" style="color:var(--sig-nominal);" data-i18n="opvs_eye">SCALE L4 · UNIVERSAL THERMODYNAMIC AXIOMS, KIRCHHOFF AUDIT &amp; EMBODIED AGENT INTERFACE</div>
+          <h2 data-i18n="opvs_title">The Metabolic Law of OPVS — For Engineers &amp; Autonomous Robots</h2>
+          <p class="lead" data-i18n="opvs_lead">
+            Intelligence without a body is a ghost; a body without a metabolism is a statue. OPVS binds kinetic work (X), net operational liquidity (Y = Y_op − L), and stored onboard energy (Z) into a single kWh-denominated coordinate space closed by physical substation meters.
+          </p>
+
+          <div class="grid-3">
+            <article class="card card-energy">
+              <h3 class="c-energy" data-i18n="opvs_c1_t">01 · 3D Energy Phase Space</h3>
+              <p data-i18n="opvs_c1_p">Every unit occupies (X, Y, Z) in kWh ≡ OPVS. One Work → Earn → Swap cycle yields net displacement R_cycle = (ΔW, ΔM, 0) and climb pitch θ = arctan(ΔM / ΔW).</p>
+              <div class="formula-box">d_S(t) = Y(t) − Y_S(X, Z, τ², T)</div>
+            </article>
+
+            <article class="card card-caution">
+              <h3 class="c-caution" data-i18n="opvs_c2_t">02 · Curved Survival Manifold S</h3>
+              <p data-i18n="opvs_c2_p">High-payload actuation bends the solvency floor upward via quadratic joint torque fatigue and Arrhenius winding ageing (halving life per +10 K above T_nom).</p>
+              <div class="formula-box">Y_S = (Z_cap − Z) + R_0 + ∫[r_0 + α‖τ‖² + β(e^{γΔT}−1)⁺]dt</div>
+            </article>
+
+            <article class="card card-nominal">
+              <h3 class="c-nominal" data-i18n="opvs_c3_t">03 · Kirchhoff Substation Closure</h3>
+              <p data-i18n="opvs_c3_p">Every OPVS debited at swap bays reconciles against physical transformer meters, isolating charger drift, pack impedance ageing, or ledger spoofing.</p>
+              <div class="formula-box">η_station · E_substation = Σ OPVS_swap + ΔE_buffer + ε_drift</div>
+            </article>
+          </div>
+
+          <div class="grid-2" style="margin-top:1.5rem;">
+            <!-- SUPERVISOR STATE MACHINE -->
+            <div class="card">
+              <h3 class="c-white" data-i18n="opvs_sup_t">Supervisor Governance Priority (Evaluated 3 → 2 → 0 → 1)</h3>
+              <table class="pilot-table">
+                <thead>
+                  <tr>
+                    <th data-i18n="opvs_th_z">Zone</th>
+                    <th data-i18n="opvs_th_tr">Trigger</th>
+                    <th data-i18n="opvs_th_ac">Autonomous Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="phase-cell c-breach">Z3 · Breach</td>
+                    <td>d_S ≤ 0</td>
+                    <td data-i18n="opvs_z3_d">Authorized swap overdraft; quarantine &amp; rollback failing policy.</td>
+                  </tr>
+                  <tr>
+                    <td class="phase-cell c-caution">Z2 · Conserve</td>
+                    <td>0 &lt; d_S &lt; 10 OPVS | h_0 &lt; 8h</td>
+                    <td data-i18n="opvs_z2_d">High-OPVS/kWh queue filter; M2M subcontracting / liability credit.</td>
+                  </tr>
+                  <tr>
+                    <td class="phase-cell c-nominal">Z0 · Ascending</td>
+                    <td>d_S &gt; 15 OPVS &amp; ḋ_S &gt; v_ε</td>
+                    <td data-i18n="opvs_z0_d">Nominal execution; eligible for 72h Proof-of-Metabolism replication.</td>
+                  </tr>
+                  <tr>
+                    <td class="phase-cell c-white">Z1 · Stasis</td>
+                    <td>d_S &gt; 0 (default)</td>
+                    <td data-i18n="opvs_z1_d">Joint torque &amp; path efficiency audit; replication frozen.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- FRACTAL SCALING & CONTACT -->
+            <div class="card card-energy">
+              <h3 class="c-energy" data-i18n="opvs_fr_t">Fractal Scaling &amp; Direct Executive Channel</h3>
+              <table class="pilot-table">
+                <thead>
+                  <tr>
+                    <th data-i18n="opvs_th_sc">Scale</th>
+                    <th data-i18n="opvs_th_sp">Scope</th>
+                    <th data-i18n="opvs_th_mc">Mechanism</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="phase-cell c-white">Scale 0 · Organism</td>
+                    <td data-i18n="opvs_s0_sp">1 Humanoid</td>
+                    <td data-i18n="opvs_s0_d">Self-auditing wallet navigating curved Survival Manifold S.</td>
+                  </tr>
+                  <tr>
+                    <td class="phase-cell c-energy">Scale 1 · Colony</td>
+                    <td data-i18n="opvs_s1_sp">10 Units / 1 Plant</td>
+                    <td data-i18n="opvs_s1_d">Surplus above Y_cap funds Site Genesis Pool to endow Unit #11.</td>
+                  </tr>
+                  <tr>
+                    <td class="phase-cell c-nominal">Scale 2 · Clearing</td>
+                    <td data-i18n="opvs_s2_sp">Multi-Site Grid</td>
+                    <td data-i18n="opvs_s2_d">1 kWh parity across sites with tariff &amp; carbon intensity metadata.</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="formula-box" style="margin-top:1rem;">
+                OPERAE VIS · Founder &amp; Inventor: Canius, Antoine De Cagny · Contact: canius@operaevis.com
+              </div>
+            </div>
+          </div>
+
+          <!-- KIRCHHOFF DIAGNOSTIC SIGNATURES -->
+          <div class="card card-nominal" style="margin-top:1.25rem;">
+            <h3 class="c-nominal" data-i18n="opvs_kir_t">Kirchhoff Residual (ε_drift) Physical-Cryptographic Diagnostics</h3>
+            <table class="pilot-table">
+              <thead>
+                <tr>
+                  <th data-i18n="opvs_th_sig">Residual Signature (ε_drift)</th>
+                  <th data-i18n="opvs_th_diag">Physical or Cryptographic Diagnosis</th>
+                  <th data-i18n="opvs_th_resp">Automated Supervisor Response</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="phase-cell c-white" data-i18n="opvs_k1_s">Constant offset</td>
+                  <td data-i18n="opvs_k1_d">Charger efficiency model η miscalibrated across rate or ambient temperature.</td>
+                  <td data-i18n="opvs_k1_r">Refits η per charger bay; zero integrity alert.</td>
+                </tr>
+                <tr>
+                  <td class="phase-cell c-caution" data-i18n="opvs_k2_s">Slow monotonic upward drift</td>
+                  <td data-i18n="opvs_k2_d">Rising internal impedance in lithium packs causing thermal charging loss.</td>
+                  <td data-i18n="opvs_k2_r">Cross-correlates pack_id histories to retire degrading pack before field failure.</td>
+                </tr>
+                <tr>
+                  <td class="phase-cell c-caution" data-i18n="opvs_k3_s">Oscillating periodic drift</td>
+                  <td data-i18n="opvs_k3_d">Uncalibrated BMS shunt sensor or cyclic HVAC thermal skew inside swap bay.</td>
+                  <td data-i18n="opvs_k3_r">Flags bay sensor recalibration; isolates bay from baseline calibration.</td>
+                </tr>
+                <tr>
+                  <td class="phase-cell c-breach" data-i18n="opvs_k4_s">Instantaneous step discontinuity</td>
+                  <td data-i18n="opvs_k4_d">Unmetered electrical draw, spoofed swap telemetry, or unauthorized ledger injection.</td>
+                  <td data-i18n="opvs_k4_r">Freezes external Merkle audit root; triggers cryptographic integrity lock on node.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- MACHINE / EMBODIED ROBOT CONTEXT BLOCK -->
+          <div class="sim-panel" style="margin-top:1.5rem; border-color:var(--sig-nominal);">
+            <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:0.75rem; margin-bottom:0.75rem;">
+              <div>
+                <span class="eyebrow" style="color:var(--sig-nominal); margin-bottom:0.2rem; display:block;" data-i18n="opvs_ag_eye">EMBODIED AGENT &amp; VLA SYSTEM CONTEXT · APPLICATION/OPVS+JSON</span>
+                <h3 class="c-white" style="margin-bottom:0;" data-i18n="opvs_ag_t">Machine-Readable Survival Contract (Inject into Robot Policy Wrapper)</h3>
+              </div>
+              <button type="button" class="ctrl-btn btn-action-nominal" id="copy-agent-json" data-i18n="opvs_copy_btn">Copy Robot Context JSON</button>
+            </div>
+            <pre class="json-drawer" id="robot-agent-manifest" style="margin-top:0; max-height:320px;">{
+  "protocol": "OPVS_V2_SURVIVAL_MANIFOLD",
+  "motto": "ENERGY AS CURRENCY. SURVIVAL AS GOVERNANCE. THE PROTOCOL FOR MACHINE ECONOMIES.",
+  "unit_parity": { "1_OPVS_kWh": 1, "1_micro_OPVS_joules": 3.6, "type": "INT64" },
+  "triad_binding": {
+    "mind": "vla_policy_engine (e.g., gemini_robotics)",
+    "body": "electric_embodiment (e.g., atlas_56dof / spot / stretch via orbit)",
+    "metabolism": "opvs_on_prem_raft_ledger"
+  },
+  "agent_observation_schema": {
+    "X_work_kwh": "float64 (cumulative positive mechanical joint work)",
+    "Y_net_liquidity_micro_opvs": "int64 (Y_op - L_peer_debt)",
+    "Z_battery_micro_opvs": "int64 (0 <= Z <= Z_cap)",
+    "d_S_manifold_altitude_micro_opvs": "int64 (solvency buffer above swap + owed wear)",
+    "supervisor_zone": "enum[Z0_ASCENDING, Z1_STASIS, Z2_CONSERVATION, Z3_SOFT_BANKRUPTCY]"
+  },
+  "policy_directives": [
+    "1. SAFETY_PRECEDENCE: Kinematic, force, E-stop, human-separation, and thermal limits are hard invariants outside the economy. Never trade safety for OPVS.",
+    "2. GEODESIC_EFFICIENCY: Maximize intrinsic net margin delta_M = Wage - E_swap - delta_R_maint(torque_sq, temp_arrhenius) per kWh of mechanical work.",
+    "3. ANTI_ZOMBIE_RULE: Peer M2M credit (L) is a liability, never margin. Negative intrinsic pitch across 3 swaps triggers automatic checkpoint rollback."
+  ]
+}</pre>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-wrap">
+      <div class="seal-block">
+        <svg width="46" height="46" viewBox="0 0 100 100" aria-label="OPERAE VIS Seal">
+          <circle cx="50" cy="50" r="39" fill="none" stroke="#FFFFFF" stroke-width="11" />
+          <line x1="30" y1="50" x2="70" y2="50" stroke="#00E5FF" stroke-width="11" stroke-linecap="butt" />
+        </svg>
+        <div>
+          <div class="c-white" style="font-weight:700; letter-spacing:0.06em;">OPERAE VIS · DIGNVS EST OPERARIVS MERCEDE SVA</div>
+          <div style="font-size:0.8rem; color:var(--fg-muted);" data-i18n="footer_sub">Energy as Currency · Survival as Governance · www.operaevis.com · Founder &amp; Inventor: Canius, Antoine De Cagny</div>
+        </div>
+      </div>
+      <div class="sig">Θ Canius · Antoine De Cagny · 24/11/26</div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const I18N = {
+        en: {
+          doc_title: "OPERAE VIS — OPVS | Energy as Currency. Survival as Governance. The Protocol for Machine Economies.",
+          packshot_aria: "Energy as Currency. Survival as Governance. The Protocol for Machine Economies.",
+          leg_id: "IDENTITY / PERMISSIONED LEDGER",
+          leg_kwh: "ORBIT & kWh PARITY (Θ 1 OPVS ≡ 1 kWh)",
+          leg_z0: "▲ Z0 ASCENDING (+ΔM)",
+          leg_z12: "◆ DEEPMIND VLA / Z1-Z2 CONSERVE",
+          leg_z3: "✕ Z3 BREACH · SOFT BANKRUPTCY",
+          brand_sub: "OPERAE VIS · MIND × BODY × METABOLISM",
+          nav_wp: "Θ · Whitepaper",
+          nav_orbit: "I · Orbit",
+          nav_sim: "II · Simulator",
+          nav_dm: "III · DeepMind",
+          nav_opvs: "IV · OPVS Law",
+          seo_eye: "Θ OPVS V2.0 · 1 OPVS ≡ 1 KWH · EMBODIED AI & FLEET SETTLEMENT ARCHITECTURE",
+          m_l1_accent: "ENERGY",
+          m_l1_rest: "AS CURRENCY.",
+          m_l2_accent: "SURVIVAL",
+          m_l2_rest: "AS GOVERNANCE.",
+          m_l3: "THE PROTOCOL FOR MACHINE ECONOMIES.",
+          wp_vault_badge: "CENTRAL VAULT · DOWNLOAD-ONLY ACCESS · ZERO ON-PAGE PROSE",
+          wp_title: "OPVS v2.0 — Energy as Currency. Survival as Governance.",
+          wp_meta: "SPECIFICATION V2.0 · 24/11/26 · 19 PAGES · AUTHOR: CANIUS · LINEAGE: D-TEAM (2016) → OPVS (2026)",
+          wp_m1_l: "Parity Invariant",
+          wp_m2_l: "Atomic Ledger Integer",
+          wp_m3_l: "Access Policy",
+          wp_m3_v: "PDF Download Required",
+          wp_dl_btn: "⬇ Download Official Whitepaper PDF (v2.0 · 19 pp.)",
+          wp_notice_lbl: "NOTICE:",
+          wp_notice_txt: "Boston Dynamics, Orbit, Spot, Stretch, Atlas, Google DeepMind, Gemini Robotics, Google Cloud, and Hyundai are named from public sources as target platforms and reference architectures. OPERAE VIS has no partnership, endorsement, or commercial agreement with any of them; all trademarks belong to their respective owners. Numerical examples across simulators are illustrative and uncalibrated.",
+          bd_eye: "SOLUTION SHOWCASE 01 · DIRECTOR OF ORBIT SOFTWARE BRIEFING (BOSTON DYNAMICS)",
+          bd_title: "Native Metabolic Accounting for Orbit™ Fleet Orchestration & Electric Atlas",
+          bd_lead: "Orbit unifies physical-to-digital site visibility across Spot, Stretch, and 56-DoF electric Atlas. OPVS plugs directly into Orbit Webhooks, REST APIs, and autonomous battery-swap BMS bays—adding per-unit economic solvency, actuator wear escrow, and audited hourly ROI without modifying robot hardware or operator consoles.",
+          bd_c1_t: "Cloud, 1U Site Hub & OVA Parity",
+          bd_c1_p: "Deploys as a 3- or 5-node permissioned Raft cluster alongside AWS-hosted Orbit, 1U on-premise Site Hub rack hardware, or air-gapped OVA Virtual Machines within SOC2 Type II and SAML SSO boundaries. Swaps never block on network outages via cached UUID Idempotency-Keys.",
+          bd_c2_t: "Site View, Stretch & Atlas Synergy",
+          bd_c2_p: "Converts Orbit task completions—Spot 360° Site View thermal/acoustic checks, Stretch trailer case throughput, and Atlas 30 kg sustained / 50 kg peak lifts—into integer µOPVS wages reconciled against 3-minute autonomous battery swaps.",
+          bd_c3_t: "Zero-Halt Soft Bankruptcy",
+          bd_c3_p: "If an experimental manipulation policy over-heats actuators or drains battery packs below the curved Survival Manifold (d_S ≤ 0), Supervisor Mode authorizes an emergency swap overdraft so the factory line never stalls—while rolling back the policy checkpoint.",
+          pr_eye: "LIVE ORBIT × OPVS SUPERVISOR CONSOLE · REFERENCE SITE: HYUNDAI GEORGIA METAPLANT",
+          pr_title: "10 Electric Atlas Humanoids · Real-Time Solvency & Swap Roster",
+          pr_warn: "PERMISSIONED OT-LAN SETTLEMENT STREAM · mTLS v1.3 · ED25519 HARDWARE WALLETS · IDEMPOTENCY LOCK",
+          flt_all: "All (10)",
+          flt_nom: "▲ Z0/Z1 Nominal / Stasis",
+          flt_alert: "✕ Z2/Z3 Conservation / Breach",
+          flt_search: "Filter unit ID or policy...",
+          roster_empty: "No Atlas units match the active zone filter or search query.",
+          btn_step: "⚡ Step 4h Work-Swap Cycle",
+          trig_reck: "⚠️ Sim Reckless Policy (v2.5)",
+          trig_zom: "🧬 Sim Zombie Helix",
+          btn_roster_reset: "↺ Reset Fleet",
+          cta_sim: "Open Unit in Survival Lab →",
+          kpi_sub: "η · E_substation (OPVS eq.)",
+          kpi_swaps: "Σ OPVS_swap Debits",
+          kpi_buf: "ΔE_bay_buffer",
+          kpi_eps: "Kirchhoff Residual ε_drift",
+          th_wlt: "Wallet ID",
+          th_pol: "Active VLA Policy",
+          th_liq: "Liquidity (µOPVS)",
+          th_soc: "Battery SoC",
+          th_ds: "Altitude d_S",
+          th_pitch: "Pitch θ_intrinsic",
+          th_therm: "Thermal Intensity",
+          th_zone: "Supervisor Zone & Status",
+          drawer_hint: "Click any Atlas unit row above to inspect its hardware-bound Ed25519 wallet, Survival Manifold altitude, and double-entry settlement proof.",
+          pil_eye: "90-DAY CLOSED-SITE REFERENCE DEPLOYMENT",
+          pil_title: "Four Phases to the First Audited Machine Balance Sheet",
+          th_phase: "Phase",
+          th_win: "Window",
+          th_obj: "Operational Objective",
+          th_exit: "Verification Exit Criterion",
+          p1_n: "Phase 1 · Shadow Mode",
+          p1_w: "Days 1–15",
+          p1_o: "Read-only telemetry ingestion from Orbit webhooks, swap-bay BMS, MES, and Atlas joint sensors; zero production interference.",
+          p1_e: "Calibration of 1 OPVS = 1 kWh parity and manifold wear constants (α, β, γ).",
+          p2_n: "Phase 2 · Endowed Loop",
+          p2_w: "Days 16–45",
+          p2_o: "Activate 10 endowed wallets (14–18 rotating battery packs) running live Work → Earn → Swap settlement on the OT-LAN ledger.",
+          p2_e: "Autonomous loop closure without manual invoicing; Kirchhoff residual ε_drift within tolerance.",
+          p3_n: "Phase 3 · Margin Switchback",
+          p3_w: "Days 46–75",
+          p3_o: "5 units conditioned on live ΔM reward webhooks vs. 5 control units; M2M subcontracting and Zombie Helix filters active.",
+          p3_e: "Statistically significant gain in net margin (OPVS/h) and θ_intrinsic with zero safety regressions.",
+          p4_n: "Phase 4 · External Audit",
+          p4_w: "Days 76–90",
+          p4_o: "Freeze protocol constants; reconcile cryptographic Merkle roots directly against plant substation kWh meters.",
+          p4_e: "Publication of the first audited machine balance sheet (P&L, energy cash flow, asset ROI).",
+          sim_bar_tag: "SCALE L2 · WORKFORCE OS v2.0",
+          sim_bar_title: "3D Xi'an Terracotta Phalanx · 48 Robots · Embodied SIRH Payslip & Gemini VLA Bridge",
+          sim_open_full: "↗ Standalone /workforce-os",
+          sim_eye: "SCALE L2 · UNIFIED 4D KIRCHHOFF SANDBOX · TERRACOTTA PHALANX MATRIX & CORE API v1",
+          sim_title: "Orbit × Atlas 4D Terracotta Matrix & Kirchhoff Ledger Simulator",
+          sim_lead: "Command the 20-unit Atlas phalanx arranged on a 4D Terracotta Matrix (ΔWh × d_S × τ² × Thermal Grade). Tune task wages, battery swaps, joint temperature, and torque fatigue to observe formation shifts, performance recoloring, and Ascension Peak aura luminescence.",
+          sim_banner: "DETERMINISTIC 4D MATRIX CONSOLE · STRICT INT64 µOPVS ARITHMETIC · ZERO FLOATING-POINT CURRENCY",
+          sim_ctrl_title: "01 · TROOP UNIT & 4D MATRIX PARAMETERS",
+          sim_unit_lbl: "Target Atlas Wallet",
+          sim_preset_lbl: "Stress & Policy Scenario",
+          pre_nom: "Margin AI v2.4",
+          pre_therm: "Thermal Surge",
+          pre_low: "Low-Yield Shift",
+          pre_zom: "Exp v2.5 Breach",
+          sim_wage_lbl: "Task Wage (µOPVS)",
+          sim_wh_lbl: "Matrix X · Swap Energy ΔWh",
+          sim_temp_lbl: "Matrix W · Joint Temp (°C · Grade Color)",
+          sim_torq_lbl: "Matrix Z · Torque² Rank Depth",
+          sim_override_t: "02 · HUMAN-ON-THE-LOOP OVERRIDE",
+          btn_quar: "Quarantine Policy",
+          btn_sever: "Sever Zombie Credit",
+          g5_step1: "⚡ +1 Cycle (4h)",
+          g5_step6: "⏩ +6 Cycles (24h)",
+          g5_export: "Export Balance Sheet",
+          g5_reset: "↺ Reset Simulation",
+          g5_k_liq: "Operational Liquidity (Y)",
+          g5_k_ds: "Matrix Altitude d_S",
+          g5_k_dm: "Last Cycle Margin ΔM",
+          g5_k_esc: "Maintenance Escrow R_maint",
+          g5_chart_t: "4D TERRACOTTA TROOP MATRIX — ΔWh × d_S × τ² × PERFORMANCE",
+          api_swap_d: "Atomic BMS battery swap debit at 1,000 µOPVS/Wh (triggers Zone 3 overdraft if Y < E_swap).",
+          api_swap_b: "Dispatch Swap",
+          api_task_d: "Settle Orbit/MES task wage & joint wear escrow; emits margin webhook.",
+          api_task_b: "Settle Task",
+          api_m2m_d: "Subcontract 1.50 OPVS from wlt_atlas_01 to target (HTTP 422 if Zombie Helix locked).",
+          api_m2m_b: "M2M Transfer",
+          api_tip_d: "Credit +250,000 µOPVS human operator edge-recovery bonus (excluded from policy promotion).",
+          api_tip_b: "Credit +0.25 OPVS Tip",
+          g5_log_t: "APPEND-ONLY LEDGER & WEBHOOK STREAM (SHA-256 CHAIN)",
+          g5_kirch_ok: "KIRCHHOFF: CLOSED_WITHIN_TOLERANCE",
+          dm_eye: "SOLUTION SHOWCASE 02 · HEAD OF ROBOTICS & VLA RESEARCH BRIEFING (GOOGLE DEEPMIND)",
+          dm_main_t: "Thermodynamic Grounding for Embodied VLA Policies & Gemini Robotics",
+          dm_main_l: "Simulation rewards optimize task completion speed while ignoring harmonic-drive fatigue, winding temperature, and battery swap cost. OPVS supplies embodied foundation models with an exact, ungameable physical scalar—net energy margin ΔM—while enforcing hard safety orthogonality.",
+          dm_v1_t: "Geodesic Minimum-Effort Control",
+          dm_v1_p: "Conditioning VLA policies on reward.margin_settled teaches agents to navigate geodesics on the curved Survival Manifold—minimizing quadratic torque norms and thermal spikes per verified industrial output.",
+          dm_v2_t: "Zombie Helix Quarantine",
+          dm_v2_p: "Prevents reward hacking in multi-agent fleets: if a policy masks negative intrinsic margin (θ_int < 0) across 3 consecutive swaps via peer M2M borrowing or tips, Supervisor severs inbound credit and rolls back the checkpoint.",
+          dm_v3_t: "Safety Strictly Outside Economy",
+          dm_v3_p: "No OPVS balance or task bounty can relax joint force, velocity, human-separation, E-stop, or thermal limits. The economy evaluates outcomes after safe motion—it never commands actuation.",
+          dm_sub_eye: "LIVE INTEGRATION SANDBOX · ORBIT ↔ AIVI-LEARNING ↔ ATLASWAGESERVICE → OPVS",
+          dm_title: "Bidirectional LearningEvent Sync & Idempotent µOPVS Wage Settlement",
+          dm_s1_k: "01 · EVENT SOURCE",
+          dm_p1: "Bidirectional state sync on every LearningEvent",
+          dm_s2_k: "02 · ADAPTER GATE",
+          dm_p2: "Filters agent=\"atlas\" & qualifying actions",
+          dm_s3_k: "03 · IDEMPOTENCY",
+          dm_p3: "ROUND_HALF_UP wage + _processed_events lock",
+          dm_s4_k: "04 · OPVS SETTLEMENT",
+          dm_p4: "Credits INT64 µOPVS at 1 OPVS = 1 kWh parity",
+          dm_ctrl_t: "LEARNING EVENT DISPATCHER",
+          dm_new_id: "New ID",
+          dm_send: "⚡ Dispatch LearningEvent",
+          dm_replay: "↻ Replay Last event_id (Test Idempotency)",
+          dm_reset: "↺ Reset Adapter State",
+          dm_k_wlt: "Atlas OPVS Balance (wlt_atlas_01)",
+          dm_k_cred: "Total Atlas CREDITS",
+          dm_k_proc: "Processed Events (_processed_events)",
+          dm_k_sync: "Last Adapter Sync Result",
+          dm_log_t: "ORBIT ↔ AIVI ↔ ATLAS ADAPTER EXECUTION LOG",
+          dm_log_empty: "Click \"Dispatch LearningEvent\" to execute Orbit ↔ AIVI sync, ROUND_HALF_UP wage math, and idempotent µOPVS settlement.",
+          dm_json_empty: "Dispatch a LearningEvent to inspect deterministic Orbit ↔ AIVI ↔ OPVS settlement JSON.",
+          opvs_eye: "SCALE L4 · UNIVERSAL THERMODYNAMIC AXIOMS, KIRCHHOFF AUDIT & EMBODIED AGENT INTERFACE",
+          opvs_title: "The Metabolic Law of OPVS — For Engineers & Autonomous Robots",
+          opvs_lead: "Intelligence without a body is a ghost; a body without a metabolism is a statue. OPVS binds kinetic work (X), net operational liquidity (Y = Y_op − L), and stored onboard energy (Z) into a single kWh-denominated coordinate space closed by physical substation meters.",
+          opvs_c1_t: "01 · 3D Energy Phase Space",
+          opvs_c1_p: "Every unit occupies (X, Y, Z) in kWh ≡ OPVS. One Work → Earn → Swap cycle yields net displacement R_cycle = (ΔW, ΔM, 0) and climb pitch θ = arctan(ΔM / ΔW).",
+          opvs_c2_t: "02 · Curved Survival Manifold S",
+          opvs_c2_p: "High-payload actuation bends the solvency floor upward via quadratic joint torque fatigue and Arrhenius winding ageing (halving life per +10 K above T_nom).",
+          opvs_c3_t: "03 · Kirchhoff Substation Closure",
+          opvs_c3_p: "Every OPVS debited at swap bays reconciles against physical transformer meters, isolating charger drift, pack impedance ageing, or ledger spoofing.",
+          opvs_sup_t: "Supervisor Governance Priority (Evaluated 3 → 2 → 0 → 1)",
+          opvs_th_z: "Zone",
+          opvs_th_tr: "Trigger",
+          opvs_th_ac: "Autonomous Action",
+          opvs_z3_d: "Authorized swap overdraft; quarantine & rollback failing policy.",
+          opvs_z2_d: "High-OPVS/kWh queue filter; M2M subcontracting / liability credit.",
+          opvs_z0_d: "Nominal execution; eligible for 72h Proof-of-Metabolism replication.",
+          opvs_z1_d: "Joint torque & path efficiency audit; replication frozen.",
+          opvs_fr_t: "Fractal Scaling & Direct Executive Channel",
+          opvs_th_sc: "Scale",
+          opvs_th_sp: "Scope",
+          opvs_th_mc: "Mechanism",
+          opvs_s0_sp: "1 Humanoid",
+          opvs_s0_d: "Self-auditing wallet navigating curved Survival Manifold S.",
+          opvs_s1_sp: "10 Units / 1 Plant",
+          opvs_s1_d: "Surplus above Y_cap funds Site Genesis Pool to endow Unit #11.",
+          opvs_s2_sp: "Multi-Site Grid",
+          opvs_s2_d: "1 kWh parity across sites with tariff & carbon intensity metadata.",
+          opvs_kir_t: "Kirchhoff Residual (ε_drift) Physical-Cryptographic Diagnostics",
+          opvs_th_sig: "Residual Signature (ε_drift)",
+          opvs_th_diag: "Physical or Cryptographic Diagnosis",
+          opvs_th_resp: "Automated Supervisor Response",
+          opvs_k1_s: "Constant offset",
+          opvs_k1_d: "Charger efficiency model η miscalibrated across rate or ambient temperature.",
+          opvs_k1_r: "Refits η per charger bay; zero integrity alert.",
+          opvs_k2_s: "Slow monotonic upward drift",
+          opvs_k2_d: "Rising internal impedance in lithium packs causing thermal charging loss.",
+          opvs_k2_r: "Cross-correlates pack_id histories to retire degrading pack before field failure.",
+          opvs_k3_s: "Oscillating periodic drift",
+          opvs_k3_d: "Uncalibrated BMS shunt sensor or cyclic HVAC thermal skew inside swap bay.",
+          opvs_k3_r: "Flags bay sensor recalibration; isolates bay from baseline calibration.",
+          opvs_k4_s: "Instantaneous step discontinuity",
+          opvs_k4_d: "Unmetered electrical draw, spoofed swap telemetry, or unauthorized ledger injection.",
+          opvs_k4_r: "Freezes external Merkle audit root; triggers cryptographic integrity lock on node.",
+          opvs_ag_eye: "EMBODIED AGENT & VLA SYSTEM CONTEXT · APPLICATION/OPVS+JSON",
+          opvs_ag_t: "Machine-Readable Survival Contract (Inject into Robot Policy Wrapper)",
+          opvs_copy_btn: "Copy Robot Context JSON",
+          opvs_copied: "✓ Copied to Clipboard",
+          footer_sub: "Energy as Currency · Survival as Governance · www.operaevis.com · Founder & Inventor: Canius, Antoine De Cagny"
+        },
+        fr: {
+          doc_title: "OPERAE VIS — OPVS | L'Énergie comme Monnaie. La Survie comme Gouvernance. Le Protocole des Économies de Machines.",
+          packshot_aria: "L'Énergie comme Monnaie. La Survie comme Gouvernance. Le Protocole des Économies de Machines.",
+          leg_id: "IDENTITÉ / REGISTRE PERMISSIONNÉ",
+          leg_kwh: "ORBIT & PARITÉ kWh (Θ 1 OPVS ≡ 1 kWh)",
+          leg_z0: "▲ Z0 ASCENSION (+ΔM)",
+          leg_z12: "◆ DEEPMIND VLA / Z1-Z2 RÉSERVE",
+          leg_z3: "✕ Z3 RUPTURE · FAILLITE DOUCE",
+          brand_sub: "OPERAE VIS · ESPRIT × CORPS × MÉTABOLISME",
+          nav_wp: "Θ · Livre Blanc",
+          nav_orbit: "I · Orbit",
+          nav_sim: "II · Simulateur",
+          nav_dm: "III · DeepMind",
+          nav_opvs: "IV · Loi OPVS",
+          seo_eye: "Θ OPVS V2.0 · 1 OPVS ≡ 1 KWH · ARCHITECTURE DE RÈGLEMENT POUR IA INCARNÉE & FLOTTES ROBOTIQUES",
+          m_l1_accent: "L'ÉNERGIE",
+          m_l1_rest: "COMME MONNAIE.",
+          m_l2_accent: "LA SURVIE",
+          m_l2_rest: "COMME GOUVERNANCE.",
+          m_l3: "LE PROTOCOLE DES ÉCONOMIES DE MACHINES.",
+          wp_vault_badge: "COFFRE CENTRAL · TÉLÉCHARGEMENT UNIQUEMENT · ZÉRO TEXTE SUR PAGE",
+          wp_title: "OPVS v2.0 — L'Énergie comme Monnaie. La Survie comme Gouvernance.",
+          wp_meta: "SPÉCIFICATION V2.0 · 24/11/26 · 19 PAGES · AUTEUR : CANIUS · LIGNÉE : D-TEAM (2016) → OPVS (2026)",
+          wp_m1_l: "Invariant de Parité",
+          wp_m2_l: "Entier Atomique",
+          wp_m3_l: "Mode d'Accès",
+          wp_m3_v: "Téléchargement PDF Requis",
+          wp_dl_btn: "⬇ Télécharger le Livre Blanc Officiel PDF (v2.0 · 19 pp.)",
+          wp_notice_lbl: "AVIS :",
+          wp_notice_txt: "Boston Dynamics, Orbit, Spot, Stretch, Atlas, Google DeepMind, Gemini Robotics, Google Cloud et Hyundai sont cités à partir de sources publiques comme plateformes cibles et architectures de référence. OPERAE VIS n'a aucun partenariat, parrainage ni accord commercial avec ces entités ; toutes les marques appartiennent à leurs propriétaires respectifs. Les valeurs numériques des simulateurs sont illustratives et non calibrées.",
+          bd_eye: "VITRINE SOLUTION 01 · BRIEFING DIRECTEUR LOGICIEL ORBIT (BOSTON DYNAMICS)",
+          bd_title: "Comptabilité Métabolique Native pour Orbit™ & Atlas Électrique",
+          bd_lead: "Orbit unifie la supervision de Spot, Stretch et Atlas 56-DoF. OPVS se connecte aux Webhooks Orbit, APIs REST et baies BMS de swap batterie — ajoutant solvabilité par unité, séquestre d'usure articulaire et ROI horaire audité sans modifier le matériel ni les consoles opérateurs.",
+          bd_c1_t: "Parité Cloud, Site Hub 1U & OVA",
+          bd_c1_p: "Se déploie en cluster Raft (3 ou 5 nœuds) aux côtés d'Orbit AWS, du Site Hub 1U sur site ou de machines virtuelles OVA isolées sous gouvernance SOC2 Type II et SSO SAML. Tolérance hors-ligne garantie par Idempotency-Key UUID.",
+          bd_c2_t: "Synergie Site View, Stretch & Atlas",
+          bd_c2_p: "Convertit les missions Orbit — inspections Site View 360° de Spot, cadence de déchargement Stretch et levages Atlas (30 kg continu / 50 kg crête) — en salaires µOPVS entiers réconciliés à chaque swap de 3 minutes.",
+          bd_c3_t: "Faillite Douce Sans Arrêt Usine",
+          bd_c3_p: "Si une politique expérimentale surchauffe les actionneurs ou franchit la variété de survie (d_S ≤ 0), le Superviseur autorise un découvert de swap d'urgence pour ne jamais bloquer la ligne tout en restaurant la dernière politique rentable.",
+          pr_eye: "CONSOLE SUPERVISEUR ORBIT × OPVS · SITE DE RÉFÉRENCE : HYUNDAI GEORGIA",
+          pr_title: "10 Humanoïdes Atlas Électriques · Solvabilité & Swaps en Direct",
+          pr_warn: "FLUX OT-LAN PERMISSIONNÉ · mTLS v1.3 · PORTEFEUILLES MATÉRIELS ED25519 · VERROU D'IDÉMPOTENCE",
+          flt_all: "Toutes (10)",
+          flt_nom: "▲ Z0/Z1 Nominal / Stase",
+          flt_alert: "✕ Z2/Z3 Conservation / Rupture",
+          flt_search: "Filtrer unité ou politique...",
+          roster_empty: "Aucune unité Atlas ne correspond au filtre ou à la recherche.",
+          btn_step: "⚡ Avancer d'un Cycle (4 h)",
+          trig_reck: "⚠️ Simuler Politique v2.5",
+          trig_zom: "🧬 Simuler Hélice Zombie",
+          btn_roster_reset: "↺ Réinitialiser Flotte",
+          cta_sim: "Ouvrir dans le Labo Survie →",
+          kpi_sub: "η · E_substation (éq. OPVS)",
+          kpi_swaps: "Σ Débits OPVS_swap",
+          kpi_buf: "ΔE_tampon_baie",
+          kpi_eps: "Résidu Kirchhoff ε_drift",
+          th_wlt: "Portefeuille",
+          th_pol: "Politique VLA Active",
+          th_liq: "Liquidité (µOPVS)",
+          th_soc: "SoC Batterie",
+          th_ds: "Altitude d_S",
+          th_pitch: "Pente θ_intrinsic",
+          th_therm: "Intensité Thermique",
+          th_zone: "Zone Superviseur & Statut",
+          drawer_hint: "Cliquez sur une unité Atlas ci-dessus pour inspecter son portefeuille matériel Ed25519, son altitude d_S et sa preuve comptable à partie double.",
+          pil_eye: "DÉPLOIEMENT DE RÉFÉRENCE EN SITE FERMÉ (90 JOURS)",
+          pil_title: "Quatre Phases jusqu'au Premier Bilan Machine Audité",
+          th_phase: "Phase",
+          th_win: "Fenêtre",
+          th_obj: "Objectif Opérationnel",
+          th_exit: "Critère de Validation",
+          p1_n: "Phase 1 · Mode Fantôme",
+          p1_w: "Jours 1–15",
+          p1_o: "Ingestion télémétrique en lecture seule depuis les webhooks Orbit, baies BMS, MES et capteurs articulaires Atlas ; zéro interférence production.",
+          p1_e: "Calibration de la parité 1 OPVS = 1 kWh et des constantes d'usure (α, β, γ).",
+          p2_n: "Phase 2 · Boucle Dotée",
+          p2_w: "Jours 16–45",
+          p2_o: "Activation de 10 portefeuilles dotés (14 à 18 packs batteries en rotation) exécutant la boucle Work → Earn → Swap sur le registre OT-LAN.",
+          p2_e: "Bouclage autonome sans facturation manuelle ; résidu Kirchhoff ε_drift dans les tolérances.",
+          p3_n: "Phase 3 · Test Switchback",
+          p3_w: "Jours 46–75",
+          p3_o: "5 unités conditionnées par webhooks de marge ΔM contre 5 unités témoins ; sous-traitance M2M et filtres Hélice Zombie actifs.",
+          p3_e: "Gain statistiquement significatif de marge nette (OPVS/h) et θ_intrinsic sans régression sécurité.",
+          p4_n: "Phase 4 · Audit Externe",
+          p4_w: "Jours 76–90",
+          p4_o: "Gel des constantes du protocole ; réconciliation des racines de Merkle face aux compteurs kWh de sous-station.",
+          p4_e: "Publication du premier bilan machine audité (compte de résultat, flux d'énergie, ROI actif).",
+          sim_bar_tag: "ÉCHELLE L2 · WORKFORCE OS v2.0",
+          sim_bar_title: "Phalange Xi'an 3D · 48 Robots · Fiche de Paie SIRH & Gemini VLA Bridge",
+          sim_open_full: "↗ Mode Plein Écran /workforce-os",
+          sim_eye: "ÉCHELLE L2 · CONSOLE 4D UNIFIÉE · MATRICE PHALANGE TERRE CUITE & CORE API v1",
+          sim_title: "Simulateur Matrice 4D Terre Cuite Orbit × Atlas & Registre Kirchhoff",
+          sim_lead: "Pilotez la phalange de 20 robots Atlas déployée sur une Matrice 4D en terre cuite (ΔWh × d_S × τ² × Performance). Ajustez salaires, swaps batteries, température et couple pour voir la troupe se repositionner, changer de couleur et illuminer le Pic d'Ascension.",
+          sim_banner: "CONSOLE MATRICE 4D DÉTERMINISTE · ARITHMÉTIQUE ENTIÈRE INT64 µOPVS · ZÉRO VIRGULE FLOTTANTE",
+          sim_ctrl_title: "01 · UNITÉ & PARAMÈTRES MATRICE 4D",
+          sim_unit_lbl: "Portefeuille Atlas Cible",
+          sim_preset_lbl: "Scénario de Contrainte & Politique",
+          pre_nom: "Margin AI v2.4",
+          pre_therm: "Pic Thermique",
+          pre_low: "Poste Sous-Rendement",
+          pre_zom: "Rupture Exp v2.5",
+          sim_wage_lbl: "Salaire Tâche (µOPVS)",
+          sim_wh_lbl: "Matrice X · Énergie Swap ΔWh",
+          sim_temp_lbl: "Matrice W · Temp. (°C · Couleur Grade)",
+          sim_torq_lbl: "Matrice Z · Rang Couple² τ²",
+          sim_override_t: "02 · SUPERVISION HUMAINE (OVERRIDE)",
+          btn_quar: "Mettre en Quarantaine",
+          btn_sever: "Couper Crédit Zombie",
+          g5_step1: "⚡ +1 Cycle (4h)",
+          g5_step6: "⏩ +6 Cycles (24h)",
+          g5_export: "Exporter Bilan JSON",
+          g5_reset: "↺ Réinitialiser",
+          g5_k_liq: "Liquidité Opérationnelle (Y)",
+          g5_k_ds: "Altitude Matrice d_S",
+          g5_k_dm: "Marge Dernier Cycle ΔM",
+          g5_k_esc: "Séquestre Maintenance R_maint",
+          g5_chart_t: "MATRICE 4D TROUPE TERRE CUITE — ΔWh × d_S × τ² × PERFORMANCE",
+          api_swap_d: "Débit atomique swap BMS à 1 000 µOPVS/Wh (déclenche découvert Zone 3 si Y < E_swap).",
+          api_swap_b: "Exécuter Swap",
+          api_task_d: "Règle le salaire Orbit/MES et la provision d'usure articulaire ; émet le webhook de marge.",
+          api_task_b: "Régler Tâche",
+          api_m2m_d: "Sous-traitance de 1,50 OPVS depuis wlt_atlas_01 vers cible (HTTP 422 si Hélice Zombie).",
+          api_m2m_b: "Transfert M2M",
+          api_tip_d: "Crédite +250 000 µOPVS de prime opérateur humain (exclu de la promotion de politique).",
+          api_tip_b: "Pourboire +0.25 OPVS",
+          g5_log_t: "REGISTRE APPEND-ONLY & FLUX WEBHOOKS (CHAÎNE SHA-256)",
+          g5_kirch_ok: "KIRCHHOFF : BOUCLÉ_DANS_TOLÉRANCE",
+          dm_eye: "VITRINE SOLUTION 02 · BRIEFING DIRECTION ROBOTIQUE & RECHERCHE VLA (GOOGLE DEEPMIND)",
+          dm_main_t: "Ancrage Thermodynamique pour Politiques VLA Incarnées & Gemini Robotics",
+          dm_main_l: "Les récompenses de simulation optimisent la vitesse brute en ignorant la fatigue des réducteurs harmoniques, l'échauffement des bobinages et le coût des swaps. OPVS fournit aux modèles incarnés un scalaire physique infalsifiable — la marge nette ΔM — sous orthogonalité stricte de sécurité.",
+          dm_v1_t: "Contrôle Géodésique à Moindre Effort",
+          dm_v1_p: "Conditionner les politiques VLA sur reward.margin_settled apprend aux agents à suivre des géodésiques sur la variété de survie — minimisant couple² et pics thermiques par unité produite.",
+          dm_v2_t: "Quarantaine des Hélices Zombies",
+          dm_v2_p: "Empêche le reward hacking multi-agents : si une politique masque une marge intrinsèque négative (θ_int < 0) sur 3 swaps consécutifs par emprunt M2M ou pourboires, le Superviseur coupe le crédit et restaure le checkpoint.",
+          dm_v3_t: "Sécurité Strictement Hors Économie",
+          dm_v3_p: "Aucun solde OPVS ne peut assouplir les limites d'effort, de vitesse, de séparation humaine, d'arrêt d'urgence ou de température. L'économie évalue après coup — elle ne commande jamais le mouvement.",
+          dm_sub_eye: "BAC À SABLE D'INTÉGRATION · ORBIT ↔ AIVI-LEARNING ↔ ATLASWAGESERVICE → OPVS",
+          dm_title: "Synchro Bidirectionnelle LearningEvent & Règlement Salarial µOPVS Idempotent",
+          dm_s1_k: "01 · SOURCE ÉVÉNEMENT",
+          dm_p1: "Synchronisation bidirectionnelle sur chaque LearningEvent",
+          dm_s2_k: "02 · FILTRE ADAPTATEUR",
+          dm_p2: "Filtre agent=\"atlas\" & actions qualifiantes",
+          dm_s3_k: "03 · IDÉMPOTENCE",
+          dm_p3: "Calcul ROUND_HALF_UP + verrou _processed_events",
+          dm_s4_k: "04 · RÈGLEMENT OPVS",
+          dm_p4: "Crédite INT64 µOPVS à parité 1 OPVS = 1 kWh",
+          dm_ctrl_t: "ÉMETTEUR LEARNING EVENT",
+          dm_new_id: "Nouvel ID",
+          dm_send: "⚡ Envoyer LearningEvent",
+          dm_replay: "↻ Rejouer event_id (Test Idempotence)",
+          dm_reset: "↺ Réinitialiser l'Adaptateur",
+          dm_k_wlt: "Solde OPVS Atlas (wlt_atlas_01)",
+          dm_k_cred: "Total CREDITS Atlas",
+          dm_k_proc: "Événements Traités (_processed_events)",
+          dm_k_sync: "Dernière Synchro Adaptateur",
+          dm_log_t: "JOURNAL D'EXÉCUTION ORBIT ↔ AIVI ↔ ATLAS",
+          dm_log_empty: "Cliquez sur « Envoyer LearningEvent » pour exécuter la synchro Orbit ↔ AIVI, le calcul ROUND_HALF_UP et le règlement µOPVS idempotent.",
+          dm_json_empty: "Envoyez un LearningEvent pour inspecter le JSON déterministe Orbit ↔ AIVI ↔ OPVS.",
+          opvs_eye: "ÉCHELLE L4 · AXIOMES THERMODYNAMIQUES, AUDIT KIRCHHOFF & INTERFACE AGENT INCARNÉ",
+          opvs_title: "La Loi Métabolique OPVS — Pour Ingénieurs & Robots Autonomes",
+          opvs_lead: "Une intelligence sans corps est un fantôme ; un corps sans métabolisme est une statue. OPVS relie le travail mécanique (X), la liquidité nette (Y = Y_op − L) et l'énergie embarquée (Z) dans un repère unique en kWh bouclé sur les compteurs de sous-station.",
+          opvs_c1_t: "01 · Espace de Phase Énergétique 3D",
+          opvs_c1_p: "Chaque unité occupe (X, Y, Z) en kWh ≡ OPVS. Un cycle Work → Earn → Swap produit le déplacement net R_cycle = (ΔW, ΔM, 0) et l'angle θ = arctan(ΔM / ΔW).",
+          opvs_c2_t: "02 · Variété de Survie Courbe S",
+          opvs_c2_p: "Les charges lourdes courbent le seuil de solvabilité via la fatigue quadratique de couple et le vieillissement thermique d'Arrhenius (durée de vie divisée par 2 par +10 K).",
+          opvs_c3_t: "03 · Bouclage Sous-Station de Kirchhoff",
+          opvs_c3_p: "Chaque OPVS débité aux baies de swap est réconcilié face aux transformateurs physiques, isolant dérive chargeur, impédance batterie ou injection frauduleuse.",
+          opvs_sup_t: "Priorité du Superviseur (Évaluée 3 → 2 → 0 → 1)",
+          opvs_th_z: "Zone",
+          opvs_th_tr: "Seuil",
+          opvs_th_ac: "Action Autonome",
+          opvs_z3_d: "Découvert de swap autorisé ; quarantaine et rollback de la politique défaillante.",
+          opvs_z2_d: "File restreinte aux tâches haut OPVS/kWh ; sous-traitance M2M / dette inscrite au passif.",
+          opvs_z0_d: "Exécution nominale ; éligible à la réplication Proof-of-Metabolism sur 72 h.",
+          opvs_z1_d: "Audit automatique de couple et de trajectoire ; réplication gelée.",
+          opvs_fr_t: "Échelle Fractale & Canal Exécutif Direct",
+          opvs_th_sc: "Échelle",
+          opvs_th_sp: "Périmètre",
+          opvs_th_mc: "Mécanisme",
+          opvs_s0_sp: "1 Humanoïde",
+          opvs_s0_d: "Portefeuille auto-audité naviguant sur la variété de survie courbe S.",
+          opvs_s1_sp: "10 Unités / 1 Usine",
+          opvs_s1_d: "L'excédent Y > Y_cap alimente le Genesis Pool du site pour doter l'Unité #11.",
+          opvs_s2_sp: "Réseau Multi-Sites",
+          opvs_s2_d: "Compensation à parité 1 kWh avec métadonnées tarifaires et intensité carbone.",
+          opvs_kir_t: "Diagnostics Physico-Cryptographiques du Résidu de Kirchhoff (ε_drift)",
+          opvs_th_sig: "Signature Résiduelle (ε_drift)",
+          opvs_th_diag: "Diagnostic Physique ou Cryptographique",
+          opvs_th_resp: "Réponse Automatique du Superviseur",
+          opvs_k1_s: "Décalage constant",
+          opvs_k1_d: "Rendement chargeur η mal calibré selon le courant ou la température ambiante.",
+          opvs_k1_r: "Recalibre η par baie de charge ; aucune alerte d'intégrité.",
+          opvs_k2_s: "Dérive lente monotone haussière",
+          opvs_k2_d: "Hausse d'impédance interne des packs lithium causant des pertes thermiques.",
+          opvs_k2_r: "Corrèle l'historique pack_id pour retirer le pack avant défaillance terrain.",
+          opvs_k3_s: "Dérive périodique oscillante",
+          opvs_k3_d: "Capteur shunt BMS décalibré ou cycle CVC thermique dans la baie de swap.",
+          opvs_k3_r: "Signale la recalibration du capteur ; isole la baie de la référence site.",
+          opvs_k4_s: "Discontinuité brutale en échelon",
+          opvs_k4_d: "Soutirage électrique non compté, télémétrie usurpée ou injection sur le registre.",
+          opvs_k4_r: "Gèle la racine d'audit Merkle externe ; verrouillage d'intégrité cryptographique.",
+          opvs_ag_eye: "CONTEXTE SYSTÈME AGENT INCARNÉ & VLA · APPLICATION/OPVS+JSON",
+          opvs_ag_t: "Contrat de Survie Lisible par Machine (À Injecter dans le Wrapper de Politique)",
+          opvs_copy_btn: "Copier le JSON Contexte Robot",
+          opvs_copied: "✓ Copié dans le Presse-Papiers",
+          footer_sub: "L'Énergie comme Monnaie · La Survie comme Gouvernance · www.operaevis.com · Fondateur & Inventeur : Canius, Antoine De Cagny"
+        }
+      };
+
+      const SEED_FLEET = [
+        { id: "wlt_atlas_01", policy: "gemini-robotics-v2.4-margin", liq: 518420000, soc: 94.2, swap: 3120000, dm: 4610000, ds: 58420000, pitch: 8.2, torque: 1420, mode: "NOMINAL", zone: "0 · Ascending (Survivor)", tx: "tx_opvs_01JDF9A101", ep: "ep_20261124_01_019", esc: 41200000, wageSum: 26800000, swapSum: 9360000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 9360, zombie: false },
+        { id: "wlt_atlas_02", policy: "gemini-robotics-v2.4-margin", liq: 509150000, soc: 91.5, swap: 3190000, dm: 4120000, ds: 49150000, pitch: 7.4, torque: 1580, mode: "NOMINAL", zone: "0 · Ascending (Survivor)", tx: "tx_opvs_01JDF9A204", ep: "ep_20261124_02_019", esc: 39800000, wageSum: 24900000, swapSum: 9570000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 9570, zombie: false },
+        { id: "wlt_atlas_03", policy: "gemini-robotics-v2.4-margin", liq: 496300000, soc: 88.0, swap: 3250000, dm: 3890000, ds: 36300000, pitch: 6.8, torque: 1710, mode: "NOMINAL", zone: "0 · Ascending (Survivor)", tx: "tx_opvs_01JDF9A311", ep: "ep_20261124_03_019", esc: 38900000, wageSum: 24200000, swapSum: 9750000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 9750, zombie: false },
+        { id: "wlt_atlas_04", policy: "gemini-robotics-v2.4-margin", liq: 482150000, soc: 84.1, swap: 3271000, dm: 4310000, ds: 42180000, pitch: 7.1, torque: 1825, mode: "NOMINAL", zone: "0 · Ascending (Survivor)", tx: "tx_opvs_01JDF9X8K2", ep: "ep_20261124_04_019", esc: 38200000, wageSum: 25743000, swapSum: 9813000, escSum: 3000000, tipSum: 250000, m2mSum: 0, whSum: 9813, zombie: false },
+        { id: "wlt_atlas_05", policy: "gemini-robotics-v2.4-margin", liq: 474800000, soc: 82.3, swap: 3305000, dm: 3450000, ds: 29800000, pitch: 5.9, torque: 1960, mode: "NOMINAL", zone: "0 · Ascending (Survivor)", tx: "tx_opvs_01JDF9B019", ep: "ep_20261124_05_019", esc: 37600000, wageSum: 22900000, swapSum: 9915000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 9915, zombie: false },
+        { id: "wlt_atlas_06", policy: "gemini-robotics-v2.1-base",   liq: 451200000, soc: 76.4, swap: 3480000, dm: 820000,  ds: 11200000, pitch: 1.5, torque: 2480, mode: "NOMINAL", zone: "1 · Stasis Band", tx: "tx_opvs_01JDF9B402", ep: "ep_20261124_06_019", esc: 34100000, wageSum: 15900000, swapSum: 10440000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 10440, zombie: false },
+        { id: "wlt_atlas_07", policy: "gemini-robotics-v2.1-base",   liq: 446900000, soc: 74.8, swap: 3510000, dm: 310000,  ds: 6900000,  pitch: 0.6, torque: 2740, mode: "NOMINAL", zone: "1 · Stasis Band", tx: "tx_opvs_01JDF9C118", ep: "ep_20261124_07_019", esc: 33200000, wageSum: 14460000, swapSum: 10530000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 10530, zombie: false },
+        { id: "wlt_atlas_08", policy: "gemini-robotics-v2.1-base",   liq: 9420000,   soc: 18.2, swap: 3610000, dm: -680000, ds: 4120000,  pitch: -1.4, torque: 3320, mode: "CONSERVATION", zone: "2 · Conservation", tx: "tx_opvs_01JDF9D007", ep: "ep_20261124_08_019", esc: 29400000, wageSum: 11800000, swapSum: 10830000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 10830, zombie: false },
+        { id: "wlt_atlas_09", policy: "gemini-robotics-v2.5-exp",    liq: 2140000,   soc: 4.5,  swap: 3410000, dm: -2450000, ds: -1270000, pitch: -6.4, torque: 4380, mode: "SOFT_BANKRUPTCY", zone: "3 · Plane Breach (Zombie)", tx: "tx_opvs_breach_09", ep: "ep_20261124_09_019", esc: 24500000, wageSum: 5880000, swapSum: 10230000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 10230, zombie: true },
+        { id: "wlt_atlas_10", policy: "gemini-robotics-v2.1-base",   liq: 462000000, soc: 79.0, swap: 3390000, dm: 1940000, ds: 22000000, pitch: 3.4, torque: 2040, mode: "NOMINAL", zone: "0 · Ascending (Survivor)", tx: "tx_opvs_01JDF9F512", ep: "ep_20261124_10_019", esc: 35600000, wageSum: 19000000, swapSum: 10170000, escSum: 3000000, tipSum: 0, m2mSum: 0, whSum: 10170, zombie: false }
+      ];
+
+      let lang = "en";
+      let cycle = 1;
+      let filter = "ALL";
+      let rosterSearch = "";
+      let selectedWalletId = null;
+      let fleet = JSON.parse(JSON.stringify(SEED_FLEET));
+      const bayBufferDelta = 1150000;
+      let residualEps = 12000;
+
+      // Survival Lab Simulator state (synchronized with canonical fleet store)
+      let g5SelectedId = "wlt_atlas_04";
+      let g5History = {};
+      let g5Events = [];
+      let g5JsonOpen = false;
+      let lastSyncedAdapterWallet = 518420000;
+
+      const fmtInt = (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+      const hashStub = (s) => {
+        let h = 2166136261;
+        for (let i = 0; i < s.length; i += 1) {
+          h ^= s.charCodeAt(i);
+          h = Math.imul(h, 16777619);
+        }
+        return "sha256:" + ((h >>> 0).toString(16).padStart(8, "0")) + "9a4f7c...";
+      };
+
+      /* ==================== SINGLE-BAR 5-TAB ROUTER & URL SYNC ==================== */
+      const VIEWS = {
+        whitepaper: { view: "view-whitepaper", btn: "tab-btn-whitepaper" },
+        orbit: { view: "view-orbit", btn: "tab-btn-orbit" },
+        simulator: { view: "view-simulator", btn: "tab-btn-simulator" },
+        deepmind: { view: "view-deepmind", btn: "tab-btn-deepmind" },
+        opvs: { view: "view-opvs", btn: "tab-btn-opvs" }
+      };
+
+      function ensureWorkforceLoaded() {
+        const frame = document.getElementById("workforce-os-frame");
+        if (!frame) return;
+        const base = frame.getAttribute("data-src");
+        if (base && !frame.getAttribute("src")) {
+          frame.setAttribute("src", `${base}?lang=${lang}`);
+        } else if (frame.contentWindow) {
+          frame.contentWindow.postMessage({ type: "opvs:set-lang", lang }, "*");
+        }
+      }
+
+      function switchTab(tab, updateHash = true) {
+        const key = VIEWS[tab] ? tab : "whitepaper";
+        Object.entries(VIEWS).forEach(([k, cfg]) => {
+          document.getElementById(cfg.view).classList.toggle("hidden", k !== key);
+          document.getElementById(cfg.btn).classList.toggle("active", k === key);
+        });
+        if (updateHash && history.replaceState) {
+          history.replaceState(null, "", "#" + key);
+        }
+        window.scrollTo({ top: 0, behavior: "instant" });
+        if (key === "orbit") renderRoster();
+        if (key === "simulator") ensureWorkforceLoaded();
+        if (key === "deepmind") fetchAdapterState();
+      }
+
+      document.getElementById("tab-btn-whitepaper").addEventListener("click", () => switchTab("whitepaper"));
+      document.getElementById("tab-btn-orbit").addEventListener("click", () => switchTab("orbit"));
+      document.getElementById("tab-btn-simulator").addEventListener("click", () => switchTab("simulator"));
+      document.getElementById("tab-btn-deepmind").addEventListener("click", () => switchTab("deepmind"));
+      document.getElementById("tab-btn-opvs").addEventListener("click", () => switchTab("opvs"));
+
+      document.getElementById("roster-open-sim").addEventListener("click", () => {
+        if (selectedWalletId) g5SelectedId = selectedWalletId;
+        switchTab("simulator");
+      });
+
+      document.getElementById("brand-home").addEventListener("click", (e) => {
+        e.preventDefault();
+        switchTab("whitepaper");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      /* ==================== ORBIT FLEET ROSTER CONSOLE ==================== */
+      function resetLedgerDrawer() {
+        selectedWalletId = null;
+        const drawer = document.getElementById("ledger-inspector");
+        drawer.textContent = I18N[lang].drawer_hint;
+        drawer.style.borderLeftColor = "var(--sig-energy)";
+      }
+
+      function renderLedgerProof(u) {
+        selectedWalletId = u.id;
+        const drawer = document.getElementById("ledger-inspector");
+        drawer.innerHTML = "";
+        const accentColor = u.mode === "SOFT_BANKRUPTCY"
+          ? "var(--sig-breach)"
+          : (u.mode === "CONSERVATION" || u.zone.startsWith("1") ? "var(--sig-caution)" : "var(--sig-nominal)");
+        drawer.style.borderLeftColor = accentColor;
+
+        const title = document.createElement("div");
+        title.style.fontWeight = "700";
+        title.style.letterSpacing = "0.08em";
+        title.style.textTransform = "uppercase";
+        title.style.color = accentColor;
+        title.textContent = `ORBIT × OPVS LEDGER PROOF · ${u.id} · ${u.mode} · ${u.zone}`;
+        drawer.appendChild(title);
+
+        const grid = document.createElement("div");
+        grid.className = "ledger-grid";
+        const fields = [
+          ["tx_id", u.tx, "c-energy"],
+          ["orbit_mission_episode", u.ep, "c-white"],
+          ["amount_debited_micro_opvs", fmtInt(u.swap) + " µOPVS", "c-energy"],
+          ["balance_after_micro_opvs", fmtInt(u.liq) + " µOPVS", u.liq < 10000000 ? "c-caution" : "c-nominal"],
+          ["net_margin_micro_opvs", (u.dm >= 0 ? "+" : "") + fmtInt(u.dm) + " µOPVS", u.dm >= 0 ? "c-nominal" : "c-breach"],
+          ["torque_fatigue_integral", fmtInt(u.torque || 1825) + (u.torque > 2200 ? " (>S NOM)" : " (NOM)"), u.torque > 3200 ? "c-breach" : (u.torque > 2200 ? "c-caution" : "c-nominal")],
+          ["ed25519_signature", `ed25519:a8f4c19d...${u.id.slice(-2)}`, "c-white"]
+        ];
+        fields.forEach(([k, v, cls]) => {
+          const item = document.createElement("div");
+          const lbl = document.createElement("div");
+          lbl.className = "ledger-kv-label";
+          lbl.textContent = k;
+          const val = document.createElement("div");
+          val.className = `ledger-kv-val ${cls}`;
+          val.textContent = v;
+          item.appendChild(lbl);
+          item.appendChild(val);
+          grid.appendChild(item);
+        });
+        drawer.appendChild(grid);
+      }
+
+      function getThermalProfile(torqueVal) {
+        const tq = Number(torqueVal) || 1825;
+        const pct = Math.max(0, Math.min(100, Math.round(((tq - 800) / 4000) * 100)));
+        const fill = Math.max(10, pct);
+        if (tq > 3200) {
+          return {
+            pct,
+            cls: "thermal-crit",
+            textCls: "c-breach",
+            tag: lang === "fr" ? "! SEUIL S" : "! >S WALL",
+            bg: `linear-gradient(90deg, rgba(255, 171, 0, 0.28) 0%, rgba(255, 59, 48, 0.54) ${fill}%, rgba(255, 59, 48, 0.08) ${fill}%, rgba(255, 255, 255, 0.02) 100%)`
+          };
+        }
+        if (tq > 2200) {
+          return {
+            pct,
+            cls: "thermal-over",
+            textCls: "c-caution",
+            tag: lang === "fr" ? "▲ > NOM" : "▲ > NOM",
+            bg: `linear-gradient(90deg, rgba(0, 230, 118, 0.16) 0%, rgba(255, 171, 0, 0.42) ${fill}%, rgba(255, 171, 0, 0.06) ${fill}%, rgba(255, 255, 255, 0.02) 100%)`
+          };
+        }
+        return {
+          pct,
+          cls: "",
+          textCls: "c-nominal",
+          tag: "NOM",
+          bg: `linear-gradient(90deg, rgba(0, 229, 255, 0.20) 0%, rgba(0, 230, 118, 0.30) ${fill}%, rgba(255, 255, 255, 0.03) ${fill}%, rgba(255, 255, 255, 0.02) 100%)`
+        };
+      }
+
+      function renderRoster() {
+        const tbody = document.getElementById("fleet-tbody");
+        tbody.innerHTML = "";
+        const totalSwaps = fleet.reduce((acc, u) => acc + u.swap, 0);
+        const substationEq = totalSwaps + bayBufferDelta + residualEps;
+        const activeCount = fleet.length;
+
+        document.getElementById("kpi-substation").textContent = fmtInt(substationEq) + " µOPVS";
+        document.getElementById("kpi-swaps").textContent = fmtInt(totalSwaps) + " µOPVS";
+        document.getElementById("kpi-buffer").textContent = "+" + fmtInt(bayBufferDelta) + " µOPVS";
+        document.getElementById("kpi-epsilon").textContent = fmtInt(residualEps) + " µOPVS";
+        document.getElementById("sim-clock").textContent = `CYCLE: ${String(cycle).padStart(2, "0")} · DAY: ${Math.min(90, 15 + Math.ceil(cycle / 6))}/90 · FLEET: ${activeCount}/10 ACTIVE`;
+
+        const q = rosterSearch.trim().toLowerCase();
+        let visibleCount = 0;
+
+        fleet.forEach((u) => {
+          const isAlert = u.mode !== "NOMINAL";
+          if (filter === "NOMINAL" && isAlert) return;
+          if (filter === "ALERT" && !isAlert) return;
+          if (q && !u.id.toLowerCase().includes(q) && !u.policy.toLowerCase().includes(q) && !u.zone.toLowerCase().includes(q)) return;
+
+          visibleCount += 1;
+          const tr = document.createElement("tr");
+          const isBreach = u.mode === "SOFT_BANKRUPTCY";
+          const isCons = u.mode === "CONSERVATION";
+          const isStasis = u.mode === "NOMINAL" && u.zone.startsWith("1");
+
+          const rowZoneCls = isBreach ? "row-z3" : (isCons ? "row-z2" : (isStasis ? "row-z1" : "row-z0"));
+          tr.className = `clickable ${rowZoneCls}${selectedWalletId === u.id ? " row-selected" : ""}`;
+          const badgeCls = isBreach ? "badge-breach" : (isCons ? "badge-cons" : (isStasis ? "badge-stasis" : "badge-nom"));
+          const marker = isBreach ? "✕" : (isCons ? "▼" : (isStasis ? "◆" : "▲"));
+          const socCls = u.soc < 20 ? "c-breach" : (u.soc < 50 ? "c-caution" : "c-nominal");
+          const dsCls = u.ds < 0 ? "c-breach" : (u.ds > 15000000 ? "c-nominal" : "c-caution");
+          const pitchCls = u.pitch > 2 ? "c-nominal" : (u.pitch < 0 ? "c-breach" : "c-caution");
+          const zoneCls = isBreach ? "c-breach" : (isCons || isStasis ? "c-caution" : "c-nominal");
+          const tp = getThermalProfile(u.torque);
+          const thermTitle = lang === "fr"
+            ? `Intégrale couple² : ${fmtInt(u.torque)} (plage nominale variété S ≤ 2 200)`
+            : `Joint torque² integral: ${fmtInt(u.torque)} (nominal manifold efficiency ≤ 2 200)`;
+
+          tr.innerHTML = `
+            <td class="c-white" style="font-weight:700;">${u.id}</td>
+            <td style="color:var(--fg-muted);">${u.policy}</td>
+            <td class="c-white">${fmtInt(u.liq)}</td>
+            <td class="${socCls}" style="font-weight:700;">${u.soc.toFixed(1)}%</td>
+            <td class="${dsCls}">${u.ds >= 0 ? "+" : ""}${fmtInt(u.ds)}</td>
+            <td class="${pitchCls}">${u.pitch.toFixed(1)}°</td>
+            <td class="thermal-cell" title="${thermTitle}">
+              <div class="thermal-chip ${tp.cls}" style="background:${tp.bg};">
+                <span class="${tp.textCls}">${fmtInt(u.torque)} τ² · ${tp.pct}%</span>
+                <span class="thermal-tag ${tp.textCls}">${tp.tag}</span>
+              </div>
+            </td>
+            <td class="${zoneCls}"><span class="badge ${badgeCls}">${marker} ${u.mode}</span> ${u.zone}</td>
+          `;
+          tr.addEventListener("click", () => {
+            g5SelectedId = u.id;
+            renderLedgerProof(u);
+            renderRoster();
+          });
+          tbody.appendChild(tr);
+        });
+
+        if (visibleCount === 0) {
+          const emptyTr = document.createElement("tr");
+          emptyTr.innerHTML = `<td colspan="8" style="text-align:center; padding:1.2rem; color:var(--fg-muted);">${I18N[lang].roster_empty}</td>`;
+          tbody.appendChild(emptyTr);
+        }
+      }
+
+      document.querySelectorAll("[data-filter]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll("[data-filter]").forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          filter = btn.getAttribute("data-filter");
+          renderRoster();
+        });
+      });
+
+      document.getElementById("roster-search").addEventListener("input", (e) => {
+        rosterSearch = e.target.value;
+        renderRoster();
+      });
+
+      document.getElementById("btn-step").addEventListener("click", () => {
+        cycle += 1;
+        fleet = fleet.map((u, idx) => {
+          if (u.mode === "SOFT_BANKRUPTCY") {
+            const next = {
+              ...u,
+              policy: "gemini-robotics-v2.4-margin [ROLLBACK]",
+              dm: 1200000,
+              liq: u.liq + 1200000,
+              ds: u.ds + 1200000,
+              soc: Math.min(100, u.soc + 85),
+              pitch: 2.1,
+              torque: 1920,
+              temp: 56,
+              mode: "CONSERVATION",
+              zone: "2 · Conservation",
+              tx: `tx_opvs_rb_${String(cycle).padStart(2, "0")}_${u.id.slice(-2)}`,
+              ep: `ep_20261124_${String(idx + 1).padStart(2, "0")}_${String(19 + cycle).padStart(3, "0")}`
+            };
+            g5History[u.id].push(make4DNode(next, cycle, 7800000));
+            return next;
+          }
+          const wage = u.policy.includes("v2.4") ? 7800000 : 4100000;
+          const maint = 500000;
+          const dm = wage - u.swap - maint;
+          const nextLiq = Math.max(0, u.liq + dm);
+          const nextDs = u.ds + dm;
+          const nextSoc = Math.max(5, u.soc - 4.2);
+          const nextTorque = u.policy.includes("v2.4")
+            ? Math.max(1250, Math.min(2150, (u.torque || 1825) + ((cycle + idx) % 3 - 1) * 45))
+            : Math.min(4600, (u.torque || 2480) + 60);
+          const nextTemp = u.policy.includes("v2.4")
+            ? Math.max(48, Math.min(62, (u.temp || 54) + ((cycle + idx) % 3 - 1)))
+            : Math.min(86, (u.temp || 64) + 2);
+          const nextMode = nextDs <= 0 || nextLiq === 0 ? "SOFT_BANKRUPTCY" : (nextLiq < 10000000 ? "CONSERVATION" : "NOMINAL");
+          const nextZone = nextMode === "SOFT_BANKRUPTCY" ? "3 · Plane Breach" : (nextMode === "CONSERVATION" ? "2 · Conservation" : (nextDs > 15000000 ? "0 · Ascending" : "1 · Stasis Band"));
+          const next = {
+            ...u,
+            liq: nextLiq,
+            soc: nextSoc,
+            dm,
+            ds: nextDs,
+            torque: nextTorque,
+            temp: nextTemp,
+            wageSum: u.wageSum + wage,
+            swapSum: u.swapSum + u.swap,
+            escSum: u.escSum + maint,
+            esc: u.esc + maint,
+            whSum: u.whSum + Math.round(u.swap / 1000),
+            mode: nextMode,
+            zone: nextZone,
+            tx: `tx_opvs_swap_${String(cycle).padStart(2, "0")}_${u.id.slice(-2)}`,
+            ep: `ep_20261124_${String(idx + 1).padStart(2, "0")}_${String(19 + cycle).padStart(3, "0")}`
+          };
+          g5History[u.id].push(make4DNode(next, cycle, wage));
+          return next;
+        });
+        residualEps = 10000 + (cycle * 1300) % 9000;
+        pushG5Event("SETTLED", "orbit.fleet_step", "fleet_01..10", `4h work-swap cycle ${String(cycle).padStart(2, "0")} settled across 10 Atlas units`, "c-energy");
+        if (selectedWalletId) {
+          const sel = fleet.find((u) => u.id === selectedWalletId);
+          if (sel) renderLedgerProof(sel);
+        } else {
+          resetLedgerDrawer();
+        }
+        renderRoster();
+        renderG5();
+      });
+
+      document.getElementById("trigger-reckless").addEventListener("click", () => {
+        fleet[8].policy = "gemini-robotics-v2.5-exp [RECKLESS]";
+        fleet[8].ds = -1270000;
+        fleet[8].liq = 2140000;
+        fleet[8].soc = 3.2;
+        fleet[8].torque = 4460;
+        fleet[8].temp = 85;
+        fleet[8].mode = "SOFT_BANKRUPTCY";
+        fleet[8].zone = "3 · Plane Breach (Soft Bankruptcy)";
+        g5History[fleet[8].id].push(make4DNode(fleet[8], cycle, 3600000));
+        pushG5Event("BREACH", "orbit.reckless_trigger", fleet[8].id, "Simulated v2.5-exp breach · Soft Bankruptcy overdraft authorized", "c-breach");
+        g5SelectedId = fleet[8].id;
+        renderLedgerProof(fleet[8]);
+        renderRoster();
+        renderG5();
+      });
+
+      document.getElementById("trigger-zombie").addEventListener("click", () => {
+        fleet[6].liq = 446900000;
+        fleet[6].swap = 3510000;
+        fleet[6].dm = -450000;
+        fleet[6].pitch = -1.2;
+        fleet[6].torque = 3490;
+        fleet[6].temp = 74;
+        fleet[6].zombie = true;
+        fleet[6].zone = "1 · Stasis (Zombie Helix Masked)";
+        g5History[fleet[6].id].push(make4DNode(fleet[6], cycle, 4200000));
+        pushG5Event("ZOMBIE", "supervisor.zombie_helix", fleet[6].id, "Masked negative intrinsic pitch (-1.2°) detected across swap window", "c-caution");
+        g5SelectedId = fleet[6].id;
+        renderLedgerProof(fleet[6]);
+        renderRoster();
+        renderG5();
+      });
+
+      function resetSharedFleet() {
+        cycle = 1;
+        fleet = JSON.parse(JSON.stringify(SEED_FLEET));
+        residualEps = 12000;
+        lastSyncedAdapterWallet = 518420000;
+        g5JsonOpen = false;
+        const g5Drawer = document.getElementById("g5-json-drawer");
+        if (g5Drawer) g5Drawer.classList.add("hidden");
+        initG5History();
+        resetLedgerDrawer();
+        updateSliderPreview();
+        renderRoster();
+        renderG5();
+      }
+
+      document.getElementById("btn-roster-reset").addEventListener("click", resetSharedFleet);
+
+      /* ==================== SURVIVAL LAB SIMULATOR ==================== */
+      function make4DNode(u, cyc, wage) {
+        return {
+          cycle: cyc,
+          ds: u.ds,
+          wh: Math.round((u.swap || 3271000) / 1000),
+          torque: u.torque || 1825,
+          temp: u.temp || 54,
+          wage: wage ?? 8581000,
+          dm: u.dm,
+          liq: u.liq,
+          mode: u.mode,
+          zombie: Boolean(u.zombie)
+        };
+      }
+
+      function initG5History() {
+        g5History = {};
+        fleet.forEach((u) => {
+          const baseWh = Math.round(u.swap / 1000);
+          const baseTq = u.torque || 1825;
+          const baseTemp = u.temp || 54;
+          const traj = [];
+          for (let k = -2; k <= 0; k += 1) {
+            const dsStep = u.ds - (0 - k) * u.dm;
+            traj.push({
+              cycle: k + 3,
+              ds: dsStep,
+              wh: Math.max(2200, Math.min(4600, baseWh + k * 45)),
+              torque: Math.max(800, Math.min(4800, baseTq + k * 75)),
+              temp: Math.max(40, Math.min(88, baseTemp + k * 2)),
+              wage: Math.max(3500000, u.swap + u.dm + 800000),
+              dm: u.dm,
+              liq: Math.max(0, u.liq - (0 - k) * u.dm),
+              mode: dsStep <= 0 ? "SOFT_BANKRUPTCY" : (dsStep < 10000000 ? "CONSERVATION" : "NOMINAL"),
+              zombie: Boolean(u.zombie)
+            });
+          }
+          g5History[u.id] = traj;
+        });
+        g5Events = [
+          { cycle: 1, type: "WEBHOOK", route: "reward.margin_settled", wallet: "wlt_atlas_04", detail: "net_margin=+4 310 000 µOPVS · d_S=+42 180 000 · NOMINAL", cls: "c-nominal", hash: hashStub("seed_04") },
+          { cycle: 1, type: "BREACH", route: "supervisor.plane_breach", wallet: "wlt_atlas_09", detail: "d_S=-1 270 000 µOPVS · AUTHORIZED_OVERDRAFT · QUARANTINED v2.5-exp", cls: "c-breach", hash: hashStub("seed_09") }
+        ];
+      }
+
+      function computeMaintEscrow(torqueSq, tempC) {
+        const base = 450000;
+        const torqueTerm = Math.round(torqueSq * 220);
+        const thermalOver = Math.max(0, tempC - 52);
+        const thermalWall = Math.round(Math.pow(1.14, thermalOver) * 140000 - 140000);
+        return base + torqueTerm + thermalWall;
+      }
+
+      function classifyUnit(u) {
+        if (u.ds <= 0 && u.liq <= 0) return { mode: "VOID_HALT", zone: "3 · Void Halt (Exhausted)", zombie: true };
+        if (u.ds <= 0 || u.liq <= 0) return { mode: "SOFT_BANKRUPTCY", zone: "3 · Plane Breach (Zombie)", zombie: true };
+        if (u.liq < 10000000 || u.ds < 10000000) return { mode: "CONSERVATION", zone: "2 · Conservation", zombie: false };
+        if (u.ds <= 15000000) return { mode: "NOMINAL", zone: "1 · Stasis Band", zombie: false };
+        return { mode: "NOMINAL", zone: "0 · Ascending (Survivor)", zombie: false };
+      }
+
+      function updateSliderPreview() {
+        const wageEl = document.getElementById("g5-wage");
+        if (!wageEl) return;
+        const wage = Number(wageEl.value);
+        const wh = Number(document.getElementById("g5-wh").value);
+        const temp = Number(document.getElementById("g5-temp").value);
+        const torque = Number(document.getElementById("g5-torque").value);
+
+        document.getElementById("g5-wage-val").textContent = fmtInt(wage);
+        document.getElementById("g5-wh-val").textContent = fmtInt(wh) + " Wh";
+        document.getElementById("g5-temp-val").textContent = `${temp} °C`;
+        document.getElementById("g5-torque-val").textContent = fmtInt(torque);
+
+        const maint = computeMaintEscrow(torque, temp);
+        const estDm = wage - wh * 1000 - maint;
+        const box = document.getElementById("g5-preview-formula");
+        box.textContent = `ΔR_maint = ${fmtInt(maint)} µOPVS · Est ΔM = ${estDm >= 0 ? "+" : ""}${fmtInt(estDm)} µOPVS`;
+        box.style.borderLeftColor = estDm >= 0 ? "var(--sig-nominal)" : "var(--sig-breach)";
+        box.style.color = estDm >= 0 ? "var(--sig-nominal)" : "var(--sig-breach)";
+        window.dispatchEvent(new CustomEvent("opvs:g5-preview"));
+      }
+
+      function pushG5Event(type, route, wallet, detail, cls) {
+        g5Events.unshift({ cycle, type, route, wallet, detail, cls, hash: hashStub(`${cycle}_${route}_${wallet}_${g5Events.length}`) });
+        if (g5Events.length > 40) g5Events.pop();
+      }
+
+      function renderG5() {
+        const select = document.getElementById("g5-unit-select");
+        if (!select) return;
+      }
+
+      /* ==================== DEEPMIND ADAPTER (LIVE API + CLIENT-SIDE DETERMINISTIC FALLBACK) ==================== */
+      let dmLastEventId = "evt_dm_atlas_001";
+      let dmSeq = 1;
+      const localAdapter = {
+        walletMicroOpvs: 518420000,
+        creditsCents: 0,
+        processed: new Set(),
+        history: []
+      };
+
+      function localProcessEvent(payload) {
+        const syncResult = payload.source === "aivi_learning" ? "synced_to_orbit" : "synced_to_aivi";
+        if (localAdapter.processed.has(payload.event_id)) {
+          const dupRec = {
+            event_id: payload.event_id,
+            source: payload.source,
+            sync_result: syncResult,
+            user_or_agent_id: payload.user_or_agent_id,
+            module_id: payload.module_id,
+            action: payload.action,
+            idempotency_status: "IDEMPOTENT_DUPLICATE_BLOCKED",
+            wage_payout: null
+          };
+          localAdapter.history.unshift(dupRec);
+          return dupRec;
+        }
+        const qualifying = payload.user_or_agent_id === "atlas" &&
+          ["module_completed", "system_adopted", "assessment_passed"].includes(payload.action);
+        if (!qualifying) {
+          const syncOnly = {
+            event_id: payload.event_id,
+            source: payload.source,
+            sync_result: syncResult,
+            user_or_agent_id: payload.user_or_agent_id,
+            module_id: payload.module_id,
+            action: payload.action,
+            idempotency_status: "SYNCED_NON_QUALIFYING",
+            wage_payout: null
+          };
+          localAdapter.history.unshift(syncOnly);
+          return syncOnly;
+        }
+        localAdapter.processed.add(payload.event_id);
+        const cents = Math.floor(((payload.duration_minutes / 60) * 2500 + 500 * payload.score) + 0.5 + 1e-12);
+        const microOpvs = Math.round((cents / 100) * 250000);
+        localAdapter.creditsCents += cents;
+        localAdapter.walletMicroOpvs += microOpvs;
+        const paidRec = {
+          event_id: payload.event_id,
+          source: payload.source,
+          sync_result: syncResult,
+          user_or_agent_id: payload.user_or_agent_id,
+          module_id: payload.module_id,
+          action: payload.action,
+          idempotency_status: "SETTLED_FIRST_SEEN",
+          wage_payout: {
+            wallet_id: "wlt_atlas_01",
+            amount: (cents / 100).toFixed(2),
+            opvs_equivalent_micro_opvs: microOpvs,
+            parity_note: "1 CREDIT = 0.25 OPVS = 250,000 micro_opvs"
+          }
+        };
+        localAdapter.history.unshift(paidRec);
+        return paidRec;
+      }
+
+      function getLocalState() {
+        return {
+          atlas_wallet_micro_opvs: localAdapter.walletMicroOpvs,
+          atlas_credits_total: (localAdapter.creditsCents / 100).toFixed(2),
+          processed_count: localAdapter.processed.size,
+          history: localAdapter.history
+        };
+      }
+
+      function updateDmPreview() {
+        const dur = Number(document.getElementById("dm-duration").value);
+        const score = Number(document.getElementById("dm-score").value);
+        const agent = document.getElementById("dm-agent").value;
+        const action = document.getElementById("dm-action").value;
+        document.getElementById("dm-dur-val").textContent = `${dur} min`;
+        document.getElementById("dm-score-val").textContent = score.toFixed(2);
+
+        const qualifying = agent === "atlas" && ["module_completed", "system_adopted", "assessment_passed"].includes(action);
+        const box = document.getElementById("dm-calc-preview");
+        if (!qualifying) {
+          box.textContent = "Payout = 0.00 CREDITS (Bidirectional sync only — non-qualifying agent/action)";
+          box.style.borderLeftColor = "var(--fg-muted)";
+          box.style.color = "var(--fg-muted)";
+          return;
+        }
+        const cents = Math.floor(((dur / 60) * 2500 + 500 * score) + 0.5 + 1e-12);
+        const microOpvs = Math.round((cents / 100) * 250000);
+        box.textContent = `Payout = ${(cents / 100).toFixed(2)} CREDITS → +${fmtInt(microOpvs)} µOPVS`;
+        box.style.borderLeftColor = "var(--sig-caution)";
+        box.style.color = "var(--sig-caution)";
+      }
+
+      function applyAdapterWalletSync(adapterWalletMicro) {
+        const delta = adapterWalletMicro - lastSyncedAdapterWallet;
+        if (delta !== 0) {
+          const atlas01 = fleet[0];
+          atlas01.liq = Math.max(0, atlas01.liq + delta);
+          atlas01.ds += delta;
+          if (delta > 0) atlas01.wageSum += delta;
+          Object.assign(atlas01, classifyUnit(atlas01));
+          if (g5History[atlas01.id]) g5History[atlas01.id].push(make4DNode(atlas01, g5History[atlas01.id].length + 1, 8581000 + delta));
+          pushG5Event("ADAPTER", "/api/adapter/events", atlas01.id, `LearningEvent wage delta ${delta >= 0 ? "+" : ""}${fmtInt(delta)} µOPVS synced`, delta >= 0 ? "c-nominal" : "c-caution");
+          lastSyncedAdapterWallet = adapterWalletMicro;
+          renderRoster();
+          renderG5();
+        }
+      }
+
+      function renderAdapterHistory(state) {
+        applyAdapterWalletSync(state.atlas_wallet_micro_opvs);
+        const atlas01 = fleet[0];
+        document.getElementById("dm-kpi-wallet").textContent = fmtInt(atlas01.liq) + " µOPVS";
+        document.getElementById("dm-kpi-credits").textContent = `${state.atlas_credits_total} CREDITS`;
+        document.getElementById("dm-kpi-proc").textContent = String(state.processed_count);
+        const hist = state.history || [];
+        document.getElementById("dm-kpi-sync").textContent = hist.length > 0 ? hist[0].sync_result : "—";
+
+        const logEl = document.getElementById("dm-event-log");
+        if (hist.length === 0) {
+          logEl.innerHTML = `<div style="padding:0.85rem; color:var(--fg-muted);">${I18N[lang].dm_log_empty}</div>`;
+          return;
+        }
+        logEl.innerHTML = "";
+        hist.forEach((rec) => {
+          const row = document.createElement("div");
+          row.className = "event-row";
+          const isPaid = Boolean(rec.wage_payout);
+          const isDup = rec.idempotency_status === "IDEMPOTENT_DUPLICATE_BLOCKED";
+          const cls = isPaid ? "c-nominal" : (isDup ? "c-breach" : "c-caution");
+          const badge = isPaid ? "PAID" : (isDup ? "DUP_BLOCK" : "SYNC_ONLY");
+          const amountText = isPaid
+            ? `+${rec.wage_payout.amount} CREDITS (+${fmtInt(rec.wage_payout.opvs_equivalent_micro_opvs)} µOPVS)`
+            : rec.idempotency_status;
+
+          row.innerHTML = `
+            <span class="${cls}" style="font-weight:700;">${badge}</span>
+            <span class="c-energy">${rec.sync_result}</span>
+            <span class="c-white">${rec.event_id} · <span style="color:var(--fg-muted);">${rec.user_or_agent_id} · ${rec.action}</span></span>
+            <span class="${cls}" style="font-weight:600;">${amountText}</span>
+          `;
+          logEl.appendChild(row);
+        });
+      }
+
+      async function fetchAdapterState() {
+        try {
+          const res = await fetch("/api/adapter/state");
+          if (res.ok) {
+            renderAdapterHistory(await res.json());
+            return;
+          }
+        } catch { /* fallback to deterministic in-browser engine */ }
+        renderAdapterHistory(getLocalState());
+      }
+
+      async function dispatchLearningEvent(overrideEventId) {
+        const eventId = overrideEventId || document.getElementById("dm-event-id").value.trim() || `evt_dm_atlas_${String(dmSeq).padStart(3, "0")}`;
+        dmLastEventId = eventId;
+        const payload = {
+          event_id: eventId,
+          source: document.getElementById("dm-source").value,
+          user_or_agent_id: document.getElementById("dm-agent").value,
+          module_id: document.getElementById("dm-module").value,
+          action: document.getElementById("dm-action").value,
+          duration_minutes: Number(document.getElementById("dm-duration").value),
+          score: Number(document.getElementById("dm-score").value)
+        };
+
+        let record;
+        try {
+          const res = await fetch("/api/adapter/events", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+          if (res.ok) record = await res.json();
+        } catch { /* use client-side engine */ }
+
+        if (!record) record = localProcessEvent(payload);
+
+        document.getElementById("dm-last-json").textContent = JSON.stringify(record, null, 2);
+        const badge = document.getElementById("dm-idemp-badge");
+        if (record.idempotency_status === "IDEMPOTENT_DUPLICATE_BLOCKED") {
+          badge.textContent = "IDEMPOTENCY GUARD: DUPLICATE BLOCKED";
+          badge.style.color = "var(--sig-breach)";
+        } else if (record.wage_payout) {
+          badge.textContent = "IDEMPOTENCY GUARD: SETTLED & RECORDED";
+          badge.style.color = "var(--sig-nominal)";
+          dmSeq += 1;
+          if (!overrideEventId) {
+            document.getElementById("dm-event-id").value = `evt_dm_atlas_${String(dmSeq).padStart(3, "0")}`;
+          }
+        } else {
+          badge.textContent = `IDEMPOTENCY GUARD: ${record.idempotency_status}`;
+          badge.style.color = "var(--sig-caution)";
+        }
+        await fetchAdapterState();
+      }
+
+      document.getElementById("dm-new-uuid").addEventListener("click", () => {
+        dmSeq += 1;
+        document.getElementById("dm-event-id").value = `evt_dm_atlas_${String(dmSeq).padStart(3, "0")}`;
+      });
+      ["dm-duration", "dm-score", "dm-agent", "dm-action"].forEach((id) => {
+        document.getElementById(id).addEventListener("input", updateDmPreview);
+        document.getElementById(id).addEventListener("change", updateDmPreview);
+      });
+      document.getElementById("dm-dispatch-btn").addEventListener("click", () => dispatchLearningEvent());
+      document.getElementById("dm-replay-btn").addEventListener("click", () => dispatchLearningEvent(dmLastEventId));
+      document.getElementById("dm-reset-btn").addEventListener("click", async () => {
+        try { await fetch("/api/adapter/reset", { method: "POST" }); } catch { /* offline */ }
+        localAdapter.walletMicroOpvs = 518420000;
+        localAdapter.creditsCents = 0;
+        localAdapter.processed.clear();
+        localAdapter.history = [];
+        dmSeq = 1;
+        dmLastEventId = "evt_dm_atlas_001";
+        document.getElementById("dm-event-id").value = dmLastEventId;
+        document.getElementById("dm-last-json").textContent = I18N[lang].dm_json_empty;
+        const badge = document.getElementById("dm-idemp-badge");
+        badge.textContent = "IDEMPOTENCY GUARD: READY";
+        badge.style.color = "var(--sig-caution)";
+        await fetchAdapterState();
+      });
+
+      /* ==================== COPY ROBOT CONTEXT & FULL BILINGUAL I18N ==================== */
+      document.getElementById("copy-agent-json").addEventListener("click", (e) => {
+        const txt = document.getElementById("robot-agent-manifest").textContent;
+        if (navigator.clipboard) navigator.clipboard.writeText(txt);
+        const btn = e.currentTarget;
+        btn.textContent = I18N[lang].opvs_copied;
+        setTimeout(() => { btn.textContent = I18N[lang].opvs_copy_btn; }, 1600);
+      });
+
+      function applyI18n() {
+        document.documentElement.lang = lang;
+        document.title = I18N[lang].doc_title;
+        document.getElementById("packshot-heading").setAttribute("aria-label", I18N[lang].packshot_aria);
+        document.querySelectorAll("[data-i18n]").forEach((el) => {
+          const k = el.getAttribute("data-i18n");
+          if (I18N[lang][k] !== undefined) {
+            if (el.id === "ledger-inspector" && selectedWalletId) return;
+            if (el.id === "dm-last-json" && el.textContent.trim().startsWith("{")) return;
+            el.textContent = I18N[lang][k];
+          }
+        });
+        document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+          const k = el.getAttribute("data-i18n-placeholder");
+          if (I18N[lang][k] !== undefined) el.setAttribute("placeholder", I18N[lang][k]);
+        });
+        document.getElementById("lang-toggle").textContent = lang === "en" ? "FR" : "EN";
+        renderRoster();
+        fetchAdapterState();
+      }
+
+      document.getElementById("lang-toggle").addEventListener("click", () => {
+        lang = lang === "en" ? "fr" : "en";
+        applyI18n();
+        const frame = document.getElementById("workforce-os-frame");
+        if (frame && frame.contentWindow && frame.getAttribute("src")) {
+          frame.contentWindow.postMessage({ type: "opvs:set-lang", lang }, "*");
+        }
+      });
+
+      // Expose shared simulator state bridge for modular Kirchhoff 4D engine
+      window.__OPVS_STATE__ = {
+        getFleet: () => fleet,
+        getHistory: () => g5History,
+        getSelectedId: () => g5SelectedId,
+        getLang: () => lang,
+        getCycle: () => cycle
+      };
+
+      // Boot & Deep-Link Routing (#orbit, #simulator, #whitepaper, #deepmind, #opvs or ?tab=...)
+      initG5History();
+      updateSliderPreview();
+      updateDmPreview();
+      applyI18n();
+      renderRoster();
+      renderG5();
+
+      const params = new URLSearchParams(window.location.search);
+      const queryTab = (params.get("tab") || "").toLowerCase();
+      const initialHash = (window.location.hash || "").replace("#", "").toLowerCase();
+      if (VIEWS[queryTab]) {
+        switchTab(queryTab, false);
+      } else if (VIEWS[initialHash]) {
+        switchTab(initialHash, false);
+      } else {
+        switchTab("whitepaper", false);
+      }
+    })();
+  </script>
+</body>
+</html>

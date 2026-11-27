@@ -25,15 +25,19 @@
     "softwareVersion": "2.0.0",
     "dateModified": "2026-11-27",
     "author": {
-      "@type": "Organization",
-      "name": "OPERAE VIS",
-      "url": "https://operaevis.com",
-      "email": "antonin@operaevis.com"
+      "@type": "Person",
+      "name": "Canius, Antoine De Cagny",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "OPERAE VIS",
+        "url": "https://operaevis.com"
+      },
+      "email": "canius@operaevis.com"
     },
     "contactPoint": {
       "@type": "ContactPoint",
       "contactType": "Executive & Robotics Audit",
-      "email": "antonin@operaevis.com"
+      "email": "canius@operaevis.com"
     },
     "description": "Thermodynamic settlement protocol (1 OPVS = 1 kWh = 3.6 MJ; 1 micro-OPVS = 3.6 J in strict INT64) and Robotic Workforce OS linking embodied VLA policies (Google DeepMind Gemini Robotics) to heterogeneous fleets (Apptronik Apollo, Electric Atlas 56-DoF, ALOHA Bimanual, Spot/Stretch via Orbit)."
   }
@@ -1788,10 +1792,10 @@
     <div class="footer-inner">
       <div>
         <div class="mono" style="font-size:0.82rem; font-weight:700;">OPERAEVIS.COM · OPVS v2.0</div>
-        <div class="micro-label" data-i18n="ftr_sub">ENERGY AS CURRENCY · SURVIVAL AS GOVERNANCE · 1 OPVS ≡ 1 kWh ≡ 3.6 MJ · CONTACT: ANTONIN@OPERAEVIS.COM</div>
+        <div class="micro-label" data-i18n="ftr_sub">ENERGY AS CURRENCY · SURVIVAL AS GOVERNANCE · 1 OPVS ≡ 1 kWh ≡ 3.6 MJ · FOUNDER &amp; INVENTOR: CANIUS, ANTOINE DE CAGNY</div>
       </div>
       <div class="mono" style="font-size:0.76rem; color:var(--fg-label);">
-        <a href="mailto:antonin@operaevis.com" style="color:var(--c-cyan); text-decoration:none;">antonin@operaevis.com</a>
+        <a href="mailto:canius@operaevis.com" style="color:var(--c-cyan); text-decoration:none;">canius@operaevis.com</a>
       </div>
     </div>
   </footer>
@@ -2007,7 +2011,7 @@
           kch_r3_a: "Freeze unverified payouts; flag audit anomaly for immediate inspection.",
           btn_copy_contract: "Copy application/opvs+json",
           btn_exp_json: "⬇ Export JSON",
-          ftr_sub: "ENERGY AS CURRENCY · SURVIVAL AS GOVERNANCE · 1 OPVS ≡ 1 kWh ≡ 3.6 MJ · CONTACT: ANTONIN@OPERAEVIS.COM"
+          ftr_sub: "ENERGY AS CURRENCY · SURVIVAL AS GOVERNANCE · 1 OPVS ≡ 1 kWh ≡ 3.6 MJ · FOUNDER & INVENTOR: CANIUS, ANTOINE DE CAGNY"
         },
         fr: {
           hdr_sub: "OPERAE VIS · 1 BOT = 1 Θ HOLDER",
@@ -2174,7 +2178,7 @@
           kch_r3_a: "Geler règlements non vérifiés ; lever anomalie d'audit immédiate.",
           btn_copy_contract: "Copier application/opvs+json",
           btn_exp_json: "⬇ Exporter JSON",
-          ftr_sub: "L'ÉNERGIE COMME MONNAIE · LA SURVIE COMME GOUVERNANCE · 1 OPVS ≡ 1 kWh ≡ 3.6 MJ · CONTACT : ANTONIN@OPERAEVIS.COM"
+          ftr_sub: "L'ÉNERGIE COMME MONNAIE · LA SURVIE COMME GOUVERNANCE · 1 OPVS ≡ 1 kWh ≡ 3.6 MJ · FONDATEUR & INVENTEUR : CANIUS, ANTOINE DE CAGNY"
         }
       };
 
@@ -3445,7 +3449,8 @@
             idempotency_header: "Idempotency-Key: <episode_uuid>",
             safety_orthogonality: "safety_envelope_orthogonal = true"
           },
-          executive_contact: "antonin@operaevis.com"
+          founder_and_inventor: "Canius, Antoine De Cagny",
+          executive_contact: "canius@operaevis.com"
         };
         document.getElementById("opvs-machine-contract").textContent = JSON.stringify(contract, null, 2);
       }
